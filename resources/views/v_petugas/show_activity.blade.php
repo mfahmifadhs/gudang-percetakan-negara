@@ -22,58 +22,45 @@
 
 <section class="content">
   <div class="container-fluid">
-    <div class="card">
+    <div class="card card-primary card-outline">
       <div class="card-header">
         <h3 class="card-title">Barang Masuk</h3>
-
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
             <i class="fas fa-minus"></i>
           </button>
         </div>
       </div>
-      <div class="card-body p-0">
-        <table class="table table-striped projects">
-          <thead>
+      <div class="card-body">
+        <table id="table1" class="table table-responsive table-bordered">
+          <thead class="text-center">
             <tr>
-              <th style="width: 1%">
-                No
-              </th>
-              <th style="width: 25%">
-                Unit Kerja
-              </th>
-              <th style="width: 20%">
-                Petugas yang diperintahkan
-              </th>
-              <th>
-                Jumlah
-              </th>
-              <th style="width: 20%">
-                Tanggal
-              </th>
-              <th style="width: 22%">
-              </th>
+              <th style="width: 1%">No</th>
+              <th style="width: 20%">Unit Kerja</th>
+              <th style="width: 20%">Pengirim / Jabatan</th>
+              <th style="width: 10%;">Jumlah</th>
+              <th style="width: 20%">Jam / Tanggal</th>
+              <th></th>
             </tr>
           </thead>
           <?php $no = 1;?>
-          <tbody class="text-capitalize">
+          <tbody class="text-capitalize text-center">
             @foreach($activity as $activity)
               <tr>
                 <td>{{ $no++ }} </td>
                 <td>{{ $activity->workunit_name }} </td>
                 <td>{{ $activity->order_emp_name.' / '.$activity->order_emp_position }} </td>
                 <td>{{ $activity->totalitem }} Barang</td>
-                <td>{{ \Carbon\Carbon::parse($activity->order_dt)->isoFormat('DD MMMM Y') }} /
-                    {{ $activity->order_tm }}</td>
+                <td>{{ $activity->order_tm .' / '.\Carbon\Carbon::parse($activity->order_dt)->isoFormat('DD MMMM Y') }}</td>
                 <td>
                   <a class="btn btn-primary btn-sm" rel="noopener" target="_blank" href="{{ url('petugas/cetak-bast/'.$activity->id_order) }}">
-                    <i class="fas fa-file"></i>&nbsp; BAST
+                    <i class="fas fa-file"></i> <br> BAST
                   </a>
                   <a class="btn btn-primary btn-sm" href="#">
-                    <i class="fas fa-box"></i>&nbsp; Barang
+                    <i class="fas fa-box"></i> <br> Barang
                   </a>
-                  <a class="btn btn-primary btn-sm" href="{{ url('petugas/kelengkapan-barang/'. $activity->id_order) }}">
-                    <i class="fas fa-edit"></i>&nbsp; Kelengkapan
+                  <a class="btn btn-primary btn-sm" href="{{ url('petugas/barang/kelengkapan-barang/'. $activity->id_order) }}">
+                    <i class="fas fa-edit"></i> <br> Kelengkapan
                   </a>
                 </td>
               </tr>
@@ -85,6 +72,21 @@
   </div>
 </section>
 
-
+@section('js')
+<script>
+  $(function () {
+    $("#table1").DataTable({
+      "responsive": true, "lengthChange": true  , "autoWidth": true ,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $("#table2").DataTable({
+      "responsive": true, "lengthChange": true, "autoWidth": false,
+      "searching":true, "paging": true, "info": true,
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      "buttons": ["print","pdf","excel"]
+    }).buttons().container().appendTo('#table4_wrapper .col-md-6:eq(0)');
+  });
+</script>
+@endsection
 
 @endsection

@@ -24,28 +24,28 @@
     <!-- Info boxes -->
     <div class="row">
       <div class="col-md-3 form-group">
-        <a href="{{ url('petugas/pengiriman-barang') }}" class="btn btn-primary btn-lg form-control" 
+        <a href="{{ url('petugas/pengiriman-barang') }}" class="btn btn-primary btn-lg form-control"
         style="height: 15vh;padding: 3vh;">
           <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
           <p class="font-weight-bold mt-2">PENGIRIMAN BARANG</p>
         </a>
       </div>
       <div class="col-md-3 form-group">
-        <a href="{{ url('petugas/pengeluaran-barang') }}" class="btn btn-primary btn-lg form-control" 
+        <a href="{{ url('petugas/pengeluaran-barang') }}" class="btn btn-primary btn-lg form-control"
         style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%"> 
+          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
           <p class="font-weight-bold mt-2">PENGELUARAN BARANG</p>
         </a>
       </div>
       <div class="col-md-3 form-group">
         <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%"> 
+          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
           <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
         </a>
       </div>
       <div class="col-md-3 form-group">
         <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%"> 
+          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
           <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
         </a>
       </div>
@@ -70,7 +70,7 @@
                 <div class="col-md-12">
                   <p class="mb-0" style="font-size: 14px;">
                     <a href="{{ url('petugas/daftar-aktivitas/pengiriman') }}" class="fw-bold text-primary">
-                      <i class="fas fa-arrow-circle-right"></i> Lihat semua pengiriman 
+                      <i class="fas fa-arrow-circle-right"></i> Lihat semua pengiriman
                     </a>
                   </p>
                 </div>
@@ -79,7 +79,7 @@
           </div>
           <div class="col-md-12">
             <div class="callout callout-info">
-              <h6 class="font-weight-bold">PENGIRIMAN</h6>
+              <h6 class="font-weight-bold">PENGELUARAN</h6>
             </div>
           </div>
           <div class="col-md-12">
@@ -96,7 +96,7 @@
                   <div class="col-md-12">
                     <p class="mb-0" style="font-size: 14px;">
                       <a href="{{ url('petugas/daftar-aktivitas/pengeluaran') }}" class="fw-bold text-primary">
-                        <i class="fas fa-arrow-circle-right"></i> Lihat semua pengeluaran 
+                        <i class="fas fa-arrow-circle-right"></i> Lihat semua pengeluaran
                       </a>
                     </p>
                   </div>
@@ -119,7 +119,7 @@
               <div class="card-header">
                 <h3 class="card-title mt-2 font-weight-bold">{{ $warehouse->warehouse_name }}</h3>
                 <div class="card-tools">
-                  <a href="{{ url('admin-master/detail-warehouse/'.$warehouse->id_warehouse) }}" class="btn btn-default"
+                  <a href="{{ url('petugas/gudang/detail/'.$warehouse->id_warehouse) }}" class="btn btn-default"
                     title="Cek Gudang">
                     <i class="fas fa-pallet"></i>
                   </a>
@@ -128,7 +128,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 form-group text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2271/2271068.png" style="height: 25vh;margin-top: 15%;" 
+                    <img src="https://cdn-icons-png.flaticon.com/512/2271/2271068.png" style="height: 25vh;margin-top: 15%;"
                     class="img-thumbnail">
                   </div>
                   <div class="col-md-6">

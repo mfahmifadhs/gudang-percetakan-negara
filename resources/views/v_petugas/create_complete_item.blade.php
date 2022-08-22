@@ -42,7 +42,7 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <form action="{{ url('petugas/tambah-kelengkapan-barang/'. $order->id_order) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('petugas/barang/proses-kelengkapan-barang/'. $order->id_order) }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="table-responsive">
                 <table class="table m-0">
@@ -99,7 +99,7 @@
                 </table>
               </div>
               <div class="card-footer">
-                <button  type="submit" class="btn btn-primary font-weight-bold float-left" 
+                <button  type="submit" class="btn btn-primary font-weight-bold float-left"
                 onclick="return confirm('Apaka Informasi Barang Sudah Benar ?')">Buat BAST</button>
                 <a href="{{ url('petugas/dashboard') }}" class="btn btn-danger font-weight-bold float-right">Batal</a>
               </div>
@@ -118,12 +118,12 @@
     let target = $(this).data('target');
     let reader = new FileReader();
 
-    reader.onload = (e) => { 
-      $('#preview-image-before-upload'+target).attr('src', e.target.result); 
+    reader.onload = (e) => {
+      $('#preview-image-before-upload'+target).attr('src', e.target.result);
     }
 
-    reader.readAsDataURL(this.files[0]); 
-    
+    reader.readAsDataURL(this.files[0]);
+
   });
 </script>
 @endsection

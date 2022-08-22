@@ -21,12 +21,12 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
+Route::get('dashboard', [AuthController::class, 'dashboard']);
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
 Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
-Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
-Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
+Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -47,16 +47,20 @@ Route::group(['middleware' => 'auth'], function () {
     // =============
     // Petugas Gudang
     // =============
-    Route::group(['middleware' => ['role:petugas','status:aktif'], 'prefix' => 'petugas', 'as' => 'petugas.'], 
+    Route::group(['middleware' => ['role:petugas','status:aktif'], 'prefix' => 'petugas', 'as' => 'petugas.'],
         function () {
 
         Route::get('dashboard', [PetugasController::class, 'index']);
+        Route::get('gudang/{aksi}/{id}', [PetugasController::class, 'showWarehouse']);
+        Route::get('aktivitas/{aksi}/{id}', [PetugasController::class, 'showActivity']);
+        Route::get('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
+
+        Route::post('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
+
         Route::get('daftar-aktivitas/{id}', [PetugasController::class, 'showActivity']);
         Route::get('daftar-pengeluaran', [PetugasController::class, 'showIssued']);
-        Route::get('daftar-barang/{id}', [PetugasController::class, 'showItem']);
         Route::get('pengiriman-barang', [PetugasController::class, 'creteDeliverySingle']);
         Route::get('pengeluaran-barang', [PetugasController::class, 'createPickupSingle']);
-        Route::get('kelengkapan-barang/{id}', [PetugasController::class, 'createCompleteItem']);
         Route::get('buat-bast/{id}', [PetugasController::class, 'createBAST']);
         Route::get('cetak-bast/{id}', [PetugasController::class, 'printBAST']);
 
@@ -74,8 +78,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // =============
     // Unit Kerja
-    // ============= 
-    Route::group(['middleware' => ['role:unit-kerja','status:aktif'], 'prefix' => 'unit-kerja', 'as' => 'unit-kerja.'], 
+    // =============
+    Route::group(['middleware' => ['role:unit-kerja','status:aktif'], 'prefix' => 'unit-kerja', 'as' => 'unit-kerja.'],
         function () {
 
         Route::get('dashboard', [WorkunitController::class, 'index']);
