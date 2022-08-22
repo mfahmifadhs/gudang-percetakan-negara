@@ -37,10 +37,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('dashboard', [MasterController::class, 'index']);
         Route::get('show-warehouse', [MasterController::class, 'showWarehouse']);
-        Route::get('show-workunit', [MasterController::class, 'showWorkunit']);
         Route::get('detail-warehouse/{id}', [MasterController::class, 'detailWarehouse']);
         Route::get('detail-slot/{id}', [MasterController::class, 'detailSlot']);
+        Route::get('barang/{aksi}/{id}', [MasterController::class, 'showItem']);
+        Route::get('unit-kerja/{aksi}/{id}', [MasterController::class, 'showWorkunit']);
 
+        Route::post('barang/{aksi}/{id}', [MasterController::class, 'showItem']);
         Route::post('update-warehouse/{id}', [MasterController::class, 'updateWarehouse']);
     });
 

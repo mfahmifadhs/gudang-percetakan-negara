@@ -38,7 +38,7 @@
         <div class="row">
           @foreach($warehouse as $warehouse)
           <div class="col-md-6 form-group">
-            <div class="card" style="height: 100%;font-size: 14px;">
+            <div class="card card-primary card-outline" style="height: 100%;font-size: 14px;">
               <div class="card-header">
                 <h3 class="card-title mt-2 font-weight-bold">{{ $warehouse->warehouse_name }}</h3>
                 <div class="card-tools">
@@ -46,7 +46,7 @@
                   title="Cek Gudang">
                     <i class="fas fa-pallet"></i>
                   </a>
-                  <a class="btn btn-default" type="button" data-toggle="modal" 
+                  <a class="btn btn-default" type="button" data-toggle="modal"
                   data-target="#edit-warehouse{{ $warehouse->id_warehouse }}" title="Ubah Informasi Gudang">
                     <i class="fas fa-edit"></i>
                   </a>
@@ -55,7 +55,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 form-group text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2271/2271068.png" style="height: 30vh;" 
+                    <img src="https://cdn-icons-png.flaticon.com/512/2271/2271068.png" style="height: 30vh;"
                     class="img-thumbnail">
                   </div>
                   <div class="col-md-6">

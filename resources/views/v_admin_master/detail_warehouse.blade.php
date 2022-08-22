@@ -42,25 +42,25 @@
       <!-- /.card-header -->
       <div class="card-body">
         @if($warehouse->id_warehouse == 'G09B')
-        <div class="row"> 
+        <div class="row">
           @foreach($warehouse09b as $warehouse09b)
-          <div class="row"> 
+          <div class="row">
             @foreach($pallet as $row)
               @if($row->slot_status == 'Penuh')
               <div class="col-xs-1-5" style="margin-bottom:3vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->pallet_name }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-xs-1-5" style="margin-bottom:3vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-success" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-success" style="width:100%;">
                   {{ $row->pallet_name }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Kosong' && $row->pallet_id != '0')
               <div class="col-xs-1-5" style="margin-bottom:3vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->pallet_name }}
                 </a>
               </div>
@@ -107,19 +107,19 @@
               @foreach($rack_pallet_one_lvl1 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-success" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-success" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   { $row->id_slot }}
                 </a>
               </div>
@@ -134,19 +134,19 @@
               @foreach($rack_pallet_one_lvl2 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -166,19 +166,19 @@
               @foreach($rack_pallet_two_lvl1 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -193,19 +193,19 @@
               @foreach($rack_pallet_two_lvl2 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -225,19 +225,19 @@
               @foreach($rack_pallet_three_lvl1 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -252,19 +252,19 @@
               @foreach($rack_pallet_three_lvl2 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -284,19 +284,19 @@
               @foreach($rack_pallet_four_lvl1 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -311,19 +311,19 @@
               @foreach($rack_pallet_four_lvl2 as $row)
               @if($row->slot_status == 'Kosong')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-default" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Tersedia')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-warning" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
               @elseif($row->slot_status == 'Penuh')
               <div class="col-md-4" style="margin-bottom:5vh;">
-                <a href="{{ url('admin-master/detail-slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
+                <a href="{{ url('admin-master/barang/slot/'. $row->id_slot) }}" class="btn btn-danger" style="width:100%;">
                   {{ $row->id_slot }}
                 </a>
               </div>
@@ -342,7 +342,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-        <a href="{{ url('admin-master/detail-slot/G03') }}">
+        <a href="{{ url('admin-master/barang/slot/'. $slot->id_slot) }}">
           <img src="https://cdn-icons-png.flaticon.com/512/2897/2897821.png" width="200" class="img-thumbnail">
         </a>
       </div>

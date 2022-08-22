@@ -20,13 +20,14 @@
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 </head>
-<body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse">
+
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
+  <!-- <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__wobble" src="{{ asset('dist/img/logo-kemenkes-brown.png') }}" alt="Sistem Informasi Pergudangan" height="200">
-  </div>
+  </div> -->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-light">
@@ -125,49 +126,41 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="{{ url('admin-master/dashboard') }}" class="nav-link 
+            <a href="{{ url('admin-master/dashboard') }}" class="nav-link
               {{ Request::is('admin-master/dashboard') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>Dashboard
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-header">Menu</li>
+          <li class="nav-header font-weight-bold">Menu</li>
+          <li class="nav-item">
+            <a href="{{ url('admin-master/barang/daftar/semua') }}" class="nav-link
+              {{ Request::is('admin-master/barang/daftar/semua') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-boxes"></i>
+              <p>Master Barang</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{{ url('admin-master/show-warehouse') }}" class="nav-link
               {{ Request::is('admin-master/show-warehouse') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-warehouse"></i> Master Gudang
-            </a>
-          </li>
-          <li class="nav-header">Pengguna</li>
-          <li class="nav-item">
-            <a href="{{ url('admin-master/show-workunit') }}" class="nav-link
-              {{ Request::is('admin-master/show-workunit') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-warehouse"></i> Master Unit Kerja
+              <i class="nav-icon fas fa-warehouse"></i>
+              <p>Master Gudang</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-boxes"></i>
-              <p>
-                Master Barang
-                <i class="fas fa-angle-left right"></i>
-              </p>
+            <a href="{{ url('admin-master/pengguna/daftar/semua') }}" class="nav-link
+              {{ Request::is('admin-master/pengguna/daftar/semua') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Master Pengguna</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Barang Masuk</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Barang Keluar</p>
-                </a>
-              </li>
-            </ul>
           </li>
-          
+          <li class="nav-item">
+            <a href="{{ url('admin-master/unit-kerja/daftar/semua') }}" class="nav-link
+              {{ Request::is('admin-master/unit-kerja/daftar/semua') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-briefcase"></i>
+              <p>Master Unit Kerja</p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -175,6 +168,7 @@
 
   <div class="content-wrapper">
     @yield('content')
+    <br>
   </div>
 
 
