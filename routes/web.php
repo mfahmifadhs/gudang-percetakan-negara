@@ -40,10 +40,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('detail-warehouse/{id}', [MasterController::class, 'detailWarehouse']);
         Route::get('detail-slot/{id}', [MasterController::class, 'detailSlot']);
         Route::get('barang/{aksi}/{id}', [MasterController::class, 'showItem']);
+        Route::get('gudang/{aksi}/{id}', [MasterController::class, 'showWarehouse']);
         Route::get('unit-kerja/{aksi}/{id}', [MasterController::class, 'showWorkunit']);
+        Route::get('pengguna/{aksi}/{id}', [MasterController::class, 'showUser']);
+        Route::get('json/{aksi}/{id}', [MasterController::class, 'showJson']);
 
+        Route::post('pengguna/{aksi}/{id}', [MasterController::class, 'showUser']);
+        Route::post('gudang/{aksi}/{id}', [MasterController::class, 'showWarehouse']);
+        Route::post('unit-kerja/{aksi}/{id}', [MasterController::class, 'showWorkunit']);
         Route::post('barang/{aksi}/{id}', [MasterController::class, 'showItem']);
         Route::post('update-warehouse/{id}', [MasterController::class, 'updateWarehouse']);
+        Route::post('select2/{aksi}/{id}', [MasterController::class, 'showSelect2']);
     });
 
     // =============

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 use App\Models\WarehouseModel;
 use App\Models\SlotModel;
@@ -22,7 +23,6 @@ use PDF;
 use Validator;
 use Carbon\Carbon;
 
-
 class MasterController extends Controller
 {
     public function index()
@@ -34,118 +34,113 @@ class MasterController extends Controller
     //               WAREHOUSE
     // =====================================
 
-    public function showWarehouse()
+    public function showWarehouse(Request $request, $aksi, $id)
     {
-        $warehouse  = DB::table('tbl_warehouses')
-                        ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
-                        ->orderby('status_id', 'ASC')
-                        ->get();
-        $model      = DB::table('tbl_warehouses')
-                        ->select('warehouse_category',DB::raw('count(id_warehouse) as totalwarehouse'))
-                        ->groupBy('warehouse_category')
-                        ->get();
-        return view('v_admin_master.show_warehouse', compact('warehouse','model'));
-    }
-
-    public function detailWarehouse(Request $request, $id)
-    {
-        $warehouse      = DB::table('tbl_warehouses')
-                            ->join('tbl_status', 'tbl_status.id_status', 'tbl_warehouses.status_id')
-                            ->where('id_warehouse', $id)
-                            ->get();
-        $warehouse09b   = DB::table('tbl_warehouses')
+        if($aksi == 'daftar'){
+            //Daftar gudang
+            $warehouse  = DB::table('tbl_warehouses')
                             ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
-                            ->where('id_warehouse', 'G09B')
+                            ->orderby('status_id', 'ASC')
                             ->get();
-
-        $warehouse05b   = DB::table('tbl_warehouses')
-                            ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
-                            ->where('id_warehouse', 'G05B')
+            $model      = DB::table('tbl_warehouses')
+                            ->select('warehouse_category',DB::raw('count(id_warehouse) as totalwarehouse'))
+                            ->groupBy('warehouse_category')
                             ->get();
-        $pallet         = DB::table('tbl_slots_names')
-                            ->join('tbl_slots','tbl_slots.id_slot','tbl_slots_names.pallet_id')
-                            ->get();
-        $slot           = DB::table('tbl_slots')
-                            ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-                            ->where('warehouse_id', $id)
-                            ->first();
+            return view('v_admin_master.show_warehouse', compact('warehouse','model'));
 
-        // SELECT RACK
+        }elseif($aksi == 'detail'){
+            //Detail gudang
+            $warehouse      = DB::table('tbl_warehouses')
+                                ->join('tbl_status', 'tbl_status.id_status', 'tbl_warehouses.status_id')
+                                ->where('id_warehouse', $id)
+                                ->get();
+            $warehouse09b   = DB::table('tbl_warehouses')
+                                ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
+                                ->where('id_warehouse', 'G09B')
+                                ->get();
 
-        $rack_pallet_one_lvl1   = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'I')
-                                    ->where('rack_level', 'Bawah')
-                                    ->get();
-        $rack_pallet_one_lvl2   = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'I')
-                                    ->where('rack_level', 'Atas')
-                                    ->get();
-        $rack_pallet_two_lvl1   = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'II')
-                                    ->where('rack_level', 'Bawah')
-                                    ->get();
-        $rack_pallet_two_lvl2   = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'II')
-                                    ->where('rack_level', 'Atas')
-                                    ->get();
-        $rack_pallet_three_lvl1 = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'III')
-                                    ->where('rack_level', 'Bawah')
-                                    ->get();
-        $rack_pallet_three_lvl2 = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'III')
-                                    ->where('rack_level', 'Atas')
-                                    ->get();
+            $warehouse05b   = DB::table('tbl_warehouses')
+                                ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
+                                ->where('id_warehouse', 'G05B')
+                                ->get();
+            $pallet         = DB::table('tbl_slots_names')
+                                ->join('tbl_slots','tbl_slots.id_slot','tbl_slots_names.pallet_id')
+                                ->get();
+            $slot           = DB::table('tbl_slots')
+                                ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
+                                ->where('warehouse_id', $id)
+                                ->first();
 
-        $rack_pallet_four_lvl1  = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'IV')
-                                    ->where('rack_level', 'Bawah')
-                                    ->get();
-        $rack_pallet_four_lvl2  = DB::table('tbl_rack_details')
-                                    ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
-                                    ->where('rack_id', 'IV')
-                                    ->where('rack_level', 'Atas')
-                                    ->get();
+            // SELECT RACK
 
-        return view('v_admin_master.detail_warehouse', compact('slot','warehouse','warehouse09b','warehouse05b','pallet',
-        'rack_pallet_one_lvl1','rack_pallet_one_lvl2','rack_pallet_two_lvl1','rack_pallet_two_lvl2','rack_pallet_three_lvl1',
-        'rack_pallet_three_lvl2','rack_pallet_four_lvl1','rack_pallet_four_lvl2',));
-    }
+            $rack_pallet_one_lvl1   = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'I')
+                                        ->where('rack_level', 'Bawah')
+                                        ->get();
+            $rack_pallet_one_lvl2   = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'I')
+                                        ->where('rack_level', 'Atas')
+                                        ->get();
+            $rack_pallet_two_lvl1   = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'II')
+                                        ->where('rack_level', 'Bawah')
+                                        ->get();
+            $rack_pallet_two_lvl2   = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'II')
+                                        ->where('rack_level', 'Atas')
+                                        ->get();
+            $rack_pallet_three_lvl1 = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'III')
+                                        ->where('rack_level', 'Bawah')
+                                        ->get();
+            $rack_pallet_three_lvl2 = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'III')
+                                        ->where('rack_level', 'Atas')
+                                        ->get();
 
-    public function updateWarehouse(Request $request, $id)
-    {
-        $ceknip = Validator::make($request->all(), [
-                    'id_warehouse' => 'unique:tbl_warehouses',
-                  ]);
+            $rack_pallet_four_lvl1  = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'IV')
+                                        ->where('rack_level', 'Bawah')
+                                        ->get();
+            $rack_pallet_four_lvl2  = DB::table('tbl_rack_details')
+                                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
+                                        ->where('rack_id', 'IV')
+                                        ->where('rack_level', 'Atas')
+                                        ->get();
 
-        if ($ceknip->fails()) {
-            return redirect('admin-master/show-warehouse')->with('failed', 'Kode Gudang Telah Terdaftar');
-        }else{
-            WarehouseModel::where('id_warehouse', $id)->update([
-                                    'id_warehouse'          => strtoupper($request->id_warehouse),
-                                    'warehouse_category'    => $request->warehouse_category,
-                                    'warehouse_name'        => $request->warehouse_name,
-                                    'warehouse_description' => $request->warehouse_description,
-                                    'status_id'             => $request->status_id
-                                ]);
-            return redirect('admin-master/show-warehouse')->with('success','Berhasil Mengubah Informasi Gudang');
-        }
-    }
+            return view('v_admin_master.detail_warehouse', compact('slot','warehouse','warehouse09b','warehouse05b','pallet',
+            'rack_pallet_one_lvl1','rack_pallet_one_lvl2','rack_pallet_two_lvl1','rack_pallet_two_lvl2','rack_pallet_three_lvl1',
+            'rack_pallet_three_lvl2','rack_pallet_four_lvl1','rack_pallet_four_lvl2',));
 
-    public function detailSlot($id)
-    {
-        $slot   = DB::table('tbl_slots')
+        }elseif($aksi == 'update'){
+            //Update gudang
+            WarehouseModel::where('id_warehouse', $id)
+            ->update([
+                        'id_warehouse'          => strtoupper($request->id_warehouse),
+                        'warehouse_category'    => $request->warehouse_category,
+                        'warehouse_name'        => $request->warehouse_name,
+                        'warehouse_description' => $request->warehouse_description,
+                        'status_id'             => $request->status_id
+                    ]);
+            return redirect('admin-master/gudang/daftar/semua')->with('success','Berhasil Mengubah Informasi Gudang');
+
+        }elseif($aksi == 'slot'){
+            //Slot gudang
+            $slot   = DB::table('tbl_slots')
                     ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
                     ->where('id_slot', $id)
                     ->get();
-        return view('v_admin_master.detail_slot', compact('slot'));
+
+            return view('v_admin_master.detail_slot', compact('slot'));
+
+        }
     }
 
     // ========================================
@@ -248,7 +243,6 @@ class MasterController extends Controller
             $category->delete();
 
             return redirect('admin-master/barang/daftar/semua/#tabs-category')->with('success','Berhasil menghapus kategori');
-
         }
 
     }
@@ -265,8 +259,130 @@ class MasterController extends Controller
                             ->get();
             $mainunit   = DB::table('tbl_mainunits')->get();
             return view('v_admin_master.show_workunit', compact('workunit','mainunit'));
+
+        }elseif($aksi == 'tambah'){
+            //Tambah unit kerja
+            $workunit = new WorkunitModel();
+            $workunit->workunit_name = strtolower($request->input('workunit_name'));
+            $workunit->mainunit_id   = $request->input('mainunit_id');
+            $workunit->save();
+
+            return redirect('admin-master/unit-kerja/daftar/semua')->with('success','Berhasil menambah unit kerja baru');
         }
 
+    }
+
+    // =====================================
+    //             PENGGUNA
+    // =====================================
+
+    public function showUser(Request $request, $aksi, $id)
+    {
+        if($aksi == 'daftar'){
+            // Daftar Pengguna
+            $users  = DB::table('users')
+                        ->join('tbl_roles','tbl_roles.id_role','users.role_id')
+                        ->join('tbl_workunits','tbl_workunits.id_workunit','users.workunit_id')
+                        ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                        ->join('tbl_status','tbl_status.id_status','users.status_id')
+                        ->orderBy('role_id','DESC')
+                        ->get();
+
+            return view('v_admin_master.show_user', compact('users'));
+
+        }elseif($aksi == 'detail'){
+            // Detail pengguna
+            $users  = DB::table('users')
+                        ->join('tbl_roles','tbl_roles.id_role','users.role_id')
+                        ->join('tbl_workunits','tbl_workunits.id_workunit','users.workunit_id')
+                        ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                        ->join('tbl_status','tbl_status.id_status','users.status_id')
+                        ->where('id',$id)
+                        ->first();
+            $roles  = DB::table('tbl_roles')->where('id_role','!=',1)->get();
+            $status = DB::table('tbl_status')->get();
+            return view('v_admin_master.detail_user', compact('users','roles','status'));
+
+        }elseif($aksi == 'tambah'){
+            // Tambah pengguna
+            $roles  = DB::table('tbl_roles')->where('id_role','!=',1)->get();
+            return view('v_admin_master.create_user', compact('roles'));
+
+        }elseif($aksi == 'proses-tambah'){
+            // Proses tambah pengguna
+            $users  = new User();
+            $users->role_id     = $request->input('role_id');
+            $users->workunit_id = $request->input('workunit_id');
+            $users->full_name   = $request->input('full_name');
+            $users->nip         = $request->input('nip');
+            $users->password    = Crypt::encryptString($request->input('password'));
+            $users->status_id   = $request->input('status_id');
+            $users->save();
+            return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil menambah pengguna baru');
+
+        }elseif($aksi == 'ubah'){
+            // Ubah informasi pengguna
+            User::where('id', $id)->update([
+                'role_id'       => $request->role_id,
+                'workunit_id'   => $request->workunit_id,
+                'full_name'     => $request->full_name,
+                'nip'           => $request->nip,
+                'password'      => Crypt::encryptString($request->password),
+                'status_id'     => $request->status_id
+            ]);
+            return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil mengubah informasi pengguna');
+
+        }elseif($aksi == 'hapus'){
+            // Hapus pengguna
+            $users = User::where('id', $id);
+            $users->delete();
+            DB::statement("ALTER TABLE users AUTO_INCREMENT =  1");
+            return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil menghapus pengguna');
+        }
+    }
+
+    // =====================================
+    //             SELECT 2
+    // =====================================
+
+    public function showSelect2(Request $request, $aksi, $id)
+    {
+        if($aksi == 'workunit'){
+            // Menampilkan unit kerja
+            $search = $request->search;
+
+            if($search == ''){
+                $workunit = DB::table('tbl_workunits')->get();
+            }else{
+                $workunit = DB::table('tbl_workunits')->where('workunit_name', 'like', '%' .$search . '%')->get();
+            }
+
+            $response = array();
+            foreach($workunit as $data){
+                $response[] = array(
+                    "id"    =>  $data->id_workunit,
+                    "text"  =>  $data->workunit_name
+                );
+            }
+
+            return response()->json($response);
+        }
+    }
+
+    // =====================================
+    //                JSON
+    // =====================================
+
+    public function showJson(Request $request, $aksi, $id)
+    {
+        if($aksi == 'mainunit'){
+            // Menampilkan unit utama
+            $result = DB::table('tbl_workunits')
+                        ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                        ->where('id_workunit', $id)
+                        ->pluck('id_mainunit','mainunit_name');
+            return response()->json($result);
+        }
     }
 
 }

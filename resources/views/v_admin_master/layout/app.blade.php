@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SIP | Sistem Informasi Pergudangan</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -19,6 +20,8 @@
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ asset('dist/plugins/select2/css/select2.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
 
@@ -141,8 +144,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('admin-master/show-warehouse') }}" class="nav-link
-              {{ Request::is('admin-master/show-warehouse') ? 'active' : '' }}">
+            <a href="{{ url('admin-master/gudang/daftar/semua') }}" class="nav-link
+              {{ Request::is('admin-master/gudang/daftar/semua') ? 'active' : '' }}">
               <i class="nav-icon fas fa-warehouse"></i>
               <p>Master Gudang</p>
             </a>
@@ -220,6 +223,8 @@
 <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('dist/plugins/select2/js/select2.full.min.js') }}"></script>
 @yield('js')
 </body>
 </html>

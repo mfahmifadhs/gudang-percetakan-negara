@@ -38,7 +38,7 @@ class AuthController extends Controller
     }
 
     public function postRegistration(Request $request)
-    {  
+    {
         $request->validate([
             'id' => 'required',
             'full_name' => 'required',
@@ -51,7 +51,7 @@ class AuthController extends Controller
     }
 
 
-    public function create(array $data) 
+    public function create(array $data)
     {
         return User::create([
             'id'        => $data['id'],
@@ -61,8 +61,8 @@ class AuthController extends Controller
             'password'  => Hash::make($data['password']),
             'status_id' => '1',
         ]);
-    }    
-    
+    }
+
 
     public function dashboard()
     {
@@ -70,15 +70,15 @@ class AuthController extends Controller
         {
             return redirect('admin-master/dashboard');
         }
-        elseif (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status_id == 1) 
+        elseif (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status_id == 1)
         {
             return redirect('admin-user/dashboard');
         }
-        elseif (Auth::check() && Auth::user()->role_id == 3 && Auth::user()->status_id == 1) 
+        elseif (Auth::check() && Auth::user()->role_id == 3 && Auth::user()->status_id == 1)
         {
             return redirect('unit-kerja/dashboard');
         }
-        elseif (Auth::check() && Auth::user()->role_id == 4 && Auth::user()->status_id == 1) 
+        elseif (Auth::check() && Auth::user()->role_id == 4 && Auth::user()->status_id == 1)
         {
             return redirect('petugas/dashboard');
         }
@@ -86,7 +86,7 @@ class AuthController extends Controller
             return redirect("login")->with('failed', 'Anda tidak memiliki akses!');
         }
     }
-    
+
 
     public function signOut() {
         Session::flush();

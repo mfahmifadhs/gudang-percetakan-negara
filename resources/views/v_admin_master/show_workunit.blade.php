@@ -22,14 +22,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 float-right">
-        <div class="float-right">
-          <a href="{{ url('admin-master/barang/tambah-kategori/baru') }}" class="btn btn-primary btn-sm">
+        <!-- <div class="float-right">
+          <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add-workunit">
             <i class="fas fa-plus-circle"></i> <br> Unit Kerja
           </a>
-          <a href="{{ url('admin-master/barang/tambah-kategori/baru') }}" class="btn btn-primary btn-sm">
+          <a type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add-mainunit">
             <i class="fas fa-plus-circle"></i> <br> Unit Utama
           </a>
-        </div>
+        </div> -->
       </div>
       <div class="col-md-12 form-group">
         @if ($message = Session::get('success'))
@@ -66,7 +66,7 @@
                       <th style="width: 1%;">No</th>
                       <th style="width: 20%;">Unit Kerja</th>
                       <th style="width: 20%;">Unit Utama</th>
-                      <th style="width: 1%;"></th>
+                      <!-- <th style="width: 1%;"></th> -->
                     </tr>
                   </thead>
                   <?php $no = 1;?>
@@ -76,12 +76,12 @@
                       <td>{{ $no++ }}</td>
                       <td>{{ $workunit->workunit_name }}</td>
                       <td>{{ $workunit->mainunit_name }}</td>
-                      <td>
+                      <!-- <td>
                         <a type="button" class="btn btn-primary" data-toggle="dropdown">
                           <i class="fas fa-bars"></i>
                         </a>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="{{ url('admin-master/unit-kerja/ubah/'. $workunit->id_workunit) }}">
+                          <a class="dropdown-item" data-toggle="modal" data-target="#edit-workunit-{{ $workunit->id_workunit }}">
                             Ubah
                           </a>
                           <a class="dropdown-item" href="{{ url('admin-master/unit-kerja/hapus/'. $workunit->id_workunit) }}"
@@ -89,7 +89,7 @@
                             Hapus
                           </a>
                         </div>
-                      </td>
+                      </td> -->
                     </tr>
                     @endforeach
                   </tbody>
@@ -101,7 +101,7 @@
                     <tr>
                       <th style="width: 1%;">No</th>
                       <th style="width: 20%;">Unit Utama</th>
-                      <th style="width: 1%;"></th>
+                      <!-- <th style="width: 1%;"></th> -->
                     </tr>
                   </thead>
                   <?php $no = 1;?>
@@ -110,7 +110,7 @@
                     <tr>
                       <td>{{ $no++ }}</td>
                       <td>{{ $mainunit->mainunit_name }}</td>
-                      <td>
+                      <!-- <td>
                         <a type="button" class="btn btn-primary" data-toggle="dropdown">
                           <i class="fas fa-bars"></i>
                         </a>
@@ -122,7 +122,7 @@
                           onclick="return confirm('Yakin ingin menghapus data unit kerja ini ?')">
                             Hapus
                           </a>
-                        </div>
+                        </div> -->
                       </td>
                     </tr>
                     @endforeach

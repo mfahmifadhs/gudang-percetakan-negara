@@ -42,7 +42,7 @@
               <div class="card-header">
                 <h3 class="card-title mt-2 font-weight-bold">{{ $warehouse->warehouse_name }}</h3>
                 <div class="card-tools">
-                  <a href="{{ url('admin-master/detail-warehouse/'.$warehouse->id_warehouse) }}" class="btn btn-default"
+                  <a href="{{ url('admin-master/gudang/detail/'.$warehouse->id_warehouse) }}" class="btn btn-default"
                   title="Cek Gudang">
                     <i class="fas fa-pallet"></i>
                   </a>
@@ -101,7 +101,7 @@
                   </button>
                 </div>
                 <div class="modal-body" style="font-size:14px;">
-                  <form action="{{ url('admin-master/update-warehouse/'. $warehouse->id_warehouse) }}" method="POST">
+                  <form action="{{ url('admin-master/gudang/update/'. $warehouse->id_warehouse) }}" method="POST">
                     @csrf
                     <div class="row">
                       <div class="col-md-6 form-group">
