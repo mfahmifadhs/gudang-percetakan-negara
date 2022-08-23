@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\WorkunitController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\PetugasController;
 
 /*
@@ -18,7 +19,7 @@ use App\Http\Controllers\PetugasController;
 */
 
 Route::get('/', function () {
-    return redirect('login');
+    return redirect('main/dashboard');
 });
 
 Route::get('dashboard', [AuthController::class, 'dashboard']);
@@ -28,7 +29,12 @@ Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
 
+Route::group(['prefix' => 'main', 'as' => 'main.'], function () {
+    Route::get('dashboard', [MainController::class, 'index']);
+});
+
 Route::group(['middleware' => 'auth'], function () {
+
 
     // =============
     // Admin Master
