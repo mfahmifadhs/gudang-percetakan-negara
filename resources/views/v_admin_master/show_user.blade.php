@@ -64,7 +64,7 @@
                   <td>{{ $user->workunit_name }}</td>
                   <td>{{ $user->full_name }}</td>
                   <td>{{ $user->nip }}</td>
-                  <td>{{ \Crypt::decryptString($user->password) }}</td>
+                  <td>{{ $user->password_text }}</td>
                   <td class="text-center">
                     <a class="btn btn-primary btn-xs disabled" > {{ $user->role_name }} </a>
                   </td>

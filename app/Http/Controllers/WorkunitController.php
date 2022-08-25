@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\WarehouseModel;
+use App\Models\AppLetterModel;
 use App\Models\SlotModel;
 use App\Models\RackModel;
 use App\Models\OrderModel;
@@ -28,25 +28,59 @@ class WorkunitController extends Controller
 
 	public function index()
 	{
-		return view('v_workunit.index');
+		return view('v_main.index');
 	}
 
     /*===============================================================
-              SURAT PENGAJUAN PERMOHONAN (APPLICATION LETTER)
+                            PEMBUATAN SURAT
     ===============================================================*/
 
-    public function showAppLetter(Request $request, $aksi, $id)
+    public function showLetter(Request $request, $aksi, $id)
     {
-        if ($aksi == 'pengajuan') {
-            // Surat Permohonan Pengjuan 
-            if ($request->purpose == 'penyimpanan') {
-                return view('v_workunit.pengajuan_penyimpanan');
-            }elseif ($request->purpose == 'pengambilan') {
-                return view('v_workunit.pengajuan_pengambilan');
-            }else{
-                return view('v_workunit.tambah_surat_pengajuan');
-            }
+        if ($aksi == 'pengajuan' ) {
+            // Buat surat pengajuan
+            return view('v_workunit.tambah_surat_pengajuan');
 
+        }elseif($aksi == 'tambah-pengajuan'){
+            // Tambah Surat Pengajuan
+            $appletter = new AppLetterModel();
+
+            $appletter->id_app_letter       = $request->input('id');
+            $appletter->workunit_id         = Auth::user()->workunit_id;
+            $appletter->appletter_purpose   = $request->input('purpose');
+            $appletter->appletter_num       = strtolower($request->input('letter_num'));
+            $appletter->appletter_ctg       = strtolower($request->input('category'));
+            $appletter->appletter_regarding = strtolower($request->input('regarding'));
+            $appletter->appletter_text      = $request->input('text');
+            $appletter->appletter_date      = $request->input('date');
+            $appletter->appletter_status    = 'proses';
+            $appletter->save();
+
+            return redirect('unit-kerja/surat/detail-surat-pengajuan/'. $request->id)->with('success','Berhasil membuat surat pengajuan');
+
+        }elseif($aksi == 'detail-surat-pengajuan'){
+            $appletter = DB::table('tbl_appletters')
+                            ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
+                            ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                            ->where('id_app_letter', $id)->first();
+            return view('v_workunit.detail_surat_pengajuan', compact('appletter'));
+
+        }elseif($aksi == 'daftar-surat-pengajuan'){
+            // Daftar Surat Pengajuan
+            $appletter = DB::table('tbl_appletters')
+                            ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
+                            ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                            ->where('workunit_id', Auth::user()->workunit_id)
+                            ->get();
+            return view('v_workunit.daftar_surat_pengajuan', compact('appletter'));
+
+        }elseif($aksi == 'perintah'){
+            if($id == 'penyimpanan'){
+                $item_ctg = DB::table('tbl_items_category')->get();
+                return view('v_workunit.tambah_surat_perintah_penyimpanan', compact('item_ctg'));
+            }else{
+                return view('tambah_surat_perintah_pengeluaran');
+            }
         }
     }
 
@@ -103,7 +137,7 @@ class WorkunitController extends Controller
                                     ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
                                     ->where('rack_id', 'I')
                                     ->where('rack_level', 'Atas')
-                                    ->get();                            
+                                    ->get();
         $rack_pallet_two_lvl1   = DB::table('tbl_rack_details')
                                     ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
                                     ->where('rack_id', 'II')
@@ -163,5 +197,20 @@ class WorkunitController extends Controller
 
 		return view('v_workunit.show_warrent', compact('warrent'));
 	}
+
+    // =================================
+	// 	            JSON
+	// =================================
+
+    public function showJson($aksi)
+    {
+        if($aksi == 'more-pallet')
+        {
+            $category 	= DB::table('tbl_items_category')->get();
+	        $array['category'] 	= $category;
+
+	        return response()->json($array);
+        }
+    }
 
 }

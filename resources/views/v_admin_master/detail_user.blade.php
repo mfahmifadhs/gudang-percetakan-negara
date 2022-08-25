@@ -84,7 +84,7 @@
                             <a type="button" onclick="viewPass()"><i class="fas fa-eye"></i></a>
                           </span>
                         </div>
-                        <input type="password" id="password" name="password" class="form-control" value="{{ \Crypt::decryptString($users->password) }}">
+                        <input type="password" id="password" name="password" class="form-control" value="{{ $users->password_text }}">
                       </div>
                     </div>
                   </div>

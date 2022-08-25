@@ -33,6 +33,8 @@ Route::group(['prefix' => 'main', 'as' => 'main.'], function () {
     Route::get('dashboard', [MainController::class, 'index']);
 });
 
+
+
 Route::group(['middleware' => 'auth'], function () {
 
 
@@ -98,10 +100,10 @@ Route::group(['middleware' => 'auth'], function () {
         function () {
 
         Route::get('dashboard', [WorkunitController::class, 'index']);
-        Route::get('surat/{aksi}/{id}', [WorkunitController::class, 'showAppLetter']);
+        Route::get('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
 
-
-        Route::post('surat/{aksi}/{id}', [WorkunitController::class, 'showAppLetter']);
+        Route::post('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
+        Route::get('json/{aksi}', [WorkunitController::class, 'showJson']);
 
         Route::get('menu-barang', [WorkunitController::class, 'showItem']);
         Route::get('menu-gudang', [WorkunitController::class, 'showWarehouse']);

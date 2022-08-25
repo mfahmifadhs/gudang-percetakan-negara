@@ -29,6 +29,15 @@
 
   <!-- Template Stylesheet -->
   <link href="{{ asset('dist-main/css/style.css') }}" rel="stylesheet">
+
+  <!-- summernote -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+  @yield('css')
 </head>
 <body>
 
@@ -48,7 +57,7 @@
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-dark py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-      <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
+      <a href="{{ url('/') }}" class="navbar-brand ms-4 ms-lg-0">
         <h1 class="fw-bold text-primary m-0">Gudang <span class="text-white">PN</span></h1>
       </a>
       <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -59,24 +68,34 @@
           <a href="index.html" class="nav-item nav-link active">Beranda</a>
           <a href="about.html" class="nav-item nav-link">Tentang</a>
           <a href="causes.html" class="nav-item nav-link">Berita</a>
+          <a href="causes.html" class="nav-item nav-link">Gudang</a>
           <a href="causes.html" class="nav-item nav-link">Prosedur</a>
           <div class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Lainya</a>
             <div class="dropdown-menu m-0">
-              <a href="service.html" class="dropdown-item">Service</a>
-              <a href="donate.html" class="dropdown-item">Donate</a>
-              <a href="team.html" class="dropdown-item">Our Team</a>
-              <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-              <a href="404.html" class="dropdown-item">404 Page</a>
+              <a href="donate.html" class="dropdown-item">Ambil Barang</a>
+              <a href="" class="dropdown-item">Simpan Barang</a>
             </div>
           </div>
-          <a href="contact.html" class="nav-item nav-link">Contact</a>
+          <a href="contact.html" class="nav-item nav-link">Bantuan</a>
         </div>
-        <div class="d-none d-lg-flex ms-2">
-          <a class="btn btn-outline-primary py-2 px-3 disabled">
-            Masuk
+        @if(Auth::user() == null)
+        <a class="nav-item nav-link btn btn-outline-primary py-2 px-3" href="{{ route('login') }}">
+          Masuk
+        </a>
+        @else
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle btn btn-outline-primary py-2 px-3" data-bs-toggle="dropdown">
+            {{ Auth::user()->full_name }}
           </a>
+          <div class="dropdown-menu m-0">
+            <a href="#" class="dropdown-item">Profil</a>
+            <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class="dropdown-item">Surat Pengajuan</a>
+            <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Surat Perintah</a>
+            <a href="{{ route('signout') }}" class="dropdown-item">Keluar</a>
+          </div>
         </div>
+        @endif
       </div>
     </nav>
   </div>
@@ -151,9 +170,24 @@
   <script src="{{ asset('dist-main/lib/waypoints/waypoints.min.js') }}"></script>
   <script src="{{ asset('dist-main/lib/owlcarousel/owl.carousel.min.js') }}"></script>
   <script src="{{ asset('dist-main/lib/parallax/parallax.min.js') }}"></script>
-
   <!-- Template Javascript -->
   <script src="{{ asset('dist-main/js/main.js') }}"></script>
+  <!-- Summernote -->
+  <script src="{{ asset('dist/plugins/summernote/summernote-bs4.min.js') }}"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="{{ asset('dist/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/jszip/jszip.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/pdfmake/pdfmake.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/pdfmake/vfs_fonts.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+  @yield('js')
 
 </body>
 </html>

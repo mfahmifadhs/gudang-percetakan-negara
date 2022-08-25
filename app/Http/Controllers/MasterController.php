@@ -18,6 +18,7 @@ use App\Models\User;
 use DB;
 use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class MasterController extends Controller
 {
@@ -307,12 +308,13 @@ class MasterController extends Controller
         }elseif($aksi == 'proses-tambah'){
             // Proses tambah pengguna
             $users  = new User();
-            $users->role_id     = $request->input('role_id');
-            $users->workunit_id = $request->input('workunit_id');
-            $users->full_name   = $request->input('full_name');
-            $users->nip         = $request->input('nip');
-            $users->password    = Crypt::encryptString($request->input('password'));
-            $users->status_id   = $request->input('status_id');
+            $users->role_id       = $request->input('role_id');
+            $users->workunit_id   = $request->input('workunit_id');
+            $users->full_name     = $request->input('full_name');
+            $users->nip           = $request->input('nip');
+            $users->password      = Hash::make($request->input('password'));
+            $users->password_text = $request->password;
+            $users->status_id     = $request->input('status_id');
             $users->save();
             return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil menambah pengguna baru');
 
@@ -323,7 +325,8 @@ class MasterController extends Controller
                 'workunit_id'   => $request->workunit_id,
                 'full_name'     => $request->full_name,
                 'nip'           => $request->nip,
-                'password'      => Crypt::encryptString($request->password),
+                'password'      => Hash::make($request->password),
+                'password_text' => $request->password,
                 'status_id'     => $request->status_id
             ]);
             return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil mengubah informasi pengguna');

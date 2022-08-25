@@ -1,4 +1,5 @@
 @extends('v_main.layout.app')
+
 @section('content')
 
   <!-- About Start -->
@@ -25,11 +26,11 @@
                 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
             </div>
-            <a class="btn btn-primary py-2 px-3 me-3" href="{{ route('login') }}">
-              Pengajuan Penyimpanan
-              <div class="d-inline-flex btn-sm-square bg-white text-primary rounded-circle ms-2">
-                <i class="fa fa-arrow-right"></i>
-              </div>
+            <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}">
+              <i class="fas fa-boxes"></i> Simpan Barang
+            </a>
+            <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}">
+              <i class="fas fa-people-carry"></i> Ambil Barang
             </a>
           </div>
         </div>
