@@ -11,32 +11,31 @@
             <h1 class="display-6 mb-4">Surat Perintah Penyimpanan</h1>
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">Informasi Pengirim</div>
             <div>
-              <form action="{{ url('unit-kerja/surat/tambah-pengajuan/penyimpanan') }}" method="POST">
+              <form action="{{ url('unit-kerja/surat/tambah-surat-perintah/penyimpanan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="purpose" value="penyimpanan">
-                <input type="hidden" name="id" value="{{ random_int(100000, 999999) }}">
+                <input type="hidden" name="id_warrent" value="{{ random_int(100000, 999999) }}">
                 <div class="row g-4">
                   <div class="col-md-6">
                     <div class="form-floating">
-                      <input type="date" class="form-control" name="date" value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-DD') }}" required>
-                      <label for="name">Tanggal Penyimpanan</label>
+                      <input type="date" class="form-control" name="warr_dt" value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-DD') }}" required>
+                      <label for="name">Tanggal</label>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-floating">
-                      <input type="text" class="form-control text-uppercase" name="letter_num" placeholder="Nomor surat" required>
+                      <input type="text" class="form-control text-uppercase" name="warr_num" placeholder="Nomor surat" required>
                       <label for="name">Nomor Surat</label>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-floating">
-                      <input type="text" class="form-control" name="category" placeholder="Jenis Surat" required>
+                      <input type="text" class="form-control" name="warr_name" placeholder="Jenis Surat" required>
                       <label for="name">Nama petugas yang diperintahkan mengirim barang</label>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-floating">
-                      <input type="text" class="form-control" name="regarding" placeholder="Perihal" required>
+                      <input type="text" class="form-control" name="warr_position" placeholder="Perihal" required>
                       <label for="name">Jabatan petugas yang diperintahkan mengirim barang</label>
                     </div>
                   </div>
@@ -59,10 +58,9 @@
                         <div class="col-md-12 mb-4" data-wow-delay="0.3s">
                           <div class="causes-item d-flex flex-column bg-light border-top border-5 border-primary rounded-top overflow-hidden h-100">
                             <div class="text-center p-4 pt-4">
-
-                              <p>Silahkan download format file <a href="">disini</a> dan upload file data barang yang telah diisi.</p>
+                              <p>Silahkan download format file <a href="{{ asset('format_data_barang.xlsx') }}" download>disini</a> dan upload file data barang yang telah diisi.</p>
                               <div class="form-floating">
-                                <input type="file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="category" placeholder="Jenis Surat" required>
+                                <input type="file" class="form-control" name="upload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" name="category" placeholder="Jenis Surat">
                                 <label for="name">Upload File (Format .xlxs)</label>
                               </div>
                             </div>
@@ -70,7 +68,6 @@
                         </div>
                       </div>
                       <div class="tab-pane fade" id="insert" role="tabpanel" aria-labelledby="insert-tab">
-
                         <div class="col-md-12 mb-4" data-wow-delay="0.3s">
                           <div class="causes-item d-flex flex-column bg-light border-top border-5 border-primary rounded-top overflow-hidden h-100">
                             <div class="text-center p-4 pt-0">
@@ -109,37 +106,37 @@
                               </div>
                               <div class="col-md-3 form-group">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="item_code[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="item_code[]" placeholder="Perihal">
                                   <label for="name">Kode Barang</label>
                                 </div>
                               </div>
                               <div class="col-md-3">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="nup[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="nup[]" placeholder="Perihal">
                                   <label for="name">NUP</label>
                                 </div>
                               </div>
                               <div class="col-md-6 mb-3">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="item_name[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="item_name[]" placeholder="Perihal">
                                   <label for="name">Nama Barang</label>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="type[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="type[]" placeholder="Perihal">
                                   <label for="name">Merk/Type</label>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="qty[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="qty[]" placeholder="Perihal">
                                   <label for="name">Jumlah Barang</label>
                                 </div>
                               </div>
                               <div class="col-md-6">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="unit[]" placeholder="Perihal" required>
+                                  <input type="text" class="form-control" name="unit[]" placeholder="Perihal">
                                   <label for="name">Satuan</label>
                                 </div>
                               </div>
@@ -151,8 +148,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-floating">
-                    <button type="submit" class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/tambah-pengajuan/penyimpanan') }}"
-                    onclick="return confirm('Apakah data sudah benar ?');">
+                    <button type="submit" class="btn btn-primary py-2 px-3 me-3" onclick="return confirm('Apakah data sudah benar ?');">
                       Submit
                     </button>
                     </div>

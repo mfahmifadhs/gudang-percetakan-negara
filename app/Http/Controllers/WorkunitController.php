@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\AppLetterModel;
 use App\Models\SlotModel;
@@ -13,7 +14,8 @@ use App\Models\OrderDetailModel;
 use App\Models\ItemCategoryModel;
 use App\Models\WorkunitModel;
 use App\Models\User;
-
+use App\Models\WarrentModel;
+use App\Imports\ImportItem;
 use DB;
 use Auth;
 use Hash;
@@ -81,6 +83,27 @@ class WorkunitController extends Controller
             }else{
                 return view('tambah_surat_perintah_pengeluaran');
             }
+        }elseif($aksi == 'tambah-surat-perintah' && $id == 'penyimpanan'){
+            // Proses surat perintah penyimpanan barang
+            $warrent = new WarrentModel();
+            $warrent->id_warrent    = $request->input('id_warrent');
+            $warrent->warr_num      = strtolower($request->input('warr_num'));
+            $warrent->workunit_id   = Auth::user()->workunit_id;
+            $warrent->warr_name     = strtolower($request->input('warr_name'));
+            $warrent->warr_position = strtolower($request->input('warr_position'));
+            $warrent->warr_category = 'penyimpanan';
+            $warrent->warr_status   = 'diproses';
+            $warrent->warr_dt       = $request->input('warr_dt');
+            $warrent->warr_status   = Carbon::now();
+
+            if($request->upload != null)
+            {
+                Excel::import(new ImportItem($request->id_warrent, Auth::user()->workunit_id), $request->file('upload'));
+                return redirect('admin-master/show_working_area')->with('success','Berhasil Upload Data Area Kerja');
+            }else{
+
+            }
+
         }
     }
 
