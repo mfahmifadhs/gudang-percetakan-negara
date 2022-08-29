@@ -9,7 +9,7 @@ class OrderDataModel extends Model
 {
     use HasFactory;
     protected $table = "tbl_orders_data";
-    protected $primary_key = "id_order_data";
+    protected $primaryKey = "id_order_data";
     public $timestamps = false;
 
     protected $fillable = [

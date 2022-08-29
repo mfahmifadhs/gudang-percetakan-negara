@@ -9,7 +9,7 @@ class WorkunitModel extends Model
 {
     use HasFactory;
     protected $table = "tbl_workunits";
-    protected $primary_key = "id_workunit";
+    protected $primaryKey = "id_workunit";
     public $timestamps = false;
 
     protected $fillable = [

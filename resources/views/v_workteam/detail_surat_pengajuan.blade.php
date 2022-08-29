@@ -13,8 +13,8 @@
         Pengajuan Ditolak
       </a>
       @else
-      <a class="btn btn-success-danger py-2 px-3 mb-4 disabled">
-        Pengajuan Dterima
+      <a class="btn btn-outline-success py-2 px-3 mb-4 disabled">
+        Pengajuan Diterima
       </a>
       @endif
       <div class="card">
@@ -43,8 +43,13 @@
           </div>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak</a>
-          <a href="#" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+          <span style="float: left;">
+            <a href="{{ url('tim-kerja/dashboard') }}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+          </span>
+          <span style="float: right;">
+            <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak</a>
+            <a href="#" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+          </span>
         </div>
       </div>
     </div>

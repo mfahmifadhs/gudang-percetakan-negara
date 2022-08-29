@@ -9,7 +9,7 @@ class ItemCategoryModel extends Model
 {
     use HasFactory;
     protected $table = "tbl_items_category";
-    protected $primary_key = "id_item_category";
+    protected $primaryKey = "id_item_category";
     public $timestamps = false;
 
     protected $fillable = [

@@ -9,7 +9,7 @@ class OrderExitItemModel extends Model
 {
     use HasFactory;
     protected $table = "tbl_items_exit";
-    protected $primary_key = "id_item_exit";
+    protected $primaryKey = "id_item_exit";
     public $timestamps = false;
 
     protected $fillable = [

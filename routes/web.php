@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\MasterController;
-use App\Http\Controllers\WorkunitController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\WorkunitController;
+use App\Http\Controllers\WorkteamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +31,13 @@ Route::post('post-registration', [AuthController::class, 'postRegistration'])->n
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
 
 Route::group(['prefix' => 'main', 'as' => 'main.'], function () {
-    Route::get('dashboard', [MainController::class, 'index']);
+    Route::get('dashboard', function() { return view('v_main.index'); });
+    Route::get('prosedur', function() { return view('v_main.prosedur'); });
 });
 
 
 
 Route::group(['middleware' => 'auth'], function () {
-
-
     // =============
     // Admin Master
     // =============
@@ -111,6 +111,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('menu-surat-perintah', [WorkunitController::class, 'showWarrent']);
         Route::get('detail-gudang/{id}', [WorkunitController::class, 'detailWarehouse']);
         Route::get('detail-slot/{id}', [WorkunitController::class, 'detailSlot']);
+    });
+
+    // =============
+    // TIM KERJA
+    // =============
+    Route::group(['middleware' => ['role:tim-kerja','status:aktif'], 'prefix' => 'tim-kerja', 'as' => 'tim-kerja.'],
+        function () {
+
+        Route::get('dashboard', [WorkteamController::class, 'index']);
+        Route::get('surat/{aksi}/{id}', [WorkteamController::class, 'showLetter']);
+
     });
 
 });

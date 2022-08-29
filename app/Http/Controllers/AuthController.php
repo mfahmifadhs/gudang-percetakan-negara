@@ -72,7 +72,7 @@ class AuthController extends Controller
         }
         elseif (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status_id == 1)
         {
-            return redirect('admin-user/dashboard');
+            return redirect('tim-kerja/dashboard');
         }
         elseif (Auth::check() && Auth::user()->role_id == 3 && Auth::user()->status_id == 1)
         {

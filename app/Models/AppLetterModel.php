@@ -9,7 +9,7 @@ class AppLetterModel extends Model
 {
     use HasFactory;
     protected $table        = "tbl_appletters";
-    protected $primary_key  = "id_app_letter";
+    protected $primaryKey  = "id_app_letter";
     public $timestamps      = false;
 
     protected $fillable = [

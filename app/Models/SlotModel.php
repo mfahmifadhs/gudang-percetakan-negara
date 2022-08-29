@@ -9,7 +9,7 @@ class SlotModel extends Model
 {
     use HasFactory;
     protected $table = "tbl_slots";
-    protected $primary_key = "id_slot";
+    protected $primaryKey = "id_slot";
     public $timestamps = false;
 
     protected $fillable = [

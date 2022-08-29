@@ -6,15 +6,8 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\AppLetterModel;
-use App\Models\SlotModel;
-use App\Models\RackModel;
-use App\Models\OrderModel;
-use App\Models\OrderDataModel;
-use App\Models\OrderDetailModel;
-use App\Models\ItemCategoryModel;
-use App\Models\WorkunitModel;
-use App\Models\User;
 use App\Models\WarrentModel;
+use App\Models\WarrentItemModel;
 use App\Imports\ImportItem;
 use DB;
 use Auth;
@@ -39,9 +32,10 @@ class WorkunitController extends Controller
 
     public function showLetter(Request $request, $aksi, $id)
     {
-        if ($aksi == 'pengajuan' ) {
+        if ($aksi == 'pengajuan' && $id == 'penyimpanan') {
             // Buat surat pengajuan
-            return view('v_workunit.tambah_surat_pengajuan');
+            $item_ctg = DB::table('tbl_items_category')->get();
+            return view('v_workunit.tambah_surat_pengajuan_penyimpanan', compact('item_ctg'));
 
         }elseif($aksi == 'tambah-pengajuan'){
             // Tambah Surat Pengajuan
@@ -94,16 +88,28 @@ class WorkunitController extends Controller
             $warrent->warr_category = 'penyimpanan';
             $warrent->warr_status   = 'diproses';
             $warrent->warr_dt       = $request->input('warr_dt');
-            $warrent->warr_status   = Carbon::now();
+            $warrent->warr_tm       = Carbon::now();
+            $warrent->save();
 
-            if($request->upload != null)
-            {
-                Excel::import(new ImportItem($request->id_warrent, Auth::user()->workunit_id), $request->file('upload'));
-                return redirect('admin-master/show_working_area')->with('success','Berhasil Upload Data Area Kerja');
+            if($request->upload != null){
+                $data = Excel::import(new ImportItem($request->id_warrent), $request->upload);
             }else{
 
             }
 
+            $totalitem = DB::table('tbl_warrents_items')->where('warrent_entry_id', $request->id_warrent)->count();
+            WarrentModel::where('id_warrent', $request->id_warrent)->update([ 'warr_total_item' => $totalitem ]);
+
+            return redirect('unit-kerja/surat/detail-surat-perintah-penyimpanan/'. $request->id_warrent)->with('success','Berhasil membuat surat perintah penyimpanan barang');
+
+
+        }elseif($aksi == 'detail-surat-perintah-penyimpanan'){
+            $warrent = WarrentModel::with(['entryitem'])->where('id_warrent', $id)->get();
+            return view('v_workunit.detail_surat_perintah', compact('warrent'));
+        }elseif($aksi == 'daftar-surat-perintah'){
+            // Daftar Surat Perintah
+            $warrent = DB::table('tbl_warrents')->where('workunit_id', Auth::user()->workunit_id)->get();
+            return view('v_workunit.daftar_surat_perintah', compact('warrent'));
         }
     }
 

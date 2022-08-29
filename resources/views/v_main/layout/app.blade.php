@@ -65,11 +65,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-          <a href="index.html" class="nav-item nav-link active">Beranda</a>
-          <a href="about.html" class="nav-item nav-link">Tentang</a>
-          <a href="causes.html" class="nav-item nav-link">Berita</a>
-          <a href="causes.html" class="nav-item nav-link">Gudang</a>
-          <a href="causes.html" class="nav-item nav-link">Prosedur</a>
+          <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
+          <a href="#" class="nav-item nav-link">Gudang</a>
+          <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
           <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Lainya</a>
             <div class="dropdown-menu m-0">
@@ -77,7 +75,6 @@
               <a href="" class="dropdown-item">Simpan Barang</a>
             </div>
           </div>
-          <a href="contact.html" class="nav-item nav-link">Bantuan</a>
         </div>
         @if(Auth::user() == null)
         <a class="nav-item nav-link btn btn-outline-primary py-2 px-3" href="{{ route('login') }}">
@@ -85,13 +82,17 @@
         </a>
         @else
         <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle btn btn-outline-primary py-2 px-3" data-bs-toggle="dropdown">
+          <a href="#" class="nav-link dropdown-toggle btn btn-outline-primary py-2 px-3 text-capitalize" data-bs-toggle="dropdown">
             {{ Auth::user()->full_name }}
           </a>
           <div class="dropdown-menu m-0">
             <a href="#" class="dropdown-item">Profil</a>
+            @if(Auth::user()->role_id == 3)
             <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class="dropdown-item">Surat Pengajuan</a>
             <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Surat Perintah</a>
+            @elseif(Auth::user()->role_id == 2)
+            <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Daftar Barang</a>
+            @endif
             <a href="{{ route('signout') }}" class="dropdown-item">Keluar</a>
           </div>
         </div>
