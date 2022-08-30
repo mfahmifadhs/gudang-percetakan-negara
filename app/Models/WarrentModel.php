@@ -9,8 +9,8 @@ use App\Models\WarrentItemModel;
 class WarrentModel extends Model
 {
     use HasFactory;
-    protected $table = "tbl_warrents";
-    protected $primaryKey = "id_warrent";
+    protected $table        = "tbl_warrents";
+    protected $primaryKey   = "id_warrent";
     public $timestamps = false;
 
     protected $fillable = [

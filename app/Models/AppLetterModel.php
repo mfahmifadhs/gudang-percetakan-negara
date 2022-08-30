@@ -9,11 +9,11 @@ class AppLetterModel extends Model
 {
     use HasFactory;
     protected $table        = "tbl_appletters";
-    protected $primaryKey  = "id_app_letter";
+    protected $primaryKey   = "id_app_letter";
     public $timestamps      = false;
 
     protected $fillable = [
-        'workunit_id','appletter_purpose','appletter_ctg','appletter_num',
-        'appletter_regarding','appletter_text','appletter_date','appletter_status'
+        'workunit_id','appletter_purpose','appletter_ctg','appletter_num','appletter_regarding',
+        'appletter_text','appletter_total_item','appletter_date','appletter_status'
     ];
 }

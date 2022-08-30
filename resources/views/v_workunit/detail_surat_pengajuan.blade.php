@@ -36,15 +36,51 @@
             <p class="m-0">Perihal    :  <span class="text-capitalize"> {{ $appletter->appletter_regarding }} </span></p>
           </div>
           <div class="row mt-4">
-            <p>Yth. Kepala Biro Umum</p>
-            <div style="margin-top: 10px;">
-              <p>{!! $appletter->appletter_text !!}</p>
+            <p class="text-capitalize">
+                Yth. Kepala Biro Umum <br>
+                {!! $appletter->appletter_text !!}
+            </p>
+            <div class="mt-2 text-capitalize">
+              <p>Dengan ini kami ingin mengajukan untuk mengirimkan dan menyimpan barang berikut ke Kompleks Perkantoran dan Pergudangan Kementerian Kesehatan RI.	</p>
             </div>
+          </div>
+          <div class="row m-1">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td>No</td>
+                <td>Kategori Barang</td>
+                <td>Nama Barang</td>
+                <td>Mark/Tipe</td>
+                <td>Jumlah</td>
+                <td>Satuan</td>
+              </tr>
+            </thead>
+            <?php $no=1; ?>
+            <tbody>
+              @foreach($item as $item)
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $item->warr_item_category }}</td>
+                  <td>{{ $item->warr_item_name }}</td>
+                  <td>{{ $item->warr_item_type }}</td>
+                  <td>{{ $item->warr_item_qty }}</td>
+                  <td>{{ $item->warr_item_unit }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
           </div>
         </div>
         <div class="card-footer">
-          <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak</a>
-          <a href="#" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+          <span style="float:left;">
+            <a href="{{ url('/') }}" class="btn btn-primary"><i class="fas fa-arrow-circle-left"></i> Kembali</a>
+          </span>
+          <span style="float:right;">
+            <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak</a>
+            <a href="#" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+          </span>
+
         </div>
       </div>
     </div>

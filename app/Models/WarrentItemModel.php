@@ -14,7 +14,9 @@ class WarrentItemModel extends Model
 
     protected $fillable = [
         'id_warrent_item',
+        'appletter_entry_id',
         'warrent_entry_id',
+        'appletter_exit_id',
         'warrent_exit_id',
         'warr_item_category',
         'warr_item_code',

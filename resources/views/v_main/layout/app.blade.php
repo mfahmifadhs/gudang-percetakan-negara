@@ -57,9 +57,15 @@
     </div>
 
     <nav class="navbar navbar-expand-lg navbar-dark py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+      @if(Auth::user() != null && Auth::user()->role_id == 2)
+      <a href="{{ url('tim-kerja/dashboard') }}" class="navbar-brand ms-4 ms-lg-0">
+        <h1 class="fw-bold text-primary m-0">Gudang <span class="text-white">PN</span></h1>
+      </a>
+      @else
       <a href="{{ url('/') }}" class="navbar-brand ms-4 ms-lg-0">
         <h1 class="fw-bold text-primary m-0">Gudang <span class="text-white">PN</span></h1>
       </a>
+      @endif
       <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -71,8 +77,8 @@
           <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Lainya</a>
             <div class="dropdown-menu m-0">
-              <a href="donate.html" class="dropdown-item">Ambil Barang</a>
-              <a href="" class="dropdown-item">Simpan Barang</a>
+              <a href="#" class="dropdown-item">Penyimpanan</a>
+              <a href="#" class="dropdown-item">Pengambilan</a>
             </div>
           </div>
         </div>

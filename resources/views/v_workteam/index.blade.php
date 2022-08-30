@@ -36,18 +36,6 @@
                         <i class="fas fa-bars"></i>
                       </a>
                       <div class="dropdown-menu m-0">
-                        @if($appletter->appletter_status == 'proses')
-                        <a class="dropdown-item" href="{{ url('tim-kerja/surat/perintah/penyimpanan') }}">
-                          <i class="fas fa-check-circle"></i> Terima
-                        </a>
-                        <a class="dropdown-item" href="{{ url('tim-kerja/surat/perintah/penyimpanan') }}">
-                        <i class="fas fa-times-circle"></i> Tolak
-                        </a>
-                        @elseif($appletter->appletter_status == 'konfirmasi')
-                        <a class="dropdown-item" href="#">
-                          Konfirmasi Penyimpanan
-                        </a>
-                        @endif
                         <a class="dropdown-item" href="{{ url('tim-kerja/surat/detail-surat-pengajuan/'. $appletter->id_app_letter) }}">
                           <i class="fas fa-info-circle"></i> Detail
                         </a>

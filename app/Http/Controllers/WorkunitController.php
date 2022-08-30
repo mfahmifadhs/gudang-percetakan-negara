@@ -37,11 +37,10 @@ class WorkunitController extends Controller
             $item_ctg = DB::table('tbl_items_category')->get();
             return view('v_workunit.tambah_surat_pengajuan_penyimpanan', compact('item_ctg'));
 
-        }elseif($aksi == 'tambah-pengajuan'){
-            // Tambah Surat Pengajuan
+        }elseif($aksi == 'tambah-pengajuan' && $id == 'penyimpanan'){
+            // Buat Surat Pengajuan Penyimpanan
             $appletter = new AppLetterModel();
-
-            $appletter->id_app_letter       = $request->input('id');
+            $appletter->id_app_letter       = $request->input('id_appletter');
             $appletter->workunit_id         = Auth::user()->workunit_id;
             $appletter->appletter_purpose   = $request->input('purpose');
             $appletter->appletter_num       = strtolower($request->input('letter_num'));
@@ -51,15 +50,21 @@ class WorkunitController extends Controller
             $appletter->appletter_date      = $request->input('date');
             $appletter->appletter_status    = 'proses';
             $appletter->save();
+            // Upload barang
+            Excel::import(new ImportItem($request->id_appletter), $request->upload);
+            // Update jumlah barang
+            $totalitem = DB::table('tbl_warrents_items')->where('appletter_entry_id', $request->id_appletter)->count();
+            AppLetterModel::where('id_app_letter', $request->id_appletter)->update([ 'appletter_total_item' => $totalitem ]);
 
-            return redirect('unit-kerja/surat/detail-surat-pengajuan/'. $request->id)->with('success','Berhasil membuat surat pengajuan');
+            return redirect('unit-kerja/surat/detail-surat-pengajuan/'. $request->id_appletter)->with('success','Berhasil membuat surat pengajuan');
 
         }elseif($aksi == 'detail-surat-pengajuan'){
-            $appletter = DB::table('tbl_appletters')
+            $appletter  = DB::table('tbl_appletters')
                             ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
                             ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
                             ->where('id_app_letter', $id)->first();
-            return view('v_workunit.detail_surat_pengajuan', compact('appletter'));
+            $item       = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
+            return view('v_workunit.detail_surat_pengajuan', compact('appletter','item'));
 
         }elseif($aksi == 'daftar-surat-pengajuan'){
             // Daftar Surat Pengajuan
@@ -70,15 +75,25 @@ class WorkunitController extends Controller
                             ->get();
             return view('v_workunit.daftar_surat_pengajuan', compact('appletter'));
 
-        }elseif($aksi == 'perintah'){
-            if($id == 'penyimpanan'){
-                $item_ctg = DB::table('tbl_items_category')->get();
-                return view('v_workunit.tambah_surat_perintah_penyimpanan', compact('item_ctg'));
-            }else{
-                return view('tambah_surat_perintah_pengeluaran');
-            }
-        }elseif($aksi == 'tambah-surat-perintah' && $id == 'penyimpanan'){
+        }elseif($aksi == 'perintah-penyimpanan'){
+            // Tambah surat perintah penyimpanan
+            $appletter = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->first();
+            $item      = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
+            return view('v_workunit.tambah_surat_perintah', compact('item','appletter'));
+
+        }elseif($aksi == 'perintah-pengeluaran'){
+            // Tambah surat perintah pengeluaran
+            $item = DB::table('tbl_warrents_items')->where('appletter_exit_id', $id)->get();
+            return view('v_workunit.tambah_surat_perintah', compact('item'));
+
+        }elseif($aksi == 'tambah-surat-perintah'){
             // Proses surat perintah penyimpanan barang
+            if($request->appletter_exit_id == null){
+                $category = 'penyimpanan';
+            }else{
+                $category = 'pengeluaran';
+            }
+
             $warrent = new WarrentModel();
             $warrent->id_warrent    = $request->input('id_warrent');
             $warrent->warr_num      = strtolower($request->input('warr_num'));
@@ -91,14 +106,7 @@ class WorkunitController extends Controller
             $warrent->warr_tm       = Carbon::now();
             $warrent->save();
 
-            if($request->upload != null){
-                $data = Excel::import(new ImportItem($request->id_warrent), $request->upload);
-            }else{
-
-            }
-
-            $totalitem = DB::table('tbl_warrents_items')->where('warrent_entry_id', $request->id_warrent)->count();
-            WarrentModel::where('id_warrent', $request->id_warrent)->update([ 'warr_total_item' => $totalitem ]);
+            WarrentItemModel::where('appletter_entry_id', $request->appletter_entry_id)->update([ 'warrent_entry_id' => $request->id_warrent ]);
 
             return redirect('unit-kerja/surat/detail-surat-perintah-penyimpanan/'. $request->id_warrent)->with('success','Berhasil membuat surat perintah penyimpanan barang');
 

@@ -42,8 +42,17 @@ class WorkteamController extends Controller
                             ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
                             ->where('id_app_letter', $id)->first();
 
-            return view('v_workteam.detail_surat_pengajuan', compact('appletter'));
+            $item       = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
+            return view('v_workteam.detail_surat_pengajuan', compact('appletter','item'));
 
+        }elseif($aksi == 'pengajuan-diterima'){
+            // Proses surat pengajuan diterima
+            AppLetterModel::where('id_app_letter', $id)->update([ 'appletter_status' => 'diterima' ]);
+            return redirect('tim-kerja/surat/detail-surat-pengajuan/'. $id)->with('success','Surat Pengajuan Diterima');
+        }elseif($aksi == 'pengajuan-ditolak'){
+            // Proses surat pengajuan ditolak
+            AppLetterModel::where('id_app_letter', $id)->update([ 'appletter_status' => 'ditolak' ]);
+            return redirect('tim-kerja/surat/detail-surat-pengajuan/'. $id)->with('failed','Surat Pengajuan Ditolak');
         }elseif($aksi == 'daftar-surat-pengajuan'){
             // Daftar Surat Pengajuan
             $appletter = DB::table('tbl_appletters')

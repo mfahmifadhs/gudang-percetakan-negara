@@ -42,11 +42,7 @@
                             </a>
                             <div class="dropdown-menu m-0">
                               @if($appletter->appletter_status == 'diterima' && $appletter->appletter_purpose == 'penyimpanan')
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/perintah/penyimpanan') }}">
-                                Buat Surat Perintah
-                              </a>
-                              @else
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/perintah/pengeluaran') }}">
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/perintah-penyimpanan/'. $appletter->id_app_letter) }}">
                                 Buat Surat Perintah
                               </a>
                               @endif

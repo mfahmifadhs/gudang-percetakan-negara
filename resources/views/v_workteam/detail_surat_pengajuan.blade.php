@@ -4,9 +4,26 @@
 
   <div class="container-xxl py-5">
     <div class="container" style="margin-top: 100px;">
+      <div class="col-md-12">
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+          <p style="color:#001d23;margin: auto;">{{ $message }}</p>
+        </div>
+        @endif
+        @if ($message = Session::get('failed'))
+        <div class="alert alert-danger">
+          <p style="color:#001d23;margin: auto;">{{ $message }}</p>
+        </div>
+        @endif
+      </div>
       @if($appletter->appletter_status == 'proses')
-      <a class="btn btn-outline-primary py-2 px-3 mb-4 disabled">
-        Diproses
+      <a class="btn btn-outline-success py-2 px-3 mb-4" href="{{ url('tim-kerja/surat/pengajuan-diterima/'. $appletter->id_app_letter) }}"
+      onclick="return confirm('Apakah pengajuan ini diterima ?');">
+        <i class="fas fa-check-circle"></i> Diterima
+      </a>
+      <a class="btn btn-outline-danger py-2 px-3 mb-4" href="{{ url('tim-kerja/surat/pengajuan-ditolak/'. $appletter->id_app_letter) }}"
+      onclick="return confirm('Apakah pengajuan ini ditolak ?');">
+        <i class="fas fa-times-circle"></i> Ditolak
       </a>
       @elseif($appletter->appletter_status == 'ditolak')
       <a class="btn btn-outline-danger py-2 px-3 mb-4 disabled">
@@ -36,10 +53,40 @@
             <p class="m-0">Perihal    :  <span class="text-capitalize"> {{ $appletter->appletter_regarding }} </span></p>
           </div>
           <div class="row mt-4">
-            <p>Yth. Kepala Biro Umum</p>
-            <div style="margin-top: 10px;">
-              <p>{!! $appletter->appletter_text !!}</p>
+            <p class="text-capitalize">
+                Yth. Kepala Biro Umum <br>
+                {!! $appletter->appletter_text !!}
+            </p>
+            <div class="mt-2 text-capitalize">
+              <p>Dengan ini kami ingin mengajukan untuk mengirimkan dan menyimpan barang berikut ke Kompleks Perkantoran dan Pergudangan Kementerian Kesehatan RI.	</p>
             </div>
+          </div>
+          <div class="row m-1">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td>No</td>
+                <td>Kategori Barang</td>
+                <td>Nama Barang</td>
+                <td>Mark/Tipe</td>
+                <td>Jumlah</td>
+                <td>Satuan</td>
+              </tr>
+            </thead>
+            <?php $no=1; ?>
+            <tbody>
+              @foreach($item as $item)
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $item->warr_item_category }}</td>
+                  <td>{{ $item->warr_item_name }}</td>
+                  <td>{{ $item->warr_item_type }}</td>
+                  <td>{{ $item->warr_item_qty }}</td>
+                  <td>{{ $item->warr_item_unit }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
           </div>
         </div>
         <div class="card-footer">
