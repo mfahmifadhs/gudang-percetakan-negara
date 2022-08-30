@@ -14,7 +14,7 @@ use App\Models\OrderExitItemModel;
 use App\Models\ItemCategoryModel;
 use App\Models\WorkunitModel;
 use App\Models\User;
-
+use App\Models\WarrentModel;
 use DB;
 use Auth;
 use Hash;
@@ -45,12 +45,32 @@ class PetugasController extends Controller
                         ->limit('5')
                         ->get();
 
-		$warehouses = DB::table('tbl_warehouses')
-                        ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
-                        ->orderby('status_id', 'ASC')
-                        ->paginate(4);
-		return view('v_petugas.index', compact('warehouses','delivery','pickup'));
+        $warrent    = DB::table('tbl_warrents')
+                        ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_warrents.workunit_id')
+                        ->where('warr_status','diproses')
+                        ->orderBy('warr_dt','DESC')
+                        ->get();
+
+		return view('v_petugas.index', compact('delivery','pickup','warrent'));
 	}
+
+    // ========================================
+	//     			SURAT PERINTAH
+	// ========================================
+
+    public function showWarrent(Request $request, $aksi, $id)
+    {
+        if($aksi == 'proses'){
+            $category = DB::table('tbl_warrents')->where('id_warrent', $id)->pluck('warr_category');
+            if($category = 'penyimpanan'){
+                $warrent = WarrentModel::with('entryitem')->get();
+            }else{
+                $warrent = WarrentModel::with('exititem')->get();
+            }
+            return view('v_petugas.process_warrent', compact('warrent'));
+        }
+
+    }
 
     // ========================================
 	//     			DAFTAR GUDANG

@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('gudang/{aksi}/{id}', [PetugasController::class, 'showWarehouse']);
         Route::get('aktivitas/{aksi}/{id}', [PetugasController::class, 'showActivity']);
         Route::get('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
+        Route::get('surat-perintah/{aksi}/{id}', [PetugasController::class, 'showWarrent']);
 
         Route::post('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
 

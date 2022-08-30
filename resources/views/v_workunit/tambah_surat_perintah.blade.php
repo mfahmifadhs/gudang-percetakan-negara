@@ -16,11 +16,12 @@
                 <input type="hidden" name="id_warrent" value="{{ random_int(100000, 999999) }}">
                 <input type="hidden" name="appletter_entry_id" value="{{ $appletter->appletter_entry_id }}">
                 <input type="hidden" name="appletter_exit_id" value="{{ $appletter->appletter_exit_id }}">
+                <input type="hidden" name="total_item" value="{{ $appletter->appletter_total_item }}">
                 <div class="row g-4">
                   <div class="col-md-6">
                     <div class="form-floating">
                       <input type="date" class="form-control" name="warr_dt" value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-DD') }}" required>
-                      <label for="name">Tanggal</label>
+                      <label for="name">Tanggal Penyimpanan</label>
                     </div>
                   </div>
                   <div class="col-md-6">

@@ -77,7 +77,11 @@ class WorkunitController extends Controller
 
         }elseif($aksi == 'perintah-penyimpanan'){
             // Tambah surat perintah penyimpanan
-            $appletter = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->first();
+            $appletter = DB::table('tbl_warrents_items')
+                            ->join('tbl_appletters','tbl_appletters.id_app_letter','tbl_warrents_items.appletter_entry_id')
+                            ->where('appletter_entry_id', $id)
+                            ->first();
+
             $item      = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
             return view('v_workunit.tambah_surat_perintah', compact('item','appletter'));
 
@@ -95,15 +99,16 @@ class WorkunitController extends Controller
             }
 
             $warrent = new WarrentModel();
-            $warrent->id_warrent    = $request->input('id_warrent');
-            $warrent->warr_num      = strtolower($request->input('warr_num'));
-            $warrent->workunit_id   = Auth::user()->workunit_id;
-            $warrent->warr_name     = strtolower($request->input('warr_name'));
-            $warrent->warr_position = strtolower($request->input('warr_position'));
-            $warrent->warr_category = 'penyimpanan';
-            $warrent->warr_status   = 'diproses';
-            $warrent->warr_dt       = $request->input('warr_dt');
-            $warrent->warr_tm       = Carbon::now();
+            $warrent->id_warrent        = $request->input('id_warrent');
+            $warrent->warr_num          = strtolower($request->input('warr_num'));
+            $warrent->workunit_id       = Auth::user()->workunit_id;
+            $warrent->warr_name         = strtolower($request->input('warr_name'));
+            $warrent->warr_position     = strtolower($request->input('warr_position'));
+            $warrent->warr_category     = 'penyimpanan';
+            $warrent->warr_status       = 'diproses';
+            $warrent->warr_total_item   = $request->input('total_item');
+            $warrent->warr_dt           = $request->input('warr_dt');
+            $warrent->warr_tm           = Carbon::now();
             $warrent->save();
 
             WarrentItemModel::where('appletter_entry_id', $request->appletter_entry_id)->update([ 'warrent_entry_id' => $request->id_warrent ]);

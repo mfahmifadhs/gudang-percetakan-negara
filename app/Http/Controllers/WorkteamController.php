@@ -26,6 +26,7 @@ class WorkteamController extends Controller
         $appletter = DB::table('tbl_appletters')
                         ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
                         ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
+                        ->orderBy('appletter_status','ASC')
                         ->get();
 		return view('v_workteam.index', compact('appletter'));
 	}
