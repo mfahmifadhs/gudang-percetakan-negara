@@ -56,7 +56,7 @@
                   <a class="btn btn-primary btn-sm" rel="noopener" target="_blank" href="{{ url('petugas/cetak-bast/'.$activity->id_order) }}">
                     <i class="fas fa-file"></i> <br> BAST
                   </a>
-                  <a class="btn btn-primary btn-sm" href="#">
+                  <a class="btn btn-primary btn-sm" href="{{ url('petugas/barang/cari/'. $activity->id_order) }}">
                     <i class="fas fa-box"></i> <br> Barang
                   </a>
                   <a class="btn btn-primary btn-sm" href="{{ url('petugas/barang/kelengkapan-barang/'. $activity->id_order) }}">

@@ -60,14 +60,14 @@ class PetugasController extends Controller
 
     public function showWarrent(Request $request, $aksi, $id)
     {
-        if($aksi == 'proses'){
+        if($aksi == 'penapisan'){
             $category = DB::table('tbl_warrents')->where('id_warrent', $id)->pluck('warr_category');
             if($category = 'penyimpanan'){
-                $warrent = WarrentModel::with('entryitem')->get();
+                $warrent = WarrentModel::with('entryitem')->where('id_warrent',$id)->get();
             }else{
                 $warrent = WarrentModel::with('exititem')->get();
             }
-            return view('v_petugas.process_warrent', compact('warrent'));
+            return view('v_petugas.screening_item', compact('warrent'));
         }
 
     }
@@ -177,7 +177,7 @@ class PetugasController extends Controller
 						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
 						->where('order_category','Pengiriman')
 						->where('in_item_qty','!=', 0)
-						->paginate(6);
+						->get();
 
             return view('v_petugas.show_item', compact('items'));
 
@@ -193,7 +193,7 @@ class PetugasController extends Controller
 						->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
 						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
 						->where('order_category','Pengeluaran')
-						->paginate(6);
+						->get();
 
             return view('v_petugas.show_item', compact('items'));
 
@@ -207,6 +207,7 @@ class PetugasController extends Controller
                         ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
                         ->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
                         ->where('id_order', $id)
+                        ->orderBy('in_item_name', 'ASC')
                         ->get();
 
             return view('v_petugas.create_complete_item', compact('order','item'));
@@ -218,7 +219,7 @@ class PetugasController extends Controller
             ]);
 
             if ($valImage->fails()) {
-                return redirect('petugas/kelengkapan-barang/'. $id)->with('failed','Format foto tidak sesuai');
+                return redirect('petugas/barang/kelengkapan-barang/'. $id)->with('failed','Format foto tidak sesuai');
             } else {
                 $item 		= new OrderItemModel();
                 $imgitem 	= $request->item_img;
@@ -260,6 +261,20 @@ class PetugasController extends Controller
                 return redirect('petugas/buat-bast/'. $id);
             }
 
+        }elseif($aksi == 'cari'){
+            $items = DB::table('tbl_items_incoming')
+						->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
+						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
+						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
+						->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
+						->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
+						->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
+						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
+						->where('id_order',$id)
+						->where('in_item_qty','!=', 0)
+						->get();
+
+            return view('v_petugas.show_item', compact('items'));
         }
     }
 
@@ -312,6 +327,8 @@ class PetugasController extends Controller
 
   		if ($check->order_category == 'Pengiriman') {
   			$item 	= DB::table('tbl_items_incoming')
+                        ->select('in_item_code','in_item_nup','order_category','in_item_name', DB::raw('sum(in_item_qty) as totalitem'),
+                                 'in_item_unit','item_condition_name','in_item_purchase','in_item_description')
       					->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
 						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
 						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
@@ -319,6 +336,8 @@ class PetugasController extends Controller
       					->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
       					->join('tbl_warehouses', 'tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
       					->where('id_order', $id)
+                        ->groupBy('in_item_code','in_item_nup','order_category','in_item_name','in_item_unit','item_condition_name',
+                                  'in_item_purchase','in_item_description')
      					->get();
   		}elseif ($check->order_category == 'Pengeluaran') {
   			$item 	= DB::table('tbl_items_exit')
@@ -348,15 +367,19 @@ class PetugasController extends Controller
 		$check 			= DB::table('tbl_orders')->where('id_order',$id)->first();
 
   		if ($check->order_category == 'Pengiriman') {
-  			$item 	= DB::table('tbl_items_incoming')
-      					->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
-						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-     					->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
-      					->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
-      					->join('tbl_warehouses', 'tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
-      					->where('id_order', $id)
-     					->get();
+            $item 	= DB::table('tbl_items_incoming')
+                        ->select('in_item_code','in_item_nup','order_category','in_item_name', DB::raw('sum(in_item_qty) as totalitem'),
+                                'in_item_unit','item_condition_name','in_item_purchase','in_item_description')
+                        ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+                        ->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
+                        ->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
+                        ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
+                        ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
+                        ->join('tbl_warehouses', 'tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
+                        ->where('id_order', $id)
+                        ->groupBy('in_item_code','in_item_nup','order_category','in_item_name','in_item_unit','item_condition_name',
+                                'in_item_purchase','in_item_description')
+                        ->get();
   		}elseif ($check->order_category == 'Pengeluaran') {
   			$item 	= DB::table('tbl_items_exit')
   						->join('tbl_items_incoming','tbl_items_incoming.id_item_incoming','tbl_items_exit.item_incoming_id')

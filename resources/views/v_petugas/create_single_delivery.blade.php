@@ -46,7 +46,7 @@
           <!-- /.card-header -->
           <div class="card-body">
             <form action="{{ url('petugas/tambah-barang') }}" method="POST">
-              @csrf 
+              @csrf
               <div class="row">
                 <!-- Informasi Pengirim -->
                 <div class="col-md-12">
@@ -94,14 +94,14 @@
                         <div class="col-md-6">
                           <label>Pengirim : </label>
                           <div class="input-group mb-3">
-                            <input type="text" name="order_emp_name" class="form-control text-capitalize" 
+                            <input type="text" name="order_emp_name" class="form-control text-capitalize"
                             placeholder="Nama Petugas Yang Membawa Barang">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <label>Jabatan : </label>
                           <div class="input-group mb-3">
-                            <input type="text" name="order_emp_position" class="form-control text-capitalize" 
+                            <input type="text" name="order_emp_position" class="form-control text-capitalize"
                             placeholder="Jabatan Petugas Yang Membawa Barang">
                           </div>
                         </div>
@@ -140,8 +140,8 @@
                       <div class="row">
                         <div class="col-md-6 form-group">
                           <label>Batas Waktu Penyimpanan</label>
-                          <input type="date" name="deadline[]" class="form-control" 
-                          value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-D') }}" min="<?= date('Y-m-d'); ?>" 
+                          <input type="date" name="deadline[]" class="form-control"
+                          value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-D') }}" min="<?= date('Y-m-d'); ?>"
                           placeholder="Batas Waktu Penyimpanan" required>
                         </div>
                         <div class="col-md-6 form-group">
@@ -213,7 +213,7 @@
                 </div>
                 <!-- Submit -->
                 <div class="col-md-12">
-                  <button type="submit" class="btn btn-primary float-right font-weight-bold" 
+                  <button type="submit" class="btn btn-primary float-right font-weight-bold"
                   onclick="return confirm('Apaka Penempatan Barang Sudah Benar ?')">
                     SUBMIT
                   </button>
@@ -237,7 +237,7 @@
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     // Menampilkan Workunit
     $( "#select2-workunit" ).select2({
-      ajax: { 
+      ajax: {
         url: "{{ url('petugas/select2-workunit') }}",
         type: "post",
         dataType: 'json',
@@ -264,7 +264,7 @@
           type:"GET",
           url:"/petugas/json-get-mainunit?workunit="+workunit,
           dataType: 'JSON',
-          success:function(res){               
+          success:function(res){
             if(res){
               $("#mainunit").empty();
               $.each(res,function(mainunit_name,id_mainunit){
@@ -279,7 +279,7 @@
        });
       }else{
         $("#mainunit").empty();
-      }      
+      }
     });
   });
 </script>
@@ -482,7 +482,7 @@
                   '</div>' +
                 '</div>' +
               '</div>' +
-            '</div>' 
+            '</div>'
           );
         }
       });
