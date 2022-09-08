@@ -79,6 +79,7 @@
                                                     <i class="fas fa-bars"></i>
                                                 </a>
                                                 <div class="dropdown-menu">
+                                                    <a href="{{ url('petugas/cetak-qrcode/'. $item->id_item_incoming) }}" target="_blank">CETAK PDF</a>
                                                     <a class="dropdown-item btn" type="button" data-toggle="modal" data-target="#qr-code{{ $item->id_item_incoming }}">
                                                         <i class="fas fa-qrcode"></i> Cetak QR Code
                                                     </a>

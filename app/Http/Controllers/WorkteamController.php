@@ -38,15 +38,16 @@ class WorkteamController extends Controller
     public function showLetter(Request $request, $aksi, $id)
     {
         if($aksi == 'detail-surat-pengajuan'){
-            $appletter = DB::table('tbl_appletters')
-                            ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
-                            ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
-                            ->where('id_app_letter', $id)->first();
-
-            $item       = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
+            $appletter  = DB::table('tbl_appletters')->first();
+            $item       = DB::table('tbl_appletters_detail')
+                            ->join('tbl_appletters', 'id_app_letter','appletter_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->get();
             return view('v_workteam.detail_surat_pengajuan', compact('appletter','item'));
 
         }elseif($aksi == 'pengajuan-diterima'){
+            dd($request->all());
             // Proses surat pengajuan diterima
             AppLetterModel::where('id_app_letter', $id)->update([ 'appletter_status' => 'diterima' ]);
             return redirect('tim-kerja/surat/detail-surat-pengajuan/'. $id)->with('success','Surat Pengajuan Diterima');

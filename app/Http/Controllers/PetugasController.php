@@ -672,4 +672,10 @@ class PetugasController extends Controller
 	   return response()->json($array);
   	}
 
+    public function printQRCode($id)
+    {
+        $item = DB::table('tbl_items_incoming')->where('id_item_incoming', $id)->first();
+        return view('v_petugas.cetak_qrcode', compact('item'));
+    }
+
 }

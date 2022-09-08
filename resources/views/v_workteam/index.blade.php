@@ -6,11 +6,11 @@
   <div class="container-xxl py-5">
     <div class="container" style="margin-top: 150px;">
       <div class="row g-5">
-        <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="col-lg-10 wow fadeInUp" data-wow-delay="0.5s">
           <div class="h-100">
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">#GudangPercetakanNegara</div>
             <h1 class="display-6 mb-5">Surat Permohonan Pengajuan</h1>
-            <table id="table1" class="table table-bordered table-striped table-responsive text-capitalize text-center">
+            <table id="table1" class="table table-bordered table-striped text-capitalize text-center">
               <thead style="color: black;">
                 <tr>
                   <th>No</th>
@@ -26,7 +26,7 @@
                 @foreach($appletter as $appletter)
                 <tr>
                   <td>{{ $no++ }}</td>
-                  <td>{{ $appletter->appletter_date }}</td>
+                  <td>{{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
                   <td>{{ $appletter->workunit_name }}</td>
                   <td>{{ $appletter->appletter_purpose }} barang</td>
                   <td>{{ $appletter->appletter_status }}</td>
@@ -56,7 +56,8 @@
 <script>
   $(function () {
     $("#table1").DataTable({
-      "responsive": true, "lengthChange": true  , "autoWidth": true
+      "responsive": true, "lengthChange": false  , "autoWidth": false,
+      "searching": false, "info": false, "sort": false, "paging": false
     });
   });
 </script>

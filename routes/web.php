@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('pengeluaran-barang', [PetugasController::class, 'createPickupSingle']);
         Route::get('buat-bast/{id}', [PetugasController::class, 'createBAST']);
         Route::get('cetak-bast/{id}', [PetugasController::class, 'printBAST']);
+        Route::get('cetak-qrcode/{id}', [PetugasController::class, 'printQRCode']);
 
         Route::post('tambah-kelengkapan-barang/{id}', [PetugasController::class, 'postCompleteItem']);
         Route::post('tambah-barang', [PetugasController::class, 'postDeliverySingle']);
