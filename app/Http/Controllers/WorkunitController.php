@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\AppLetterModel;
+use App\Models\AppLetterDetailModel;
 use App\Models\WarrentModel;
 use App\Models\WarrentItemModel;
 use App\Imports\ImportItem;
@@ -34,36 +35,48 @@ class WorkunitController extends Controller
     {
         if ($aksi == 'pengajuan' && $id == 'penyimpanan') {
             // Buat surat pengajuan
-            $item_ctg = DB::table('tbl_items_category')->get();
-            return view('v_workunit.tambah_surat_pengajuan_penyimpanan', compact('item_ctg'));
+            $item_ctg       = DB::table('tbl_items_category')->get();
+            $item_condition = DB::table('tbl_items_condition')->get();
+            return view('v_workunit.tambah_surat_pengajuan_penyimpanan', compact('item_ctg','item_condition'));
 
         }elseif($aksi == 'tambah-pengajuan' && $id == 'penyimpanan'){
             // Buat Surat Pengajuan Penyimpanan
             $appletter = new AppLetterModel();
-            $appletter->id_app_letter       = $request->input('id_appletter');
-            $appletter->workunit_id         = Auth::user()->workunit_id;
-            $appletter->appletter_purpose   = $request->input('purpose');
-            $appletter->appletter_num       = strtolower($request->input('letter_num'));
-            $appletter->appletter_ctg       = strtolower($request->input('category'));
-            $appletter->appletter_regarding = strtolower($request->input('regarding'));
-            $appletter->appletter_text      = $request->input('text');
-            $appletter->appletter_date      = $request->input('date');
-            $appletter->appletter_status    = 'proses';
+            $file      = $request->file('upload-spm');
+            $filename  = $request->upload_spm->getClientOriginalName();
+            $request->upload_spm->move('data_file/surat_permohonan/', $filename);
+            $appletter->id_app_letter           = $request->input('id_appletter');
+            $appletter->workunit_id             = Auth::user()->workunit_id;
+            $appletter->appletter_file          = $filename;
+            $appletter->appletter_purpose       = 'penyimpanan';
+            $appletter->appletter_total_item    = $request->input('total_item');
+            $appletter->appletter_date          = Carbon::now();
+            $appletter->appletter_status        = 'proses';
             $appletter->save();
-            // Upload barang
-            Excel::import(new ImportItem($request->id_appletter), $request->upload);
-            // Update jumlah barang
-            $totalitem = DB::table('tbl_warrents_items')->where('appletter_entry_id', $request->id_appletter)->count();
-            AppLetterModel::where('id_app_letter', $request->id_appletter)->update([ 'appletter_total_item' => $totalitem ]);
+
+            $item   = new AppLetterDetailModel();
+            $idItem = $request->id_appletter_detail;
+            foreach($idItem as $i => $detail) {
+                $item->id_appletter_detail          = $detail;
+                $item->appletter_id                 = $request->id_appletter;
+                $item->item_category_id             = $request->item_category_id[$i];
+                $item->appletter_item_name          = $request->appletter_item_name[$i];
+                $item->appletter_item_description   = $request->appletter_item_type[$i];
+                $item->appletter_item_qty           = $request->appletter_item_qty[$i];
+                $item->appletter_item_unit          = $request->appletter_item_unit[$i];
+                $item->item_condition_id            = $request->item_condition_id[$i];
+                $item->save();
+            }
 
             return redirect('unit-kerja/surat/detail-surat-pengajuan/'. $request->id_appletter)->with('success','Berhasil membuat surat pengajuan');
 
         }elseif($aksi == 'detail-surat-pengajuan'){
-            $appletter  = DB::table('tbl_appletters')
-                            ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
-                            ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
-                            ->where('id_app_letter', $id)->first();
-            $item       = DB::table('tbl_warrents_items')->where('appletter_entry_id', $id)->get();
+            $appletter  = DB::table('tbl_appletters')->first();
+            $item       = DB::table('tbl_appletters_detail')
+                            ->join('tbl_appletters', 'id_app_letter','appletter_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->get();
             return view('v_workunit.detail_surat_pengajuan', compact('appletter','item'));
 
         }elseif($aksi == 'daftar-surat-pengajuan'){

@@ -13,15 +13,14 @@
             <div class="row">
               <div class="card card-outline card-primary">
                 <div class="card-body">
-                  <table id="table-1" class="table table-bordered table-striped table-responsive text-center">
+                  <table id="table-1" class="table table-bordered table-striped table-responsive text-center text-capitalize" style="color: black;">
                     <thead>
                       <tr>
                         <th>No</th>
                         <th>Tanggal</th>
-                        <th>No. Surat</th>
-                        <th>Jenis Surat</th>
-                        <th>Perihal</th>
-                        <th>Status</th>
+                        <th>Tujuan</th>
+                        <th>Total Barang</th>
+                        <th>Status Pengajuan</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -30,10 +29,9 @@
                       @foreach($appletter as $appletter)
                       <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $appletter->appletter_date }}</td>
-                        <td>{{ $appletter->appletter_num }}</td>
-                        <td>{{ $appletter->appletter_ctg }}</td>
-                        <td>{{ $appletter->appletter_regarding }}</td>
+                        <td>{{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
+                        <td>{{ $appletter->appletter_purpose }}</td>
+                        <td>{{ $appletter->appletter_total_item }} barang</td>
                         <td>{{ $appletter->appletter_status }}</td>
                         <td>
                           <div class="dropdown">

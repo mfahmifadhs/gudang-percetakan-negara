@@ -13,7 +13,13 @@ class AppLetterModel extends Model
     public $timestamps      = false;
 
     protected $fillable = [
-        'workunit_id','appletter_purpose','appletter_ctg','appletter_num','appletter_regarding',
-        'appletter_text','appletter_total_item','appletter_date','appletter_status'
+        'id_app_letter',
+        'workunit_id',
+        'appletter_file',
+        'appletter_purpose',
+        'appletter_total_item',
+        'appletter_date',
+        'appletter_status',
+        'appletter_note'
     ];
 }
