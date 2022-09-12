@@ -38,7 +38,6 @@
               <th style="width: 1%">No</th>
               <th style="width: 20%">Unit Kerja</th>
               <th style="width: 20%">Pengirim / Jabatan</th>
-              <th style="width: 10%;">Jumlah</th>
               <th style="width: 20%">Jam / Tanggal</th>
               <th></th>
             </tr>
@@ -50,7 +49,6 @@
                 <td>{{ $no++ }} </td>
                 <td>{{ $activity->workunit_name }} </td>
                 <td>{{ $activity->order_emp_name.' / '.$activity->order_emp_position }} </td>
-                <td>{{ $activity->totalitem }} Barang</td>
                 <td>{{ $activity->order_tm .' / '.\Carbon\Carbon::parse($activity->order_dt)->isoFormat('DD MMMM Y') }}</td>
                 <td>
                   <a class="btn btn-primary btn-sm" rel="noopener" target="_blank" href="{{ url('petugas/cetak-bast/'.$activity->id_order) }}">

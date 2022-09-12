@@ -2,80 +2,113 @@
 
 @section('content')
 
-@foreach($warrent as $warrent)
 <div class="container-xxl py-5">
-  <div class="container" style="margin-top: 100px;">
-    @if($warrent->warr_status == 'diproses')
-    <a class="btn btn-outline-primary py-2 px-3 mb-4 disabled">
-      Diproses
-    </a>
-    @elseif($warrent->warr_status == 'belum diproses')
-    <a class="btn btn-outline-danger py-2 px-3 mb-4 disabled">
-      Belum Diproses
-    </a>
-    @else
-    <a class="btn btn-success-danger py-2 px-3 mb-4 disabled">
-      Sudah Diproses
-    </a>
-    @endif
-    <div class="card">
-      <div class="card-header">
-        <div class="row text-center mt-3">
-          <div class="col-md-3"><img src="{{ asset('dist-main/img/logo-kemenkes-icon.png') }}"></div>
-            <div class="col-md-6">
-              <h5><b>KEMENTERIAN KESEHATAN REPUBLIK INDONESIA</b></h5>
-              <h6 class="text-uppercase"><b>{{ $warrent->workunit_name.' '.$warrent->mainunit_name }}</b></h6>
-              <p>Jl. H.R. Rasuna Said Blok X.5 Kav. 4-9, Blok A, 2nd Floor, Jakarta 12950<br>Telp.: (62-21) 5201587, 5201591 Fax. (62-21) 5201591</p>
+    <div class="container" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <div class="row">
+                    <div class="col-md-12 mb-2">
+                        <h6 class="text-capitalize">tanggal {{ $warrent->warr_purpose }} : </h6>
+                        <p class="mt-2">
+                            {{ \Carbon\Carbon::parse($warrent->warr_date)->isoFormat('DD MMMM Y') }}
+                        </p>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <h6 class="text-capitalize">surat perintah {{ $warrent->warr_purpose }} :</h6>
+                        <p class="mt-2">
+                            <a href="{{ asset('data_file/surat_permohonan/'. $warrent->warr_file) }}" target="_blank">{{ $warrent->warr_file }}</a>
+                        </p>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <h6 class="text-capitalize">status {{ $warrent->warr_purpose }} :</h6>
+                        <p class="mt-2">
+                            @if($warrent->warr_status == 'proses')
+                            <a class="btn btn-outline-primary py-2 px-3 disabled">
+                                Diproses
+                            </a>
+                            @elseif($warrent->warr_status == 'konfirmasi')
+                            <a class="btn btn-outline-danger py-2 px-3 disabled">
+                                Menunggu Konfirmasi
+                            </a>
+                            @else
+                            <a class="btn btn-outline-success py-2 px-3 disabled">
+                                Selesai
+                            </a>
+                            @endif
+                        </p>
+                    </div>
+                </div>
             </div>
-          <div class="col-md-3"><img src="{{ asset('dist-main/img/logo-germas.png') }}"></div>
+            <div class="col-md-9 form-group">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class=""><i class="fas fa-arrow-alt-circle-left"></i> KEMBALI</a>
+                    </div>
+                    <div class="col-md-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title pt-2 text-capitalize">konfirmasi {{ $warrent->warr_purpose }} barang</h6>
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title pt-2">Daftar Barang</h6>
+                            </div>
+                            <div class="card-body">
+                                <table id="table-1" class="table table-responsive" style="color: black;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 1%;">No</th>
+                                            <th style="width: 20%;">Jenis Barang</th>
+                                            <th style="width: 20%;">Kode Barang</th>
+                                            <th style="width: 10%;">NUP</th>
+                                            <th style="width: 15%;">Barang</th>
+                                            <th style="width: 15%;">Merk/Tipe</th>
+                                            <th style="width: 10%;">Jumlah</th>
+                                            <th style="width: 10%;">Kondisi</th>
+                                            <th style="width: 10%;">Status</th>
+                                            <th style="width: 20%;">Catatan</th>
+                                        </tr>
+                                        <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($item as $dataItem)
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $dataItem->item_category_name }}</td>
+                                        <td>{{ $dataItem->warr_item_code }}</td>
+                                        <td>{{ $dataItem->warr_item_nup }}</td>
+                                        <td>{{ $dataItem->warr_item_name }}</td>
+                                        <td>{{ $dataItem->warr_item_description }}</td>
+                                        <td>{{ $dataItem->warr_item_qty.' '.$dataItem->warr_item_unit }}</td>
+                                        <td>{{ $dataItem->item_condition_name }}</td>
+                                        <td>{{ $dataItem->warr_item_status }}</td>
+                                        <td>{{ $dataItem->warr_item_note }}</td>
+                                        @endforeach
+                                    </tbody>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-        <div class="card-body">
-          <div class="row">
-            <p class="m-0">Nomor : <span class="text-uppercase"> {{ $warrent->warr_num }} </span></p>
-            <p class="m-0">Perihal    :  <span class="text-capitalize"> Surat Perintah {{ $warrent->warr_category }} Barang </span></p>
-          </div>
-          <div class="row mt-4 text-capitalize">
-            <p>Dengan ini memerintahkan : </p>
-            <p>
-                Nama <span style="margin-left:17px;">:</span>  {{ $warrent->warr_name }} <br>
-                Jabatan : {{ $warrent->warr_position }}
-            </p>
-            <p>Untuk mengirimkan dan menyimpan barang berikut ke Kompleks Perkantoran dan Pergudangan Kementerian Kesehatan RI.</p>
-        </div>
-        <div class="row m-1">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <td>No</td>
-                <td>Kategori Barang</td>
-                <td>Nama Barang</td>
-                <td>Mark/Tipe</td>
-                <td>Jumlah</td>
-                <td>Satuan</td>
-              </tr>
-            </thead>
-            <?php $no=1; ?>
-            <tbody>
-              @foreach($warrent->entryitem as $item)
-                <tr>
-                  <td>{{ $no++ }}</td>
-                  <td>{{ $item->warr_item_category }}</td>
-                  <td>{{ $item->warr_item_name }}</td>
-                  <td>{{ $item->warr_item_type }}</td>
-                  <td>{{ $item->warr_item_qty }}</td>
-                  <td>{{ $item->warr_item_unit }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Cetak</a>
-          <a href="#" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
-        </div>
-  </div>
+    </div>
 </div>
-@endforeach
+
+@section('js')
+  <script>
+    $(function () {
+      $("#table-1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "info": false, "sort":false, "paging":false, "searching":false
+      });
+    });
+  </script>
+@endsection
 
 @endsection

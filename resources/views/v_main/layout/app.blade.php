@@ -37,6 +37,8 @@
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" href="{{ asset('dist/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ asset('dist/plugins/select2/css/select2.min.css') }}">
   @yield('css')
 </head>
 <body>
@@ -77,8 +79,8 @@
           <div class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Lainya</a>
             <div class="dropdown-menu m-0">
-              <a href="#" class="dropdown-item">Penyimpanan</a>
-              <a href="#" class="dropdown-item">Pengambilan</a>
+              <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="dropdown-item">Penyimpanan</a>
+              <a href="{{ url('unit-kerja/surat/pengajuan/pengambilan') }}" class="dropdown-item">Pengambilan</a>
             </div>
           </div>
         </div>
@@ -97,7 +99,7 @@
             <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class="dropdown-item">Surat Pengajuan</a>
             <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Surat Perintah</a>
             @elseif(Auth::user()->role_id == 2)
-            <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Daftar Barang</a>
+            <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="dropdown-item">Daftar Barang</a>
             @endif
             <a href="{{ route('signout') }}" class="dropdown-item">Keluar</a>
           </div>
@@ -193,7 +195,9 @@
   <script src="{{ asset('dist/plugins/pdfmake/vfs_fonts.js') }}"></script>
   <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
   <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+  <script src="{{ asset('dist/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>>
+  <!-- Select2 -->
+  <script src="{{ asset('dist/plugins/select2/js/select2.full.min.js') }}"></script>
   @yield('js')
 
 </body>

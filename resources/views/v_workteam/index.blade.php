@@ -23,20 +23,20 @@
               </thead>
               <?php $no = 1;?>
               <tbody>
-                @foreach($appletter as $appletter)
+                @foreach($appletter as $dataAppletter)
                 <tr>
                   <td>{{ $no++ }}</td>
-                  <td>{{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
-                  <td>{{ $appletter->workunit_name }}</td>
-                  <td>{{ $appletter->appletter_purpose }} barang</td>
-                  <td>{{ $appletter->appletter_status }}</td>
+                  <td>{{ \Carbon\Carbon::parse($dataAppletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
+                  <td>{{ $dataAppletter->workunit_name }}</td>
+                  <td>{{ $dataAppletter->appletter_purpose }} barang</td>
+                  <td>{{ $dataAppletter->appletter_status }}</td>
                   <td>
                     <div class="dropdown">
                       <a href="#" class="dropdown-toggle btn btn-primary" data-bs-toggle="dropdown">
                         <i class="fas fa-bars"></i>
                       </a>
                       <div class="dropdown-menu m-0">
-                        <a class="dropdown-item" href="{{ url('tim-kerja/surat/detail-surat-pengajuan/'. $appletter->id_app_letter) }}">
+                        <a class="dropdown-item" href="{{ url('tim-kerja/surat/detail-surat-pengajuan/'. $dataAppletter->id_app_letter) }}">
                           <i class="fas fa-info-circle"></i> Detail
                         </a>
                       </div>

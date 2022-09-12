@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AppLetterDetailModel extends Model
+class AppLetterEntryModel extends Model
 {
     use HasFactory;
-    protected $table        = "tbl_appletters_detail";
-    protected $primaryKey   = "id_appletter_detail";
+    protected $table        = "tbl_appletters_entry";
+    protected $primaryKey   = "id_appletter_entry";
     public $timestamps      = false;
 
     protected $fillable = [
-        'id_appletter_detail',
+        'id_appletter_entry',
         'appletter_id',
         'item_category_id',
         'appletter_item_code',

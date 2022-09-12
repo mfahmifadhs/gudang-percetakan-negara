@@ -8,6 +8,12 @@
             <div class="col-md-3 form-group">
                 <div class="row">
                     <div class="col-md-12 mb-2">
+                        <h6>Tujuan Pengajuan : </h6>
+                        <p class="mt-2 text-capitalize">
+                            {{ $appletter->appletter_purpose }} barang
+                        </p>
+                    </div>
+                    <div class="col-md-12 mb-2">
                         <h6>Tanggal Pengajuan : </h6>
                         <p class="mt-2">
                             {{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}
@@ -31,8 +37,8 @@
                                 Pengajuan Ditolak
                             </a>
                             @else
-                            <a class="btn btn-success-danger py-2 px-3 disabled">
-                                Pengajuan Dterima
+                            <a class="btn btn-outline-success py-2 px-3 disabled">
+                                Pengajuan Diterima
                             </a>
                             @endif
                         </p>
@@ -50,6 +56,7 @@
                                 <h6 class="card-title pt-2">Daftar Barang</h6>
                             </div>
                             <div class="card-body">
+                                @if($appletter->appletter_purpose == 'penyimpanan')
                                 <table id="table-1" class="table" style="color: black;">
                                     <thead>
                                         <tr>
@@ -62,9 +69,11 @@
                                             <th>Kondisi</th>
                                             <th>Status</th>
                                         </tr>
-                                        <?php $no = 1; ?>
-                                        <tbody>
-                                            @foreach($item as $dataItem)
+                                    </thead>
+                                    <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($item as $dataItem)
+                                        <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $dataItem->item_category_name }}</td>
                                             <td>{{ $dataItem->appletter_item_name }}</td>
@@ -74,9 +83,40 @@
                                             <td>{{ $dataItem->item_condition_name }}</td>
                                             <td>{{ $dataItem->appletter_item_status }}</td>
                                             @endforeach
-                                        </tbody>
-                                    </thead>
+                                        </tr>
+                                    </tbody>
                                 </table>
+                                @else
+                                <table id="table-1" class="table" style="color: black;">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Jenis Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Merk/Tipe</th>
+                                            <th>Jumlah Diambil</th>
+                                            <th>Satuan</th>
+                                            <th>Kondisi</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($item as $dataItem)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $dataItem->item_category_name }}</td>
+                                            <td>{{ $dataItem->in_item_name }}</td>
+                                            <td>{{ $dataItem->in_item_description }}</td>
+                                            <td>{{ $dataItem->item_pick }}</td>
+                                            <td>{{ $dataItem->in_item_unit }}</td>
+                                            <td>{{ $dataItem->item_condition_name }}</td>
+                                            <td>{{ $dataItem->appletter_item_status }}</td>
+                                            @endforeach
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -87,14 +127,19 @@
 </div>
 
 @section('js')
-  <script>
-    $(function () {
-      $("#table-1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "info": false, "sort":false, "paging":false, "searching":false
-      });
+<script>
+    $(function() {
+        $("#table-1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "info": false,
+            "sort": false,
+            "paging": false,
+            "searching": false
+        });
     });
-  </script>
+</script>
 @endsection
 
 @endsection

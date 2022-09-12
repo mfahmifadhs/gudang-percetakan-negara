@@ -103,9 +103,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('dashboard', [WorkunitController::class, 'index']);
         Route::get('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
-
-        Route::post('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
+        Route::get('surat-perintah/{aksi}/{id}', [WorkunitController::class, 'showWarrent']);
         Route::get('json/{aksi}', [WorkunitController::class, 'showJson']);
+        Route::get('get-item/{id}', [WorkunitController::class, 'getItem']);
+
+        Route::post('surat-perintah/{aksi}/{id}', [WorkunitController::class, 'showWarrent']);
+        Route::post('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
 
         Route::get('menu-barang', [WorkunitController::class, 'showItem']);
         Route::get('menu-gudang', [WorkunitController::class, 'showWarehouse']);
@@ -123,6 +126,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('dashboard', [WorkteamController::class, 'index']);
         Route::get('surat/{aksi}/{id}', [WorkteamController::class, 'showLetter']);
+        Route::get('barang/{aksi}/{id}', [WorkteamController::class, 'showItem']);
 
     });
 

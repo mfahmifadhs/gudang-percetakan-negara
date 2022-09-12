@@ -18,7 +18,7 @@
                       <tr>
                         <th>No</th>
                         <th>Tanggal</th>
-                        <th>No. Surat</th>
+                        <th>Surat Perintah</th>
                         <th>Tujuan</th>
                         <th>Pengirim/Jabatan</th>
                         <th>Total Barang</th>
@@ -28,18 +28,22 @@
                     </thead>
                     <?php $no = 1;?>
                     <tbody>
-                      @foreach($warrent as $warrent)
+                      @foreach($warrent as $dataWarrent)
                       <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $warrent->warr_dt }}</td>
-                        <td class="text-uppercase">{{ $warrent->warr_num }}</td>
-                        <td>{{ $warrent->warr_category }}</td>
-                        <td class="text-capitalize">{{ $warrent->warr_name.'/'.$warrent->warr_position }}</td>
-                        <td>{{ $warrent->warr_total_item }} barang</td>
+                        <td>{{ \Carbon\Carbon::parse($dataWarrent->warr_date)->isoFormat('DD/MM/YYYY') }}</td>
                         <td>
-                            @if($warrent->warr_status == 'diproses')
-                              <b>diproses</b>
-                            @elseif($warrent->warr_status == 'konfirmasi')
+                            <a href="{{ asset('data_file/surat_perintah/'. $dataWarrent->warr_file) }}" download>
+                                {{ $dataWarrent->warr_file }}
+                            </a>
+                        </td>
+                        <td>{{ $dataWarrent->warr_purpose }}</td>
+                        <td>{{ $dataWarrent->warr_emp_name.'/'.$dataWarrent->warr_emp_position }}</td>
+                        <td>{{ $dataWarrent->warr_total_item }} barang</td>
+                        <td>
+                            @if($dataWarrent->warr_status == 'proses')
+                              <b>proses</b>
+                            @elseif($dataWarrent->warr_status == 'konfirmasi')
                               <b>menunggu konfirmasi</b>
                             @else
                               <b>selesai</b>
@@ -51,16 +55,16 @@
                               <i class="fas fa-bars"></i>
                             </a>
                             <div class="dropdown-menu m-0">
-                              @if($warrent->warr_status == 'sudah diproses')
+                              @if($dataWarrent->warr_status == 'sudah diproses')
                               <a class="dropdown-item" href="{{ url('unit-kerja/surat/perintah/penyimpanan') }}">
                                 Berita Acara Serah Terima
                               </a>
-                              @elseif($warrent->warr_status == 'konfirmasi')
+                              @elseif($dataWarrent->warr_status == 'konfirmasi')
                               <a class="dropdown-item" href="#">
                                 Konfirmasi Penyimpanan
                               </a>
                               @endif
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/detail-surat-perintah-penyimpanan/'. $warrent->id_warrent) }}">
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/detail/'. $dataWarrent->id_warrent) }}">
                                 Detail
                               </a>
                             </div>
