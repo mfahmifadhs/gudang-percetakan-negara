@@ -61,6 +61,7 @@
                                             <label for="name">Upload File (Format .pdf)</label>
                                         </div>
                                     </div>
+                                    @if($aksi == 'penyimpanan')
                                     <div class="col-md-12 p-4 text-capitalize">
                                         <p>
                                             <b>data barang yang akan dikirim</b> <br> <small>pastikan seluruh informasi barang terisi</small>
@@ -91,20 +92,20 @@
                                                         {{ $dataItem->item_category_name }}
                                                     </td>
                                                     <td>
-                                                        <input type="hidden" name="item_name[]" value="{{ $dataItem->appletter_item_name }}">
-                                                        {{ $dataItem->appletter_item_name }}
+                                                        <input type="hidden" name="item_name[]" value="{{ $dataItem->item_name }}">
+                                                        {{ $dataItem->item_name }}
                                                     </td>
                                                     <td>
-                                                        <input type="hidden" name="item_description[]" value="{{ $dataItem->appletter_item_description }}">
-                                                        {{ $dataItem->appletter_item_description }}
+                                                        <input type="hidden" name="item_description[]" value="{{ $dataItem->item_description }}">
+                                                        {{ $dataItem->item_description }}
                                                     </td>
                                                     <td>
-                                                        <input type="hidden" name="item_qty[]" value="{{ $dataItem->appletter_item_qty }}">
-                                                        {{ $dataItem->appletter_item_qty }}
+                                                        <input type="hidden" name="item_qty[]" value="{{ $dataItem->item_qty }}">
+                                                        {{ $dataItem->item_qty }}
                                                     </td>
                                                     <td>
-                                                        <input type="hidden" name="item_unit[]" value="{{ $dataItem->appletter_item_unit }}">
-                                                        {{ $dataItem->appletter_item_unit }}
+                                                        <input type="hidden" name="item_unit[]" value="{{ $dataItem->item_unit }}">
+                                                        {{ $dataItem->item_unit }}
                                                     </td>
                                                     <td>
                                                         <input type="hidden" name="item_condition_id[]" value="{{ $dataItem->id_item_condition }}">
@@ -115,6 +116,45 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    @else
+                                    <div class="col-md-12 p-4 text-capitalize">
+                                        <p>
+                                            <b>data barang yang akan diambil</b> <br> <small>pastikan seluruh informasi barang terisi</small>
+                                        </p>
+                                        <table class="table table-responsive" style="color: black;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">No</th>
+                                                    <th style="width: 22%;">Jenis Barang</th>
+                                                    <th style="width: 20%;">Nama Barang</th>
+                                                    <th style="width: 20%;">Merk/Tipe</th>
+                                                    <th style="width: 10%;">Jumlah</th>
+                                                    <th style="width: 10%;">Satuan</th>
+                                                    <th>Kondisi</th>
+                                                </tr>
+                                            </thead>
+                                            <?php $no = 1; ?>
+                                            <tbody id="input-item">
+                                                @foreach($item as $dataItem)
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="id_warr_exit[]" value="warr_exit_{{ \Carbon\Carbon::now()->isoFormat('MMDDYY').rand(100,999) }}">
+                                                        <input type="hidden" name="total_item" value="{{ count($item) }}">
+                                                        <input type="hidden" name="item_id[]" value="{{ $dataItem->item_id }}">
+                                                        {{ $no++ }}
+                                                    </td>
+                                                    <td>{{ $dataItem->item_category_name }}</td>
+                                                    <td>{{ $dataItem->item_name }}</td>
+                                                    <td>{{ $dataItem->item_description }}</td>
+                                                    <td>{{ $dataItem->item_qty }}</td>
+                                                    <td>{{ $dataItem->item_unit }}</td>
+                                                    <td>{{ $dataItem->item_condition_name }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
                                     <div class="col-md-12 p-4">
                                         <button type="submit" class="btn btn-primary py-2 px-3 me-3" onclick="return confirm('Apakah data sudah benar ?');">
                                             Submit

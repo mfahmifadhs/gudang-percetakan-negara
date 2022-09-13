@@ -10,7 +10,9 @@ use App\Models\AppLetterEntryModel;
 use App\Models\AppLetterExitModel;
 use App\Models\WarrentModel;
 use App\Models\WarrentEntryModel;
-use App\Imports\ImportItem;
+use App\Models\WarrentExitModel;
+use App\Models\ScreeningModel;
+use App\Models\Warrent;
 use DB;
 use Auth;
 use Hash;
@@ -49,28 +51,50 @@ class WorkunitController extends Controller
                             ->where('id_warrent', $id)
                             ->first();
             if ($warrent->warr_purpose == 'penyimpanan') {
-                $item   = DB::table('tbl_warrents_entry')
+                $item   = DB::table('tbl_items_screening')
+                            ->join('tbl_warrents_entry', 'tbl_warrents_entry.id_warr_entry','tbl_items_screening.item_id')
+                            ->join('tbl_warrents', 'id_warrent','tbl_warrents_entry.warrent_id')
                             ->join('tbl_items_category', 'id_item_category', 'item_category_id')
                             ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
-                            ->where('warrent_id', $id)
+                            ->where('tbl_warrents.id_warrent', $id)
                             ->get();
             } else {
-
+                $item   = DB::table('tbl_items_screening')
+                            ->join('tbl_warrents_exit', 'tbl_warrents_exit.item_id','tbl_items_screening.item_id')
+                            ->join('tbl_warrents', 'id_warrent','tbl_warrents_exit.warrent_id')
+                            ->join('tbl_items_incoming', 'id_item_incoming','tbl_items_screening.item_id')
+                            ->join('tbl_items_category', 'id_item_category','in_item_category')
+                            ->join('tbl_items_condition', 'id_item_condition','in_item_condition')
+                            ->where('tbl_warrents.id_warrent', $id)
+                            ->get();
             }
 
             return view('v_workunit.detail_surat_perintah', compact('warrent','item'));
 
         } elseif ($aksi == 'penyimpanan') {
             $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->first();
-            $item       = DB::table('tbl_appletters_detail')
-                            ->join('tbl_appletters', 'id_app_letter', 'appletter_id')
-                            ->join('tbl_items_category', 'id_item_category', 'item_category_id')
-                            ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+            $item       = DB::table('tbl_appletters_entry')->select('tbl_items_category.*','tbl_items_condition.*','appletter_item_name as item_name',
+                            'appletter_item_description as item_description','appletter_item_qty as item_qty', 'appletter_item_unit as item_unit')
+                            ->join('tbl_appletters', 'id_app_letter','appletter_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
                             ->where('appletter_id', $id)
                             ->get();
 
             return view('v_workunit.tambah_surat_perintah', compact('aksi','appletter','item'));
+
         } elseif ($aksi == 'pengeluaran') {
+            $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->first();
+            $item       = DB::table('tbl_appletters_exit')->select('tbl_items_category.*','tbl_items_condition.*','in_item_name as item_name',
+                            'in_item_description as item_description','item_pick as item_qty', 'in_item_unit as item_unit','item_id')
+                            ->join('tbl_appletters', 'id_app_letter','appletter_id')
+                            ->join('tbl_items_incoming', 'id_item_incoming','item_id')
+                            ->join('tbl_items_category', 'id_item_category','in_item_category')
+                            ->join('tbl_items_condition', 'id_item_condition','in_item_condition')
+                            ->where('appletter_id', $id)
+                            ->get();
+
+            return view('v_workunit.tambah_surat_perintah', compact('aksi','appletter','item'));
 
         } elseif ($aksi == 'proses') {
             if ($id == 'penyimpanan') {
@@ -92,9 +116,9 @@ class WorkunitController extends Controller
                 $warrent->save();
 
                 // Buat Surat Perintah Penyimpanan Barang
-                $item        = new WarrentEntryModel();
                 $idWarrEntry = $request->id_warr_entry;
                 foreach($idWarrEntry as $i => $warrEntry) {
+                    $item        = new WarrentEntryModel();
                     $item->id_warr_entry        = $warrEntry;
                     $item->warrent_id              = $request->id_warrent;
                     $item->item_category_id        = $request->item_category_id[$i];
@@ -108,10 +132,51 @@ class WorkunitController extends Controller
                     $item->save();
                 }
 
-                return redirect('unit-kerja/surat-perintah/daftar/seluruh-surat-perintah')->with('success','Berhasil membuat surat perintah');
             } else {
-
+                // Buat Surat Perintah Pengeluaran
+                $warrent   = new WarrentModel();
+                $file      = $request->file('upload_warr');
+                $filename  = $request->upload_warr->getClientOriginalName();
+                $request->upload_warr->move('data_file/surat_perintah/', $filename);
+                $warrent->id_warrent         = $request->input('id_warrent');
+                $warrent->appletter_id       = $request->input('appletter_id');
+                $warrent->workunit_id        = Auth::user()->workunit_id;
+                $warrent->warr_emp_name      = $request->input('warr_emp_name');
+                $warrent->warr_emp_position  = $request->input('warr_emp_position');
+                $warrent->warr_file          = $filename;
+                $warrent->warr_purpose       = 'pengeluaran';
+                $warrent->warr_total_item    = $request->input('total_item');
+                $warrent->warr_date          = Carbon::now();
+                $warrent->warr_status        = 'proses';
+                $warrent->save();
+                // Buat Surat Perintah Pengeluaran Barang
+                $idWarrExit = $request->id_warr_exit;
+                foreach ($idWarrExit as $i => $warrExit) {
+                    $item                 = new WarrentExitModel();
+                    $item->id_warr_exit   = $warrExit;
+                    $item->warrent_id     = $request->id_warrent;
+                    $item->item_id        = $request->item_id[$i];
+                    $item->save();
+                }
             }
+
+            return redirect('unit-kerja/surat-perintah/daftar/seluruh-surat-perintah')->with('success','Berhasil membuat surat perintah');
+        } elseif ($aksi == 'konfirmasi-penapisan') {
+            // Upadate status surat perintah
+            WarrentModel::where('id_warrent', $id)->update([ 'warr_status' => 'selesai' ]);
+
+            // Update screening
+            $idScreening = $request->id_screening;
+            foreach($idScreening as $i => $screening_id)
+            {
+                ScreeningModel::where('id_item_screening', $screening_id)
+                    ->update([
+                        'approve_workunit'          => $request->approve_workunit[$i],
+                        'screening_notes_workunit'  => $request->screening_notes_workunit[$i]
+                    ]);
+            }
+
+            return redirect('unit-kerja/surat-perintah/daftar/semua')->with('success','Berhasil mengkonfirmasi penapisan barang');
         }
     }
 

@@ -4,174 +4,230 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1>Dashboard</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
-    <!-- Info boxes -->
-    <div class="row">
-      <div class="col-md-3 form-group">
-        <a href="{{ url('petugas/pengiriman-barang') }}" class="btn btn-primary btn-lg form-control"
-        style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
-          <p class="font-weight-bold mt-2">PENGIRIMAN BARANG</p>
-        </a>
-      </div>
-      <div class="col-md-3 form-group">
-        <a href="{{ url('petugas/pengeluaran-barang') }}" class="btn btn-primary btn-lg form-control"
-        style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
-          <p class="font-weight-bold mt-2">PENGELUARAN BARANG</p>
-        </a>
-      </div>
-      <div class="col-md-3 form-group">
-        <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
-          <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
-        </a>
-      </div>
-      <div class="col-md-3 form-group">
-        <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
-          <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
-          <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
-        </a>
-      </div>
-      <div class="col-md-3 form-group">
+    <div class="container-fluid">
+        <!-- Info boxes -->
         <div class="row">
-          <div class="col-md-12">
-            <div class="card card-outline card-primary">
-              <div class="card-header">
-                <h4 class="font-weight-bold card-title">PENGIRIMAN</h4>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                @foreach($delivery as $delivery)
-                  <div class="col-md-12">
-                    <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($delivery->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
-                    <span style="font-size: 13px;" class="float-left"><label>{{ $delivery->workunit_name }}</label></span>
-                    <span class="float-right"><h6>{{ $delivery->workunit_id }}</h6></span>
-                    <hr class="mt-4">
-                  </div>
-                @endforeach
-                  <div class="col-md-12">
-                    <p class="mb-0" style="font-size: 14px;">
-                      <a href="{{ url('petugas/daftar-aktivitas/pengiriman') }}" class="fw-bold text-primary">
-                        <i class="fas fa-arrow-circle-right"></i> Lihat semua pengiriman
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div class="col-md-3 form-group">
+                <a href="{{ url('petugas/pengiriman-barang') }}" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
+                    <p class="font-weight-bold mt-2">PENGIRIMAN BARANG</p>
+                </a>
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="card card-outline card-primary">
-              <div class="card-header">
-                <h4 class="font-weight-bold card-title">PENGELUARAN</h4>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                @foreach($pickup as $pickup)
-                  <div class="col-md-12">
-                    <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($pickup->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
-                    <span style="font-size: 13px;" class="float-left"><label>{{ $pickup->workunit_name }}</label></span>
-                    <span class="float-right"><h6>{{ $pickup->workunit_id }}</h6></span>
-                  </div>
-                @endforeach
-                  <div class="col-md-12">
-                    <p class="mb-0" style="font-size: 14px;">
-                      <a href="{{ url('petugas/daftar-aktivitas/pengeluaran') }}" class="fw-bold text-primary">
-                        <i class="fas fa-arrow-circle-right"></i> Lihat semua pengeluaran
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div class="col-md-3 form-group">
+                <a href="{{ url('petugas/pengeluaran-barang') }}" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
+                    <p class="font-weight-bold mt-2">PENGELUARAN BARANG</p>
+                </a>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-9 form-group">
-        <div class="row">
-          <div class="col-md-12 form-group">
-            <div class="card card-outline card-primary">
-              <div class="card-header">
-                <h4 class="font-weight-bold card-title mt-2">SURAT PERINTAH</h4>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-default" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <table id="table-1" class="table table-bordered table-striped text-center">
-                <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>No. Surat</th>
-                      <th>Pengirim</th>
-                      <th>Petugas</th>
-                      <th>Tanggal Pengiriman</th>
-                      <th>Total Barang</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <?php $no = 1;?>
-                  <tbody>
-                    @foreach($warrent as $warrent)
-                    <tr>
-                      <td>{{ $no++ }}</td>
-                      <td class="text-uppercase">{{ $warrent->warr_num }}</td>
-                      <td class="text-capitalize">{{ $warrent->workunit_name }}</td>
-                      <td>{{ $warrent->warr_name }}</td>
-                      <td>{{ \Carbon\Carbon::parse($warrent->warr_dt)->isoFormat('DD MMMM Y') }}</td>
-                      <td>{{ $warrent->warr_total_item }} barang</td>
-                      <td class="text-center">
-                        <a type="button" class="btn btn-primary" data-toggle="dropdown">
-                          <i class="fas fa-bars"></i>
-                        </a>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" href="{{ url('petugas/surat-perintah/penapisan/'. $warrent->id_warrent) }}">
-                            <i class="fas fa-people-carry"></i> Proses
-                          </a>
+            <div class="col-md-3 form-group">
+                <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
+                    <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
+                </a>
+            </div>
+            <div class="col-md-3 form-group">
+                <a href="#" class="btn btn-primary btn-lg form-control" style="height: 15vh;padding: 3vh;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1524/1524539.png" height="50%">
+                    <p class="font-weight-bold mt-2">BUAT SURAT PERINTAH</p>
+                </a>
+            </div>
+            <div class="col-md-3 form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h4 class="font-weight-bold card-title">PENGIRIMAN</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach($delivery as $delivery)
+                                    <div class="col-md-12">
+                                        <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($delivery->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
+                                        <span style="font-size: 13px;" class="float-left"><label>{{ $delivery->workunit_name }}</label></span>
+                                        <span class="float-right">
+                                            <h6>{{ $delivery->workunit_id }}</h6>
+                                        </span>
+                                        <hr class="mt-4">
+                                    </div>
+                                    @endforeach
+                                    <div class="col-md-12">
+                                        <p class="mb-0" style="font-size: 14px;">
+                                            <a href="{{ url('petugas/daftar-aktivitas/pengiriman') }}" class="fw-bold text-primary">
+                                                <i class="fas fa-arrow-circle-right"></i> Lihat semua pengiriman
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h4 class="font-weight-bold card-title">PENGELUARAN</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach($pickup as $pickup)
+                                    <div class="col-md-12">
+                                        <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($pickup->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
+                                        <span style="font-size: 13px;" class="float-left"><label>{{ $pickup->workunit_name }}</label></span>
+                                        <span class="float-right">
+                                            <h6>{{ $pickup->workunit_id }}</h6>
+                                        </span>
+                                    </div>
+                                    @endforeach
+                                    <div class="col-md-12">
+                                        <p class="mb-0" style="font-size: 14px;">
+                                            <a href="{{ url('petugas/daftar-aktivitas/pengeluaran') }}" class="fw-bold text-primary">
+                                                <i class="fas fa-arrow-circle-right"></i> Lihat semua pengeluaran
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div class="col-md-9 form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if ($message = Session::get('success'))
+                        <div class="alert alert-success">
+                            <p class="fw-light" style="margin: auto;">{{ $message }}</p>
+                        </div>
+                        @endif
+                        @if ($message = Session::get('failed'))
+                        <div class="alert alert-danger">
+                            <p class="fw-light" style="margin: auto;">{{ $message }}</p>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h4 class="font-weight-bold card-title mt-2">SURAT PERINTAH</h4>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-default" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table id="table-1" class="table table-bordered table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Tujuan</th>
+                                            <th>Surat Perintah</th>
+                                            <th>Pengirim</th>
+                                            <th>Petugas</th>
+                                            <th>Tanggal</th>
+                                            <th>Total Barang</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($warrent as $dataWarrent)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>
+                                                @if($dataWarrent->warr_purpose == 'penyimpanan')
+                                                <span class="badge badge-success py-2">Penyimpanan</span>
+                                                @else
+                                                <span class="badge badge-danger py-2">Pengeluaran</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ asset('data_file/surat_perintah/'. $dataWarrent->warr_file) }}" download="">
+                                                    {{ $dataWarrent->warr_file }}
+                                                </a>
+                                            </td>
+                                            <td class="text-capitalize">{{ $dataWarrent->workunit_name }}</td>
+                                            <td>{{ $dataWarrent->warr_emp_name.'/'.$dataWarrent->warr_emp_position }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($dataWarrent->warr_date)->isoFormat('DD/MM/YY') }}</td>
+                                            <td>{{ $dataWarrent->warr_total_item }} barang</td>
+                                            <td>
+                                                @if($dataWarrent->warr_status == 'proses')
+                                                <span class="badge badge-warning py-2">Menunggu Proses <br> Penapisan</span>
+                                                @elseif($dataWarrent->warr_status == 'konfirmasi')
+                                                <span class="badge badge-warning py-2">Menunggu Konfirmasi <br> Unit Kerja</span>
+                                                @else
+                                                <span class="badge badge-success py-2">Barang Dapat Diproses</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <a type="button" class="btn btn-primary" data-toggle="dropdown">
+                                                    <i class="fas fa-bars"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+
+                                                    @if($dataWarrent->warr_status == 'proses')
+                                                    <a class="dropdown-item" href="{{ url('petugas/surat-perintah/penapisan/'. $dataWarrent->id_warrent) }}">
+                                                        <i class="fas fa-people-carry"></i> Proses
+                                                    </a>
+                                                    @elseif($dataWarrent->warr_status == 'selesai')
+                                                        @if($dataWarrent->warr_purpose == 'penyimpanan')
+                                                        <a class="dropdown-item" href="{{ url('petugas/barang/penyimpanan/'. $dataWarrent->id_warrent) }}">
+                                                            <i class="fas fa-people-carry"></i> Simpan Barang
+                                                        </a>
+                                                        @else
+                                                        <a class="dropdown-item" href="{{ url('petugas/barang/pengeluaran/'. $dataWarrent->id_warrent) }}">
+                                                            <i class="fas fa-people-carry"></i> Ambil Barang
+                                                        </a>
+                                                        @endif
+                                                    @endif
+                                                    <a class="dropdown-item" href="{{ url('petugas/administrasi/'.$dataWarrent->warr_purpose.'/'.$dataWarrent->id_warrent) }}">
+                                                        <i class="fas fa-people-carry"></i> Detail
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 <!-- /.content -->
 
 @section('js')
-  <script>
-    $(function () {
-      $("#table-1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "paging": false, "info": false, "ordering":false
-      });
+<script>
+    $(function() {
+        $("#table-1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "paging": false,
+            "info": false,
+            "ordering": false
+        });
     });
-  </script>
+</script>
 @endsection
 
 @endsection

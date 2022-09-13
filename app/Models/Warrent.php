@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\WarrentEntryModel;
 
-class WarrentModel extends Model
+class Warrent extends Model
 {
     protected $table        = 'tbl_warrents';
     protected $primaryKey   = 'id_warrent';
@@ -24,11 +23,4 @@ class WarrentModel extends Model
         'warr_status'
     ];
 
-    public function entryitem() {
-        return $this->hasMany(WarrentEntryModel::class, 'warrent_id');
-    }
-
-    public function exititem() {
-        return $this->hasMany('App\Models\WarrentExit');
-    }
 }

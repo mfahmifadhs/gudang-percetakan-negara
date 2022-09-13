@@ -4,160 +4,186 @@
 
 <!-- Content Header -->
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1>Penapisan Barang</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{{ url('Petugas/dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item active">Penapisan Barang</li>
-        </ol>
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Penapisan Barang <small>({{ \Carbon\Carbon::parse($warrent->warr_date)->isoFormat('DD MMMM Y') }})</small></h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{{ url('petugas/dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Penapisan Barang</li>
+                </ol>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 <!-- Content Header -->
 
-@foreach($warrent as $warrent)
 <section class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12 form-group">
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p style="color:white;margin: auto;">{{ $message }}</p>
-        </div>
-        @elseif ($message = Session::get('failed'))
+    <div class="container-fluid">
+        <div class="col-md-12 form-group">
+            @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                <p style="color:white;margin: auto;">{{ $message }}</p>
+            </div>
+            @elseif ($message = Session::get('failed'))
             <div class="alert alert-danger">
-                 <p style="color:white;margin: auto;">{{ $message }}</p>
+                <p style="color:white;margin: auto;">{{ $message }}</p>
             </div>
-        @endif
-      </div>
-      <div class="col-md-12 form-group">
-        <form action="{{ url('petugas/tambah-barang') }}" method="POST">
-          @csrf
-          <div class="card card-outline card-primary">
-            <div class="card-header">
-              <h3 class="card-title font-weight-bold mt-2">Informasi Pengirim </h3>
-              <div class="card-tools">
-                <button type="button" class="btn btn-default" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <label>Kode Penyimpanan : </label>
-                  <div class="input-group mb-3">
-                    <input type="text" name="id_order" class="form-control" value="PBM-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}" readonly>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label>Petugas Gudang : </label>
-                  <div class="input-group mb-3">
-                    <select class="form-control" name="adminuser_id" readonly>
-                      <option value="{{ Auth::id(); }}">{{ Auth::user()->full_name }}</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label>Unit Kerja : </label>
-                  <div class="input-group mb-3">
-                    <select id="select2-workunit" name="id_workunit" class="form-control select2-workunit" required>
-                      <option value="">-- Pilih Unit Kerja --</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label>Unit Utama :  </label>
-                  <div class="input-group mb-3">
-                    <select class="form-control" id="mainunit" name="mainunit_id" readonly>
-                      <option value="">-- Unit Utama --</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label>Pengirim : </label>
-                  <div class="input-group mb-3">
-                    <input type="text" name="order_emp_name" class="form-control text-capitalize"
-                    placeholder="Nama Petugas Yang Membawa Barang">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <label>Jabatan : </label>
-                  <div class="input-group mb-3">
-                    <input type="text" name="order_emp_position" class="form-control text-capitalize"
-                    placeholder="Jabatan Petugas Yang Membawa Barang">
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <label>Nomor Kendaraan : </label>
-                  <div class="input-group mb-3">
-                    <input type="text" name="order_license_vehicle" class="form-control text-uppercase"
-                    placeholder="Plat Nomor Kendaraan" onkeypress="return event.charCode != 32">
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <label>Data Barang: </label>
-                  <div class="input-group mb-3">
-                  <table class="table table-bordered table-responsive">
-                    <thead>
-                      <tr>
-                        <th style="width: 1%;">No</th>
-                        <th style="width: 20%;">Kategori Barang</th>
-                        <th style="width: 10%;">Kode Barang</th>
-                        <th style="width: 9%;">NUP</th>
-                        <th style="width: 20%;">Nama Barang</th>
-                        <th style="width: 20%;">Merk/Type Barang</th>
-                        <th style="width: 20%;">Jumlah</th>
-                      </tr>
-                    </thead>
-                    <?php $no = 1;?>
-                    <tbody>
-                      @foreach($warrent->entryitem as $item)
-                      <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $item->warr_item_category }}</td>
-                        <td>{{ $item->warr_item_code }}</td>
-                        <td>{{ $item->warr_item_nup }}</td>
-                        <td>{{ $item->warr_item_name }}</td>
-                        <td>{{ $item->warr_item_type }}</td>
-                        <td>{{ $item->warr_item_qty.' '.$item->warr_item_unit }}</td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                  </div>
-                </div>
+            @endif
+        </div>
+        <form action="{{ url('petugas/surat-perintah/proses-penapisan/'. $warrent->id_warrent) }}" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <div class="card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bold  ">Informasi Pengirim</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Surat Perintah</label>
+                                    <p><a href="{{ asset('data_file/surat_perintah/'. $warrent->warr_file) }}" download>{{ $warrent->warr_file }}</a></p>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Unit Kerja</label>
+                                    <input type="hidden" class="form-control" name="workunit_id" value="{{ $warrent->workunit_id }}">
+                                    <input type="text" class="form-control" value="{{ $warrent->workunit_name }}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Tujuan</label>
+                                    <input type="text" class="form-control text-capitalize" name="category" value="{{ $warrent->warr_purpose }}" readonly>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Pengirim</label>
+                                    <input type="text" class="form-control" name="emp_name" value="{{ $warrent->warr_emp_name }}">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Jabatan</label>
+                                    <input type="text" class="form-control" name="emp_position" value="{{ $warrent->warr_emp_position }}">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>No. Mobil</label>
+                                    <input type="text" class="form-control" name="license_vehicle" placeholder="Masukan Nomor Mobil Pengirim" required>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <button type="submit" class="btn btn-primary" onclick="return confirm('Data yang telah tersimpan, tidak dapat diubah. Proses penapisan selesai ?')">Submit</button>
+                                </div>
+                            </div>
 
-              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 form-group">
+                    <div class="card card-outline card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title font-weight-bold">Informasi Barang</h3>
+                        </div>
+                        <div class="card-body">
+                            @if($warrent->warr_purpose == 'penyimpanan')
+                            <table id="table-1" class="table table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Merk/Type</th;>
+                                        <th>Jumlah <br>(pengajuan)</th>
+                                        <th>Jumlah <br>(diterima)</th>
+                                        <th>Satuan</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <?php $no = 1; ?>
+                                <tbody>
+                                    @foreach($item as $itemEntry)
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="item_id[]" value="{{ $itemEntry->id_warr_entry }}">
+                                            {{ $no++ }}
+                                        </td>
+                                        <td>{{ $itemEntry->warr_item_name }}</td>
+                                        <td>{{ $itemEntry->warr_item_description }}</td>
+                                        <td class="text-center">{{ $itemEntry->warr_item_qty }}</td>
+                                        <td class="text-center">
+                                            <input type="text" class="form-control" name="item_received[]" placeholder="Jumlah diterima" required>
+                                        </td>
+                                        <td class="text-center">{{ $itemEntry->warr_item_unit }}</td>
+                                        <td>
+                                            <select name="status_screening[]" class="form-control">
+                                                <option value="sesuai">sesuai</option>
+                                                <option value="tidak sesuai">tidak sesuai</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea name="screening_notes[]" class="form-control" cols="30" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @else
+                            <table id="table-1" class="table table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Merk/Type</th;>
+                                        <th>Jumlah <br>(pengajuan)</th>
+                                        <th>Jumlah <br>(diambil)</th>
+                                        <th>Satuan</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <?php $no = 1; ?>
+                                <tbody>
+                                    @foreach($item as $itemExit)
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="item_id[]" value="{{ $itemExit->item_id }}">
+                                            {{ $no++ }}
+                                        </td>
+                                        <td>{{ $itemExit->in_item_name }}</td>
+                                        <td>{{ $itemExit->in_item_merk }}</td>
+                                        <td class="text-center">{{ $itemExit->warr_item_pick }}</td>
+                                        <td class="text-center">
+                                            <input type="text" class="form-control" name="item_received[]" placeholder="Jumlah diambil" required>
+                                        </td>
+                                        <td class="text-center">{{ $itemExit->in_item_unit }}</td>
+                                        <td>
+                                            <select name="status_screening[]" class="form-control">
+                                                <option value="sesuai">sesuai</option>
+                                                <option value="tidak sesuai">tidak sesuai</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea name="order_note" class="form-control" cols="30" rows="2"></textarea>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="card card-outline card-primary">
-            <div class="card-header">
-              <h3 class="card-title font-weight-bold mt-2">Informasi Barang </h3>
-              <div class="card-tools">
-                <button type="button" class="btn btn-default" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="row">
-
-              </div>
-            </div>
-          </div>
         </form>
-      </div>
     </div>
-  </div>
 </section>
-@endforeach
 
-
+@section('js')
+<script>
+    $(function() {
+        $("#table-1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "paging": false, "info": false,"ordering": false, "searching": false
+        });
+    });
+</script>
+@endsection
 
 @endsection

@@ -11,10 +11,10 @@ use App\Models\OrderModel;
 use App\Models\OrderDataModel;
 use App\Models\OrderItemModel;
 use App\Models\OrderExitItemModel;
-use App\Models\ItemCategoryModel;
-use App\Models\WorkunitModel;
+use App\Models\ScreeningModel;
 use App\Models\User;
 use App\Models\WarrentModel;
+use App\Models\Warrent;
 use DB;
 use Auth;
 use Hash;
@@ -29,6 +29,7 @@ class PetugasController extends Controller
 
 	public function index()
 	{
+        $cekScreening = DB::table('tbl_items_screening')->join('tbl_warrents','id_warrent','warrent_id')->count();
 		$delivery   = DB::table('tbl_orders')
                         ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
                         ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
@@ -36,7 +37,6 @@ class PetugasController extends Controller
                         ->orderBy('order_dt','DESC')
                         ->limit('5')
                         ->get();
-
 		$pickup     = DB::table('tbl_orders')
                         ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
                         ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
@@ -47,11 +47,10 @@ class PetugasController extends Controller
 
         $warrent    = DB::table('tbl_warrents')
                         ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_warrents.workunit_id')
-                        ->where('warr_status','diproses')
-                        ->orderBy('warr_dt','DESC')
+                        ->orderBy('warr_date','DESC')
                         ->get();
 
-		return view('v_petugas.index', compact('delivery','pickup','warrent'));
+		return view('v_petugas.index', compact('cekScreening','delivery','pickup','warrent'));
 	}
 
     // ========================================
@@ -61,13 +60,64 @@ class PetugasController extends Controller
     public function showWarrent(Request $request, $aksi, $id)
     {
         if($aksi == 'penapisan'){
-            $category = DB::table('tbl_warrents')->where('id_warrent', $id)->pluck('warr_category');
-            if($category = 'penyimpanan'){
-                $warrent = WarrentModel::with('entryitem')->where('id_warrent',$id)->get();
+            $category = DB::table('tbl_warrents')->where('id_warrent', $id)->first();
+            if($category->warr_purpose == 'penyimpanan'){
+                $warrent = DB::table('tbl_warrents')->where('id_warrent', $id)->join('tbl_workunits','id_workunit','workunit_id')->first();
+                $item    = DB::table('tbl_warrents_entry')
+                            ->join('tbl_warrents', 'id_warrent','warrent_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->get();
             }else{
-                $warrent = WarrentModel::with('exititem')->get();
+                $warrent = DB::table('tbl_warrents')->where('id_warrent', $id)->join('tbl_workunits','id_workunit','workunit_id')->first();
+                $item    = DB::table('tbl_warrents_exit')
+                            ->join('tbl_warrents', 'id_warrent','warrent_id')
+                            ->join('tbl_items_incoming', 'id_item_incoming','item_id')
+                            ->join('tbl_items_category', 'id_item_category','in_item_category')
+                            ->join('tbl_items_condition', 'id_item_condition','in_item_condition')
+                            ->where('warrent_id', $id)
+                            ->get();
             }
-            return view('v_petugas.screening_item', compact('warrent'));
+
+            return view('v_petugas.screening_item', compact('warrent','item'));
+        } elseif ($aksi == 'proses-penapisan') {
+            // Proses Order
+            $cekOrder   = DB::table('tbl_orders')->count();
+            $idOrder    = 'PBM_'.Carbon::now()->format('ddmy').$cekOrder;
+            $order = new OrderModel();
+            $order->id_order                = $idOrder;
+            $order->warrent_id              = $id;
+            $order->adminuser_id            = Auth::user()->id;
+            $order->workunit_id             = $request->input('workunit_id');
+            $order->order_license_vehicle   = $request->input('license_vehicle');
+            $order->order_emp_name          = $request->input('emp_name');
+            $order->order_emp_position      = $request->input('emp_position');
+            $order->order_category          = $request->input('category');
+            $order->order_tm                = Carbon::now();
+            $order->order_dt                = Carbon::now();
+            $order->save();
+            // Proses Penapisan
+            $cekScreening = DB::table('tbl_items_screening')->count();
+            $idItem       = $request->item_id;
+            foreach($idItem as $i => $item_id) {
+                $idScreening  = Carbon::now()->format('dmy').$cekScreening . $i;
+                $screening = new ScreeningModel();
+                $screening->id_item_screening   = $idScreening;
+                $screening->warrent_id          = $id;
+                $screening->order_id            = $idOrder;
+                $screening->item_id             = $item_id;
+                $screening->item_received       = $request->item_received[$i];
+                $screening->status_screening    = $request->status_screening[$i];
+                $screening->screening_notes     = $request->screening_notes[$i];
+                $screening->approve_petugas     = 1;
+                $screening->screening_date      = Carbon::now();
+                $screening->save();
+            }
+            // Update status penapisan
+            WarrentModel::where('id_warrent', $id)->update([ 'warr_status' => 'konfirmasi' ]);
+
+            return redirect('petugas/dashboard')->with('success','Berhasil melakukan penapisan');
+
         }
 
     }
@@ -165,116 +215,153 @@ class PetugasController extends Controller
 
     public function showItem(Request $request, $aksi, $id)
     {
-        if($id == 'masuk'){
+        if ($id == 'masuk') {
             // Daftar barang masuk
             $items = DB::table('tbl_items_incoming')
-						->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-						->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
-						->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-						->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-						->where('order_category','Pengiriman')
-						->where('in_item_qty','!=', 0)
-						->get();
+            ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+            ->join('tbl_items_category', 'tbl_items_category.id_item_category', 'tbl_orders_data.itemcategory_id')
+            ->leftjoin('tbl_items_condition', 'tbl_items_condition.id_item_condition', 'tbl_items_incoming.in_item_condition')
+            ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
+            ->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_orders.workunit_id')
+            ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
+            ->join('tbl_warehouses', '.tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
+            ->where('order_category', 'penyimpanan')
+            ->where('in_item_qty', '!=', 0)
+            ->get();
 
             return view('v_petugas.show_item', compact('items'));
-
-        }elseif($id == 'keluar'){
+        } elseif ($id == 'keluar') {
             // Daftar barang keluar
             $items = DB::table('tbl_items_exit')
-  						->join('tbl_items_incoming','tbl_items_incoming.id_item_incoming','tbl_items_exit.item_incoming_id')
-						->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-						->join('tbl_orders','tbl_orders.id_order','tbl_items_exit.order_id')
-						->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-						->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-						->where('order_category','Pengeluaran')
-						->get();
+            ->join('tbl_items_incoming', 'tbl_items_incoming.id_item_incoming', 'tbl_items_exit.item_incoming_id')
+            ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+            ->join('tbl_items_category', 'tbl_items_category.id_item_category', 'tbl_orders_data.itemcategory_id')
+            ->leftjoin('tbl_items_condition', 'tbl_items_condition.id_item_condition', 'tbl_items_incoming.in_item_condition')
+            ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_items_exit.order_id')
+            ->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_orders.workunit_id')
+            ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
+            ->join('tbl_warehouses', '.tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
+            ->where('order_category', 'Pengeluaran')
+            ->get();
 
             return view('v_petugas.show_item', compact('items'));
-
-        }elseif($aksi == 'kelengkapan-barang'){
+        } elseif ($aksi == 'kelengkapan-barang') {
             // Kelengkapan barang
-            $order 	= DB::table('tbl_orders')
-					    ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-					    ->where('id_order',$id)
-					    ->first();
-            $item 	= DB::table('tbl_items_incoming')
-                        ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-                        ->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
-                        ->where('id_order', $id)
-                        ->orderBy('in_item_name', 'ASC')
-                        ->get();
+            $order     = DB::table('tbl_orders')
+            ->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_orders.workunit_id')
+            ->where('id_order', $id)
+            ->first();
+            $item     = DB::table('tbl_items_incoming')
+            ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+            ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
+            ->where('id_order', $id)
+            ->orderBy('in_item_name', 'ASC')
+            ->get();
 
-            return view('v_petugas.create_complete_item', compact('order','item'));
-
-        }elseif($aksi == 'proses-kelengkapan-barang'){
+            return view('v_petugas.create_complete_item', compact('order', 'item'));
+        } elseif ($aksi == 'proses-kelengkapan-barang') {
             // Proses tambah kelengkapan barang
-            $valImage  	= Validator::make($request->all(), [
-
-            ]);
+            $valImage      = Validator::make($request->all(), []);
 
             if ($valImage->fails()) {
-                return redirect('petugas/barang/kelengkapan-barang/'. $id)->with('failed','Format foto tidak sesuai');
+                return redirect('petugas/barang/kelengkapan-barang/' . $id)->with('failed', 'Format foto tidak sesuai');
             } else {
-                $item 		= new OrderItemModel();
-                $imgitem 	= $request->item_img;
-                $iditem 	= $request->id_item;
-                foreach($iditem as $i => $item_id)
-                {
+                $item         = new OrderItemModel();
+                $imgitem     = $request->item_img;
+                $iditem     = $request->id_item;
+                foreach ($iditem as $i => $item_id) {
 
                     $getimg = DB::table('tbl_items_incoming')->where('id_item_incoming', $item_id)->first();
                     if ($request->hasfile('item_img')) {
-                        if($getimg->in_item_img != ''  && $getimg->in_item_img != null){
-                            $file_old = public_path().'\dist\img\data-barang\\' . $getimg->in_item_img;
+                        if ($getimg->in_item_img != ''  && $getimg->in_item_img != null) {
+                            $file_old = public_path() . '\dist\img\data-barang\\' . $getimg->in_item_img;
                             unlink($file_old);
                         }
 
                         $file       = $request->file('item_img');
-                         $filename   = $imgitem[$i]->getClientOriginalName();
-                          $imgitem[$i]->move('dist/img/data-barang/', $filename);
-                          $item->in_item_img = $filename;
+                        $filename   = $imgitem[$i]->getClientOriginalName();
+                        $imgitem[$i]->move('dist/img/data-barang/', $filename);
+                        $item->in_item_img = $filename;
                     } else {
                         $item->in_item_img = null;
                     }
                     $img = $item->in_item_img;
                     OrderItemModel::where('id_item_incoming', $iditem[$i])
-                                    ->update(['in_item_img' => $img ]);
+                        ->update(['in_item_img' => $img]);
                 }
 
-                foreach($iditem as $j => $itemid)
-                {
+                foreach ($iditem as $j => $itemid) {
 
                     OrderItemModel::where('id_item_incoming', $itemid)
                         ->update([
-                            'in_item_code'  		=> $request->item_code[$i],
-                            'in_item_nup'    		=> $request->item_nup[$i],
-                            'in_item_purchase'    	=> $request->item_purchase[$i],
-                            'in_item_condition'    	=> $request->item_condition[$i],
-                            'in_item_description'	=> $request->item_description[$i]
+                            'in_item_code'          => $request->item_code[$i],
+                            'in_item_nup'            => $request->item_nup[$i],
+                            'in_item_purchase'        => $request->item_purchase[$i],
+                            'in_item_condition'        => $request->item_condition[$i],
+                            'in_item_description'    => $request->item_description[$i]
                         ]);
                 }
-                return redirect('petugas/buat-bast/'. $id);
+                return redirect('petugas/buat-bast/' . $id);
             }
-
-        }elseif($aksi == 'cari'){
+        } elseif ($aksi == 'cari') {
             $items = DB::table('tbl_items_incoming')
-						->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-						->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-						->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-						->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
-						->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-						->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-						->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-						->where('id_order',$id)
-						->where('in_item_qty','!=', 0)
-						->get();
+            ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+            ->join('tbl_items_category', 'tbl_items_category.id_item_category', 'tbl_orders_data.itemcategory_id')
+            ->leftjoin('tbl_items_condition', 'tbl_items_condition.id_item_condition', 'tbl_items_incoming.in_item_condition')
+            ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
+            ->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_orders.workunit_id')
+            ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_orders_data.slot_id')
+            ->join('tbl_warehouses', '.tbl_warehouses.id_warehouse', 'tbl_slots.warehouse_id')
+            ->where('id_order', $id)
+            ->where('in_item_qty', '!=', 0)
+            ->get();
 
             return view('v_petugas.show_item', compact('items'));
+        } elseif ($aksi == 'penyimpanan') {
+            $order  = DB::table('tbl_orders')->where('warrent_id', $id)->first();
+            $warehouse = DB::table('tbl_warehouses')->where('status_id','1')->get();
+            $item   = DB::table('tbl_warrents_entry')
+                            ->join('tbl_warrents', 'id_warrent','warrent_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->where('id_warrent', $id)
+                            ->get();
+            return view('v_petugas.create_delivery', compact('order','warehouse','item'));
+        } elseif ($aksi == 'pengeluaran') {
+
+        } elseif ($aksi == 'proses-simpan') {
+            $idSlot       = $request->slot_id;
+            foreach($idSlot as $i => $slot_id) {
+                $data = new OrderDataModel();
+                $data->id_order_data = $request->idData[$i];
+                $data->order_id      = $id;
+                $data->slot_id       = $slot_id;
+                $data->deadline      = $request->deadline;
+                $data->total_item    = $request->item_qty[$i];
+                $data->save();
+            }
+            $warrItemId = $request->item_id;
+                $getItem    = DB::table('tbl_warrents_entry')->where('warrent_id', $request->warrent_id)->get();
+                foreach($getItem as $i => $warrItem) {
+                    $item = new OrderItemModel();
+                    $item->id_item_incoming      = Str::replace('warr_entry_', 'ITEM_', $warrItem->id_warr_entry);
+                    $item->order_data_id         = $request->idData[$i];
+                    $item->in_item_category      = $warrItem->item_category_id;
+                    $item->in_item_code          = $warrItem->warr_item_code;
+                    $item->in_item_nup           = $warrItem->warr_item_nup;
+                    $item->in_item_name          = $warrItem->warr_item_name;
+                    $item->in_item_merk          = $warrItem->warr_item_description;
+                    $item->in_item_qty           = $warrItem->warr_item_qty;
+                    $item->in_item_unit          = $warrItem->warr_item_unit;
+                    $item->in_item_condition     = $warrItem->item_condition_id;
+                    $item->in_item_unit          = $warrItem->warr_item_unit;
+                    $item->save();
+                }
+
+            return redirect('petugas/dashboard')->with('Berhasil menyimpan barang');
+
+        } elseif ($aksi == 'proses-ambil') {
+
         }
     }
 
@@ -674,8 +761,41 @@ class PetugasController extends Controller
 
     public function printQRCode($id)
     {
-        $item = DB::table('tbl_items_incoming')->where('id_item_incoming', $id)->first();
+        $item = DB::table('tbl_items_incoming')
+                    ->join('tbl_orders_data', 'tbl_orders_data.id_order_data', 'tbl_items_incoming.order_data_id')
+                    ->join('tbl_slots','id_slot','slot_id')
+                    ->join('tbl_warehouses','id_warehouse','warehouse_id')
+                    ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')
+                    ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                    ->where('id_item_incoming', $id)
+                    ->first();
         return view('v_petugas.cetak_qrcode', compact('item'));
+    }
+
+    public function getItem(Request $request, $id)
+    {
+        if ($id == 'penyimpanan') {
+            $result = DB::table('tbl_warrents_entry')
+                ->join('tbl_warrents','id_warrent','warrent_id')
+                ->join('tbl_items_category','id_item_category','item_category_id')
+                ->where('id_warr_entry', $request->itemId)
+                ->get();
+        } else {
+
+        }
+
+        return response()->json($result);
+    }
+
+    public function getWarehouse(Request $request, $id)
+    {
+        $result = DB::table('tbl_slots')
+                ->join('tbl_warehouses','id_warehouse','warehouse_id')
+                ->where('warehouse_id', $request->warehouseId)
+                ->where('slot_status','!=','penuh')
+                ->get();
+
+        return response()->json($result);
     }
 
 }

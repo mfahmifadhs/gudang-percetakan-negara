@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
         Route::get('surat-perintah/{aksi}/{id}', [PetugasController::class, 'showWarrent']);
 
+        Route::post('surat-perintah/{aksi}/{id}', [PetugasController::class, 'showWarrent']);
         Route::post('barang/{aksi}/{id}', [PetugasController::class, 'showItem']);
 
         Route::get('daftar-aktivitas/{id}', [PetugasController::class, 'showActivity']);
@@ -82,6 +83,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('buat-bast/{id}', [PetugasController::class, 'createBAST']);
         Route::get('cetak-bast/{id}', [PetugasController::class, 'printBAST']);
         Route::get('cetak-qrcode/{id}', [PetugasController::class, 'printQRCode']);
+        Route::get('get-item/{id}', [PetugasController::class, 'getItem']);
+        Route::get('get-warehouse/{id}', [PetugasController::class, 'getWarehouse']);
 
         Route::post('tambah-kelengkapan-barang/{id}', [PetugasController::class, 'postCompleteItem']);
         Route::post('tambah-barang', [PetugasController::class, 'postDeliverySingle']);

@@ -43,6 +43,10 @@
                               <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/penyimpanan/'. $appletter->id_app_letter) }}">
                                 Buat Surat Perintah
                               </a>
+                              @elseif($appletter->appletter_status == 'diterima' && $appletter->appletter_purpose == 'pengeluaran')
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/pengeluaran/'. $appletter->id_app_letter) }}">
+                                Buat Surat Perintah
+                              </a>
                               @endif
                               <a class="dropdown-item" href="{{ url('unit-kerja/surat/detail-surat-pengajuan/'. $appletter->id_app_letter) }}">
                                 Detail

@@ -15,6 +15,7 @@ class OrderModel extends Model
     protected $fillable = [
         'id_order',
         'warrent_id',
+        'screening_id',
         'adminuser_id',
         'workunit_id',
         'order_license_vehicle',

@@ -22,6 +22,6 @@ class OrderItemModel extends Model
         'in_item_unit',
         'in_item_purchase',
         'in_item_condition',
-        'in_item_description'
+        'in_item_status'
     ];
 }

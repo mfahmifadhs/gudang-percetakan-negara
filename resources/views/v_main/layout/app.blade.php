@@ -97,7 +97,7 @@
             <a href="#" class="dropdown-item">Profil</a>
             @if(Auth::user()->role_id == 3)
             <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class="dropdown-item">Surat Pengajuan</a>
-            <a href="{{ url('unit-kerja/surat/daftar-surat-perintah/semua') }}" class="dropdown-item">Surat Perintah</a>
+            <a href="{{ url('unit-kerja/surat-perintah/daftar/semua') }}" class="dropdown-item">Surat Perintah</a>
             @elseif(Auth::user()->role_id == 2)
             <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="dropdown-item">Daftar Barang</a>
             @endif

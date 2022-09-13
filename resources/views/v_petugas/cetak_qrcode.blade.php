@@ -15,7 +15,7 @@
     <style type="text/css">
         @media print {
             @page {
-                size: 10cm 12cm;
+                size: 10cm 15cm;
                 /* auto is the initial value */
                 margin: 0;
                 /* this affects the margin in the printer settings */
@@ -23,6 +23,12 @@
                 /* set a border for all printed pages */
             }
         }
+
+        label #satu {
+            font-size: 100px;
+            text-transform: capitalize;
+        }
+
     </style>
 </head>
 
@@ -45,19 +51,19 @@
                     @endif
                 </div>
                 <div class="col-12">
-                    <table border="1" style="width: 100%;">
+                    <table border="1" style="width: 100%;padding:20px;">
                         <tr>
-                            <td><img src="{{ asset('dist/img/logo-kemenkes-icon.png') }}" width="50"></td>
-                            <td colspan="2">Gudang Percetakan Negara</td>
+                            <td><center><img src="{{ asset('dist/img/logo-kemenkes-icon.png') }}" width="250"></center></td>
+                            <td><center><label style="font-size: 100px;text-transform:capitalize;">{{ $item->in_item_name.' Merk '.$item->in_item_merk }}</label></center></td>
                         </tr>
                         <tr>
-                            <td>{{ $item->id_item_incoming }}</td>
-                            <td rowspan="3" style="margin: auto;text-align:center">
-                                {!! QrCode::size(80)->generate('https://www.inventory-testing.com/'.$item->id_item_incoming) !!}
+                            <td><center><label style="font-size: 70px;text-transform:capitalize;">{{ $item->id_slot.' / '.$item->warehouse_name }}</label></center></td>
+                            <td rowspan="3" style="padding: 12px;text-align:center">
+                                {!! QrCode::size(600)->generate('https://www.inventory-testing.com/'.$item->id_item_incoming) !!}
                             </td>
                         </tr>
                         <tr>
-                            <td>{{ $item->in_item_name.' Merk '.$item->in_item_merk }}</td>
+                            <td><center><label style="font-size: 70px;text-transform:capitalize;">{{ $item->workunit_name }}</label></center></td>
                         </tr>
                     </table>
                 </div>

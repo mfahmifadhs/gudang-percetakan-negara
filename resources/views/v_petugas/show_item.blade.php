@@ -68,8 +68,6 @@
                                             <td>
                                                 @if($item->order_category == 'Pengiriman')
                                                 {{ $item->in_item_qty }}
-                                                @else
-                                                {{ $item->ex_item_qty }}
                                                 @endif
                                             </td>
                                             <td>{{ $item->in_item_unit }}</td>

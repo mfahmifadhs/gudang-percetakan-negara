@@ -44,56 +44,112 @@
                     <div class="col-md-12 mb-4">
                         <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class=""><i class="fas fa-arrow-alt-circle-left"></i> KEMBALI</a>
                     </div>
-                    <div class="col-md-12 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title pt-2 text-capitalize">konfirmasi {{ $warrent->warr_purpose }} barang</h6>
-                            </div>
-                            <div class="card-body">
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="card-title pt-2">Daftar Barang</h6>
-                            </div>
-                            <div class="card-body">
-                                <table id="table-1" class="table table-responsive" style="color: black;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 1%;">No</th>
-                                            <th style="width: 20%;">Jenis Barang</th>
-                                            <th style="width: 20%;">Kode Barang</th>
-                                            <th style="width: 10%;">NUP</th>
-                                            <th style="width: 15%;">Barang</th>
-                                            <th style="width: 15%;">Merk/Tipe</th>
-                                            <th style="width: 10%;">Jumlah</th>
-                                            <th style="width: 10%;">Kondisi</th>
-                                            <th style="width: 10%;">Status</th>
-                                            <th style="width: 20%;">Catatan</th>
-                                        </tr>
+                    <form action="{{ url('unit-kerja/surat-perintah/konfirmasi-penapisan/'. $warrent->id_warrent) }}">
+                        @csrf
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title pt-2">Daftar Barang</h6>
+                                </div>
+                                <div class="card-body">
+                                    @if($warrent->warr_purpose == 'penyimpanan')
+                                    <table id="table-1" class="table table-bordered">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Jumlah <br>(pengajuan)</th>
+                                                <th>Jumlah <br>(diterima)</th>
+                                                <th>Status</th>
+                                                <th>Konfirmasi</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
                                         <?php $no = 1; ?>
-                                    <tbody>
-                                        @foreach($item as $dataItem)
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $dataItem->item_category_name }}</td>
-                                        <td>{{ $dataItem->warr_item_code }}</td>
-                                        <td>{{ $dataItem->warr_item_nup }}</td>
-                                        <td>{{ $dataItem->warr_item_name }}</td>
-                                        <td>{{ $dataItem->warr_item_description }}</td>
-                                        <td>{{ $dataItem->warr_item_qty.' '.$dataItem->warr_item_unit }}</td>
-                                        <td>{{ $dataItem->item_condition_name }}</td>
-                                        <td>{{ $dataItem->warr_item_status }}</td>
-                                        <td>{{ $dataItem->warr_item_note }}</td>
-                                        @endforeach
-                                    </tbody>
-                                    </thead>
-                                </table>
+                                        <tbody>
+                                            @foreach($item as $itemEntry)
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="id_screening[]" value="{{ $itemEntry->id_item_screening }}">
+                                                    {{ $no++ }}
+                                                </td>
+                                                <td>{{ $itemEntry->warr_item_name.' '.$itemEntry->warr_item_description }}</td>
+                                                <td class="text-center">{{ $itemEntry->warr_item_qty.' '.$itemEntry->warr_item_unit }}</td>
+                                                <td class="text-center">{{ $itemEntry->item_received.' '.$itemEntry->warr_item_unit }}</td>
+                                                <td class="text-center">
+                                                    @if($itemEntry->status_screening == 'sesuai')
+                                                    <b>sesuai</b>
+                                                    @else
+                                                    <b>tidak sesuai</b> <br>
+                                                    <small>({{ $itemEntry->screening_notes }})</small>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <select name="approve_workunit[]" class="form-control bg-white text-center">
+                                                        <option value="1">setuju</option>
+                                                        <option value="0">tidak setuju</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <textarea name="screening_notes_workunit[]" rows="1" class="form-control" placeholder=""></textarea>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @else
+                                    <table id="table-1" class="table table-bordered">
+                                        <thead class="text-center">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Jumlah <br>(pengajuan)</th>
+                                                <th>Jumlah <br>(diambil)</th>
+                                                <th>Status</th>
+                                                <th>Konfirmasi</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <?php $no = 1; ?>
+                                        <tbody>
+                                            @foreach($item as $itemExit)
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="id_screening[]" value="{{ $itemExit->id_item_screening }}">
+                                                    {{ $no++ }}
+                                                </td>
+                                                <td>{{ $itemExit->in_item_name.' '.$itemExit->in_item_merk }}</td>
+                                                <td class="text-center">{{ $itemExit->warr_item_pick.' '.$itemExit->in_item_unit }}</td>
+                                                <td class="text-center">{{ $itemExit->item_received.' '.$itemExit->in_item_unit }}</td>
+                                                <td class="text-center">
+                                                    @if($itemExit->status_screening == 'sesuai')
+                                                    <b>sesuai</b>
+                                                    @else
+                                                    <b>tidak sesuai</b>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <select name="approve_workunit[]" class="form-control bg-white text-center">
+                                                        <option value="1">setuju</option>
+                                                        <option value="0">tidak setuju</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <textarea name="screening_notes_workunit[]" rows="1" class="form-control" placeholder=""></textarea>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('Apakah setuju dengan konfirmasi yang telah diberikan ?')">SUBMIT</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -101,14 +157,19 @@
 </div>
 
 @section('js')
-  <script>
-    $(function () {
-      $("#table-1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "info": false, "sort":false, "paging":false, "searching":false
-      });
+<script>
+    $(function() {
+        $("#table-1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "info": false,
+            "sort": false,
+            "paging": false,
+            "searching": false
+        });
     });
-  </script>
+</script>
 @endsection
 
 @endsection
