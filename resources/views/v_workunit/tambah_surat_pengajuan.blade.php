@@ -55,10 +55,7 @@
                                             <?php $no = 1; ?>
                                             <tbody id="input-item-entry">
                                                 <tr>
-                                                    <td class="text-center">
-                                                        <input type="hidden" name="id_appletter_entry[]" value="spm_item_{{ rand(1000, 9999) }}">
-                                                        {{ $no++ }}
-                                                    </td>
+                                                    <td class="text-center">{{ $no++ }}</td>
                                                     <td>
                                                         <select class="form-control bg-white" name="item_category_id[]">
                                                             <option value="">-- Pilih Kategori Barang --</option>
@@ -124,7 +121,11 @@
                                                             <option value="">-- Pilih Barang --</option>
                                                         </select>
                                                     </td>
-                                                    <td><span id="item_position1"><input type="text" class="form-control" readonly></span></td>
+                                                    <td>
+                                                        <select name="id_order_data[]" class="form-control bg-white detailWarehouse " id="data1" data-idtarget="1">
+                                                            <option value="">-- Pilih Lokasi Penyimpanan --</option>
+                                                        </select>
+                                                    </td>
                                                     <td><span id="item_qty1"><input type="text" class="form-control" readonly></span></td>
                                                     <td><span id="item_pick1"><input type="text" class="form-control" readonly></span></td>
                                                 </tr>
@@ -164,11 +165,8 @@
                 for (i = 1; i <= totalItem; i++) {
                     ++j
                     $("#input-item-entry").append(
-                        `<tr>
-                            <td class="text-center">
-                                <input type="hidden" name="id_appletter_entry[]" value="spm_item_{{ rand(1000, 9999) }}">
-                                {{ $no++ }}
-                            </td>
+                        `<tr class="input-item-entry">
+                            <td class="text-center">`+ no++ +`</td>
                             <td>
                                 <select class="form-control bg-white" name="item_category_id[]">
                                     <option value="">-- Pilih Kategori Barang --</option>
@@ -216,7 +214,11 @@
                                         <option value="">-- Pilih Barang --</option>
                                     </select>
                                 </td>
-                                <td><span id="item_position` + j + `"><input type="text" class="form-control" readonly></span></td>
+                                <td>
+                                    <select name="id_order_data[]" class="form-control bg-white detailWarehouse" id="data` + j + `" data-idtarget="` + j + `">
+                                        <option value="">-- Pilih Lokasi Penyimpanan --</option>
+                                    </select>
+                                </td>
                                 <td><span id="item_qty` + j + `"><input type="text" class="form-control" readonly></span></td>
                                 <td><span id="item_pick` + j + `"><input type="text" class="form-control" readonly></span></td>
                             </tr>`
@@ -252,7 +254,6 @@
             }
         })
 
-        // Menampilkan detail barang
         // Menampilkan detail informasi barang
         $(document).on('change', '.detailItem', function() {
             let idItem = $(this).val()
@@ -261,21 +262,39 @@
             if (idItem) {
                 $.ajax({
                     type: "GET",
-                    url: "/unit-kerja/get-item/detail?idItem=" + idItem,
+                    url: "/unit-kerja/get-item/penyimpanan?idItem=" + idItem,
+                    dataType: 'JSON',
+                    success: function(res) {
+                        $("#data" + target).empty();
+                        $("#data" + target).append('<option value="">-- Pilih Penyimpanan --</option>');
+                        $.each(res, function(index, row) {
+                            $("#data" + target).append(
+                                '<option value="'+row.slot_id+'">'+row.slot_id+'</option>'
+                            );
+                        })
+                    }
+                })
+            }
+        })
+
+        $(document).on('change', '.detailWarehouse', function() {
+            let idWarehouse = $(this).val()
+            let target = $(this).data('idtarget')
+            console.log(idWarehouse);
+            if (idWarehouse) {
+                $.ajax({
+                    type: "GET",
+                    url: "/unit-kerja/get-item/stok?idWarehouse=" + idWarehouse,
                     dataType: 'JSON',
                     success: function(res) {
                         $("#item_qty" + target).empty();
-                        $("#item_position" + target).empty();
                         $("#item_pick" + target).empty();
                         $.each(res, function(index, row) {
                             $("#item_qty" + target).append(
-                                '<input type="number" class="form-control" value="' + row.in_item_qty + '" readonly>'
-                            );
-                            $("#item_position" + target).append(
-                                '<input type="text" class="form-control" value="' + row.id_slot + '/' + row.warehouse_name + '" readonly>'
+                                '<input type="number" class="form-control" value="' + row.total_item + '" readonly>'
                             );
                             $("#item_pick" + target).append(
-                                '<input type="number" name="item_pick[]" class="form-control" minLength="1" max="' + row.in_item_qty + '" >'
+                                '<input type="number" name="item_pick[]" class="form-control" minLength="1" max="' + row.total_item + '" >'
                             );
                         })
                     }

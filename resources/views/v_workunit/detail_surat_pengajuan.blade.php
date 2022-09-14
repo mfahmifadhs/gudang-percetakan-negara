@@ -82,8 +82,8 @@
                                             <td>{{ $dataItem->appletter_item_unit }}</td>
                                             <td>{{ $dataItem->item_condition_name }}</td>
                                             <td>{{ $dataItem->appletter_item_status }}</td>
-                                            @endforeach
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 @else
@@ -96,7 +96,7 @@
                                             <th>Merk/Tipe</th>
                                             <th>Jumlah Diambil</th>
                                             <th>Satuan</th>
-                                            <th>Kondisi</th>
+                                            <th>Penyimpanan</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -107,13 +107,13 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $dataItem->item_category_name }}</td>
                                             <td>{{ $dataItem->in_item_name }}</td>
-                                            <td>{{ $dataItem->in_item_description }}</td>
+                                            <td>{{ $dataItem->in_item_merk }}</td>
                                             <td>{{ $dataItem->item_pick }}</td>
                                             <td>{{ $dataItem->in_item_unit }}</td>
-                                            <td>{{ $dataItem->item_condition_name }}</td>
+                                            <td>{{ $dataItem->slot_id }}</td>
                                             <td>{{ $dataItem->appletter_item_status }}</td>
-                                            @endforeach
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 @endif

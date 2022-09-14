@@ -22,13 +22,13 @@
                 border: 1px solid red;
                 /* set a border for all printed pages */
             }
+            footer {page-break-after: always;}
         }
 
         label #satu {
             font-size: 100px;
             text-transform: capitalize;
         }
-
     </style>
 </head>
 
@@ -50,23 +50,40 @@
                     </div>
                     @endif
                 </div>
-                <div class="col-12">
-                    <table border="1" style="width: 100%;padding:20px;">
+                @foreach($item as $i => $dataItem)
+                <div class="col-12" style="padding:2vh;">
+                    <table border="1" style="width: 100%;">
                         <tr>
-                            <td><center><img src="{{ asset('dist/img/logo-kemenkes-icon.png') }}" width="250"></center></td>
-                            <td><center><label style="font-size: 100px;text-transform:capitalize;">{{ $item->in_item_name.' Merk '.$item->in_item_merk }}</label></center></td>
-                        </tr>
-                        <tr>
-                            <td><center><label style="font-size: 70px;text-transform:capitalize;">{{ $item->id_slot.' / '.$item->warehouse_name }}</label></center></td>
-                            <td rowspan="3" style="padding: 12px;text-align:center">
-                                {!! QrCode::size(600)->generate('https://www.inventory-testing.com/'.$item->id_item_incoming) !!}
+                            <td style="width: 60%;">
+                                <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->workunit_name }}</label></center>
+                            </td>
+                            <td style="width: 40%;">
+                                <center><img src="{{ asset('dist/img/logo-kemenkes-icon.png') }}" width="250"></center>
                             </td>
                         </tr>
                         <tr>
-                            <td><center><label style="font-size: 70px;text-transform:capitalize;">{{ $item->workunit_name }}</label></center></td>
+                            <td>
+                                <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->in_item_name.' Merk '.$dataItem->in_item_merk }}</label></center>
+                            </td>
+                            <td rowspan="5" style="padding: 12px;text-align:center;margin-top: 5vh;text-transform:capitalize;">
+                                {!! QrCode::size(400)->generate($dataItem->in_item_name.' '.$dataItem->in_item_merk.' ('.$dataItem->in_item_qty.' '. $dataItem->in_item_unit. ' ) '."\nTanggal Masuk : ".\Carbon\Carbon::parse($dataItem->order_dt)->isoFormat('DD MMMM Y') ) !!}
+                            </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->id_slot.' / '.$dataItem->warehouse_name }}</label></center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <center><label style="font-size: 70px;text-transform:capitalize;">Tanggal Masuk : {{ \Carbon\Carbon::parse($dataItem->order_dt)->isoFormat('DD MMMM Y') }}</label></center>
+                            </td>
+                        </tr>
+
                     </table>
                 </div>
+                @if($i % 3 == 2 ) <p style="page-break-before: always;"></p> @endif
+                @endforeach
             </div>
         </section>
     </div>

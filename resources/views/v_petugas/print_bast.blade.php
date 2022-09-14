@@ -21,11 +21,11 @@
       </h2>
     </div>
     <div class="col-md-8 text-center">
-      <h2 class="page-header">
-        <h5><b>BERITA ACARA SERAH TERIMA BARANG</b></h5>
-        <h5><b>KEMENTERIAN KESEHATAN REPUBLIK INDONESIA</b></h5>
-        <h6 class="text-uppercase"><b>{{ $bast->mainunit_name }}</b></h6>
-        <p><i>Jl. H.R. Rasuna Said Blok X.5 Kav. 4-9, Blok A, 2nd Floor, Jakarta 12950<br>Telp.: (62-21) 5201587, 5201591 Fax. (62-21) 5201591</i></p>
+      <h2 class="page-header" >
+        <h5 style="font-size: 26px;"><b>BERITA ACARA SERAH TERIMA BARANG</b></h5>
+        <h5 style="font-size: 26px;"><b>KEMENTERIAN KESEHATAN REPUBLIK INDONESIA</b></h5>
+        <h6 class="text-uppercase" style="font-size: 26px;"><b>{{ $bast->mainunit_name }}</b></h6>
+        <p style="font-size: 20px;"><i>Jl. H.R. Rasuna Said Blok X.5 Kav. 4-9, Blok A, 2nd Floor, Jakarta 12950<br>Telp.: (62-21) 5201587, 5201591 Fax. (62-21) 5201591</i></p>
       </h2>
     </div>
     <div class="col-md-2">
@@ -37,7 +37,7 @@
       <hr style="border-width: medium;border-color: black;">
     </div>
   </div>
-  <div class="row">
+  <div class="row" style="font-size: 22px;">
     <div class="col-md-12 form-group">
       <p class="m-0">Nomor    : {{ $bast->id_order }}</p>
       <p class="m-0">Perihal : {{ $bast->order_category }} Barang</p>
@@ -92,17 +92,11 @@
             <td>{{ $item->in_item_code }}</td>
             <td>{{ $item->in_item_nup }}</td>
             <td>{{ $item->in_item_name }}</td>
-            <td>
-              @if($item->order_category == 'Pengiriman')
-                {{ $item->totalitem }}
-              @else
-                {{ $item->totalitem }}
-              @endif
-            </td>
+            <td>{{ $item->total_item }}</td>
             <td>{{ $item->in_item_unit }}</td>
             <td>{{ $item->item_condition_name }}</td>
             <td>{{ $item->in_item_purchase }}</td>
-            <td>{{ $item->in_item_description }}</td>
+            <td>{{ $item->in_item_merk }}</td>
           </tr>
           @endforeach
         </tbody>

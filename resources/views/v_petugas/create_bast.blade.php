@@ -121,11 +121,11 @@
                     <th>Kode Barang</th>
                     <th>NUP</th>
                     <th>Nama Barang</th>
+                    <th>Merk</th>
                     <th>Jumlah</th>
                     <th>Satuan</th>
                     <th>Kondisi</th>
-                    <th>Tahun</th>
-                    <th>Keterangan</th>
+                    <th>Lokasi Penyimpanan</th>
                   </tr>
                 </thead>
                 <?php $no = 1;?>
@@ -136,17 +136,11 @@
                     <td>{{ $item->in_item_code }}</td>
                     <td>{{ $item->in_item_nup }}</td>
                     <td>{{ $item->in_item_name }}</td>
-                    <td>
-                      @if($item->order_category == 'Pengiriman')
-                        {{ $item->totalitem }}
-                      @else
-                        {{ $item->ex_item_qty }}
-                      @endif
-                    </td>
+                    <td>{{ $item->in_item_merk }}</td>
+                    <td>{{ $item->total_item }}</td>
                     <td>{{ $item->in_item_unit }}</td>
                     <td>{{ $item->item_condition_name }}</td>
-                    <td>{{ $item->in_item_purchase }}</td>
-                    <td>{{ $item->in_item_description }}</td>
+                    <td>{{ $item->id_slot.' / '.$item->id_warehouse }}</td>
                   </tr>
                   @endforeach
                 </tbody>

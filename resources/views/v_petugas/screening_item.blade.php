@@ -35,6 +35,7 @@
         </div>
         <form action="{{ url('petugas/surat-perintah/proses-penapisan/'. $warrent->id_warrent) }}" method="POST">
             @csrf
+            <input type="hidden" name="total_item" value="{{ $warrent->warr_total_item }}">
             <div class="row">
                 <div class="col-md-3 form-group">
                     <div class="card card-outline card-primary">

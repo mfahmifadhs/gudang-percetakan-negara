@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ url('unit-kerja/dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('petugas/dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Pengiriman Barang</li>
                 </ol>
             </div>
@@ -78,8 +78,8 @@
                                     @foreach($item as $i => $dataItem)
                                     <tr>
                                         <td>
-                                            <input type="hidden" name="warrent_id[]" value="{{ $dataItem->warrent_id }}">
-                                            <input type="hidden" name="idData[]" value="{{ 'DATA_'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}">
+                                            <input type="hidden" name="warrent_id" value="{{ $dataItem->warrent_id }}">
+                                            <input type="hidden" name="idData[{{$i}}]" value="{{ 'DATA_'.\Carbon\Carbon::now()->format('dmy').rand(100,999).$i }}">
                                             {{ $no++ }}
                                         </td>
                                         <td>
@@ -134,9 +134,9 @@
     })
 
     $(function() {
-        let j = 1
-        let id = "{{ $order->warrent_id }}"
         let sumItem = "{{ $order->order_total_item }}"
+        let j = sumItem
+        let id = "{{ $order->warrent_id }}"
         // More Item
         $('#btn-total').click(function() {
             $(".input-item-entry").empty();
@@ -144,11 +144,13 @@
             let i
             let totalItem = ($('#total_item').val()) - sumItem
             for (i = 1; i <= totalItem; i++) {
-                ++j
                 ++no
                 $("#input-item-entry").append(
-                    `<tr>
-                        <td>` + no++ + `</td>
+                    `<tr class="input-item-entry">
+                        <td>
+                        <input type="hidden" name="idData[`+ j +`]" value="{{ 'DATA_'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}`+no+`">
+                        ` + no + `
+                        </td>
                             <td>
                                 <select name="item_id[]" class="form-control item" data-idtarget=` + j + `>
                                     <option value="">-- Pilih Barang --</option>
@@ -157,7 +159,7 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <td><span id="item_qty[]` + j + `"><input type="text" class="form-control"></span></td>
+                            <td><span id="item_qty` + j + `"><input type="text" class="form-control"></span></td>
                             <td>
                                 <select class="form-control warehouse" data-idtarget="` + j + `">
                                     <option value="">-- Pilih Gudang --</option>
@@ -173,12 +175,14 @@
                             </td>
                         </tr>`
                 )
+                ++j
             }
         })
         // Detail Item
         $(document).on('change', '.item', function() {
-            let itemId = $(this).val();
-            let target = $(this).data('idtarget');
+            let itemId = $(this).val()
+            let target = $(this).data('idtarget')
+            console.log(itemId)
             if (itemId) {
                 $.ajax({
                     type: "GET",
@@ -219,7 +223,6 @@
                             $("#slot_id" + target).select2()
                             $("#slot_id" + target).append('<option value="">-- Pilih Pallet --</option>')
                             $.each(res, function(index, row) {
-                                console.log(res)
                                 $("#slot_id" + target).append(
                                     '<option value="' + row.id_slot + '">' + row.id_slot + '</option>'
                                 )

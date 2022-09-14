@@ -60,13 +60,14 @@
                                 Berita Acara Serah Terima
                               </a>
                               @elseif($dataWarrent->warr_status == 'konfirmasi')
-                              <a class="dropdown-item" href="#">
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/konfirmasi/'. $dataWarrent->id_warrent) }}">
                                 Konfirmasi Penyimpanan
                               </a>
-                              @endif
+                              @else
                               <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/detail/'. $dataWarrent->id_warrent) }}">
                                 Detail
                               </a>
+                              @endif
                             </div>
                           </div>
                         </td>

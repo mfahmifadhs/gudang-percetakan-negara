@@ -129,7 +129,7 @@
                                                     <th style="width: 20%;">Nama Barang</th>
                                                     <th style="width: 20%;">Merk/Tipe</th>
                                                     <th style="width: 10%;">Jumlah</th>
-                                                    <th style="width: 10%;">Satuan</th>
+                                                    <th style="width: 10%;">Penyimpanan</th>
                                                     <th>Kondisi</th>
                                                 </tr>
                                             </thead>
@@ -141,13 +141,15 @@
                                                         <input type="hidden" name="id_warr_exit[]" value="warr_exit_{{ \Carbon\Carbon::now()->isoFormat('MMDDYY').rand(100,999) }}">
                                                         <input type="hidden" name="total_item" value="{{ count($item) }}">
                                                         <input type="hidden" name="item_id[]" value="{{ $dataItem->item_id }}">
+                                                        <input type="hidden" name="item_pick[]" value="{{ $dataItem->item_pick }}">
+                                                        <input type="hidden" name="slot_id[]" value="{{ $dataItem->slot_id }}">
                                                         {{ $no++ }}
                                                     </td>
                                                     <td>{{ $dataItem->item_category_name }}</td>
                                                     <td>{{ $dataItem->item_name }}</td>
                                                     <td>{{ $dataItem->item_description }}</td>
-                                                    <td>{{ $dataItem->item_qty }}</td>
-                                                    <td>{{ $dataItem->item_unit }}</td>
+                                                    <td>{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
+                                                    <td>{{ $dataItem->slot_id }}</td>
                                                     <td>{{ $dataItem->item_condition_name }}</td>
                                                 </tr>
                                                 @endforeach

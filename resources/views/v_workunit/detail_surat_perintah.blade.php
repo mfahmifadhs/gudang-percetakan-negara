@@ -45,6 +45,7 @@
                         <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class=""><i class="fas fa-arrow-alt-circle-left"></i> KEMBALI</a>
                     </div>
 
+                    @if($warrent->warr_status == 'konfirmasi')
                     <form action="{{ url('unit-kerja/surat-perintah/konfirmasi-penapisan/'. $warrent->id_warrent) }}">
                         @csrf
                         <div class="col-md-12">
@@ -150,6 +151,76 @@
                             <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('Apakah setuju dengan konfirmasi yang telah diberikan ?')">SUBMIT</button>
                         </div>
                     </form>
+                    @else
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title pt-2">Daftar Barang</h6>
+                            </div>
+                            <div class="card-body">
+                                @if($warrent->warr_purpose == 'penyimpanan')
+                                <table id="table-1" class="table table-bordered">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Jenis Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Merk/Tipe</th>
+                                            <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Kondisi</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($item as $itemEntry)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $itemEntry->item_category_name }}</td>
+                                            <td>{{ $itemEntry->warr_item_name }}</td>
+                                            <td>{{ $itemEntry->warr_item_description }}</td>
+                                            <td>{{ $itemEntry->warr_item_qty }}</td>
+                                            <td>{{ $itemEntry->warr_item_unit }}</td>
+                                            <td>{{ $itemEntry->item_condition_name }}</td>
+                                            <td>{{ $itemEntry->warr_item_status }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @else
+                                <table id="table-1" class="table table-bordered">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Jenis Barang</th>
+                                            <th>Nama Barang</th>
+                                            <th>Merk/Tipe</th>
+                                            <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Kondisi</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $no = 1; ?>
+                                    <tbody>
+                                        @foreach($item as $itemExit)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $itemExit->item_category_name }}</td>
+                                            <td>{{ $itemExit->in_item_name }}</td>
+                                            <td>{{ $itemExit->in_item_merk }}</td>
+                                            <td>{{ $itemExit->warr_item_pick }}</td>
+                                            <td>{{ $itemExit->in_item_unit }}</td>
+                                            <td>{{ $itemExit->item_condition_name }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

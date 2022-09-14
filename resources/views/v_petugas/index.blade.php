@@ -171,8 +171,6 @@
                                                 <span class="badge badge-warning py-2">Menunggu Proses <br> Penapisan</span>
                                                 @elseif($dataWarrent->warr_status == 'konfirmasi')
                                                 <span class="badge badge-warning py-2">Menunggu Konfirmasi <br> Unit Kerja</span>
-                                                @else
-                                                <span class="badge badge-success py-2">Barang Dapat Diproses</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
@@ -185,7 +183,7 @@
                                                     <a class="dropdown-item" href="{{ url('petugas/surat-perintah/penapisan/'. $dataWarrent->id_warrent) }}">
                                                         <i class="fas fa-people-carry"></i> Proses
                                                     </a>
-                                                    @elseif($dataWarrent->warr_status == 'selesai')
+                                                    @elseif($dataWarrent->warr_status == 'proses barang')
                                                         @if($dataWarrent->warr_purpose == 'penyimpanan')
                                                         <a class="dropdown-item" href="{{ url('petugas/barang/penyimpanan/'. $dataWarrent->id_warrent) }}">
                                                             <i class="fas fa-people-carry"></i> Simpan Barang
@@ -195,6 +193,7 @@
                                                             <i class="fas fa-people-carry"></i> Ambil Barang
                                                         </a>
                                                         @endif
+                                                    @elseif($dataWarrent->warr_status == 'selesai')
                                                     @endif
                                                     <a class="dropdown-item" href="{{ url('petugas/administrasi/'.$dataWarrent->warr_purpose.'/'.$dataWarrent->id_warrent) }}">
                                                         <i class="fas fa-people-carry"></i> Detail

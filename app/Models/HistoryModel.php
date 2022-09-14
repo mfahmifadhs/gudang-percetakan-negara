@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderDataModel extends Model
+class HistoryModel extends Model
 {
     use HasFactory;
-    protected $table = "tbl_orders_data";
-    protected $primaryKey = "id_order_data";
+    protected $table        = "tbl_historys";
+    protected $primaryKey   = "id_history";
     public $timestamps = false;
 
     protected $fillable = [
-        'id_order_data',
+        'hist_date',
         'order_id',
         'item_id',
         'slot_id',
-        'itemcategory_id',
-        'deadline',
-        'total_item',
+        'hist_total_item'
     ];
 }

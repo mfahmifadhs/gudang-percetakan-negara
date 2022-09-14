@@ -16,6 +16,7 @@ class WarrentExitModel extends Model
         'id_warr_exit',
         'warrent_id',
         'item_id',
+        'slot_id',
         'warr_item_pick',
         'warr_item_status',
         'warr_item_note'

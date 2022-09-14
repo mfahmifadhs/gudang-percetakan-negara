@@ -51,6 +51,31 @@ class WorkunitController extends Controller
                             ->where('id_warrent', $id)
                             ->first();
             if ($warrent->warr_purpose == 'penyimpanan') {
+                $item   = DB::table('tbl_warrents_entry')
+                            ->join('tbl_warrents', 'id_warrent','tbl_warrents_entry.warrent_id')
+                            ->join('tbl_items_category', 'id_item_category', 'item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                            ->where('tbl_warrents.id_warrent', $id)
+                            ->get();
+            } else {
+                $item   = DB::table('tbl_warrents_exit')
+                            ->join('tbl_warrents', 'id_warrent','warrent_id')
+                            ->join('tbl_items_incoming', 'id_item_incoming','item_id')
+                            ->join('tbl_items_category', 'id_item_category','in_item_category')
+                            ->join('tbl_items_condition', 'id_item_condition','in_item_condition')
+                            ->where('id_warrent', $id)
+                            ->get();
+            }
+
+            return view('v_workunit.detail_surat_perintah', compact('warrent','item'));
+
+        } elseif ($aksi == 'konfirmasi') {
+            $warrent    = DB::table('tbl_warrents')
+                            ->join('tbl_workunits','id_workunit','workunit_id')
+                            ->join('tbl_mainunits','id_mainunit','mainunit_id')
+                            ->where('id_warrent', $id)
+                            ->first();
+            if ($warrent->warr_purpose == 'penyimpanan') {
                 $item   = DB::table('tbl_items_screening')
                             ->join('tbl_warrents_entry', 'tbl_warrents_entry.id_warr_entry','tbl_items_screening.item_id')
                             ->join('tbl_warrents', 'id_warrent','tbl_warrents_entry.warrent_id')
@@ -86,7 +111,7 @@ class WorkunitController extends Controller
         } elseif ($aksi == 'pengeluaran') {
             $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->first();
             $item       = DB::table('tbl_appletters_exit')->select('tbl_items_category.*','tbl_items_condition.*','in_item_name as item_name',
-                            'in_item_description as item_description','item_pick as item_qty', 'in_item_unit as item_unit','item_id')
+                            'in_item_merk as item_description','item_pick as item_qty', 'in_item_unit as item_unit','item_id','slot_id','item_pick')
                             ->join('tbl_appletters', 'id_app_letter','appletter_id')
                             ->join('tbl_items_incoming', 'id_item_incoming','item_id')
                             ->join('tbl_items_category', 'id_item_category','in_item_category')
@@ -156,6 +181,8 @@ class WorkunitController extends Controller
                     $item->id_warr_exit   = $warrExit;
                     $item->warrent_id     = $request->id_warrent;
                     $item->item_id        = $request->item_id[$i];
+                    $item->slot_id        = $request->slot_id[$i];
+                    $item->warr_item_pick = $request->item_pick[$i];
                     $item->save();
                 }
             }
@@ -225,9 +252,10 @@ class WorkunitController extends Controller
                 $idItem  = $request->id_item_code;
                 foreach($idItem as $i => $item_code) {
                     $warrExit    = new AppLetterExitModel();
-                    $warrExit->id_appletter_exit = 'spk_item_'.rand(1000, 9999);
+                    $warrExit->id_appletter_exit = 'spk_item_'.rand(1000, 9999).$i;
                     $warrExit->appletter_id      = $request->id_appletter;
                     $warrExit->item_id           = $item_code;
+                    $warrExit->slot_id           = $request->id_order_data[$i];
                     $warrExit->item_pick         = $request->item_pick[$i];
                     $warrExit->save();
                 }
@@ -387,18 +415,19 @@ class WorkunitController extends Controller
     public function getItem(Request $request, $id)
     {
         if ($id == 'daftar') {
-            $result = DB::table('tbl_items_incoming')->join('tbl_orders_data','id_order_data','order_data_id')
-                        ->join('tbl_orders','id_order','order_id')
-                        ->join('tbl_slots','id_slot','slot_id')
-                        ->join('tbl_warehouses','id_warehouse','warehouse_id')
+            $result = DB::table('tbl_items_incoming')
                         ->where('in_item_category', $request->kategori)
                         ->get();
+        } elseif($id == 'penyimpanan') {
+            $result = DB::table('tbl_orders_data')
+                        ->where('item_id', $request->idItem)
+                        ->get();
         } else {
-            $result = DB::table('tbl_items_incoming')->join('tbl_orders_data','id_order_data','order_data_id')
+            $result = DB::table('tbl_orders_data','id_order_data','order_data_id')
                         ->join('tbl_orders','id_order','order_id')
                         ->join('tbl_slots','id_slot','slot_id')
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
-                        ->where('id_item_incoming', $request->idItem)
+                        ->where('slot_id', $request->idWarehouse)
                         ->get();
         }
         return response()->json($result);

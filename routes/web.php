@@ -82,7 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('pengeluaran-barang', [PetugasController::class, 'createPickupSingle']);
         Route::get('buat-bast/{id}', [PetugasController::class, 'createBAST']);
         Route::get('cetak-bast/{id}', [PetugasController::class, 'printBAST']);
-        Route::get('cetak-qrcode/{id}', [PetugasController::class, 'printQRCode']);
+        Route::get('print-qrcode/{id}', [PetugasController::class, 'printQRCode']);
         Route::get('get-item/{id}', [PetugasController::class, 'getItem']);
         Route::get('get-warehouse/{id}', [PetugasController::class, 'getWarehouse']);
 

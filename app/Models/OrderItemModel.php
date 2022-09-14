@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItemModel extends Model
 {
     use HasFactory;
-    protected $table = "tbl_items_incoming";
+    protected $table      = "tbl_items_incoming";
     protected $primaryKey = "id_item_incoming";
-    public $timestamps = false;
+    public $timestamps    = false;
 
     protected $fillable = [
         'order_data_id',
@@ -22,6 +22,7 @@ class OrderItemModel extends Model
         'in_item_unit',
         'in_item_purchase',
         'in_item_condition',
+        'in_item_img',
         'in_item_status'
     ];
 }
