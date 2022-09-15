@@ -67,6 +67,7 @@ class PetugasController extends Controller
                             ->join('tbl_warrents', 'id_warrent','warrent_id')
                             ->join('tbl_items_category', 'id_item_category','item_category_id')
                             ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->where('warrent_id', $id)
                             ->get();
             }else{
                 $warrent = DB::table('tbl_warrents')->where('id_warrent', $id)->join('tbl_workunits','id_workunit','workunit_id')->first();
@@ -353,6 +354,7 @@ class PetugasController extends Controller
                 $data = new OrderDataModel();
                 $data->id_order_data = $request->idData[$i];
                 $data->order_id      = $id;
+                $data->item_id       = Str::replace('warr_entry_', 'ITEM_', $request->item_id[$i]);
                 $data->slot_id       = $slot_id;
                 $data->deadline      = $request->deadline;
                 $data->total_item    = $request->item_qty[$i];
@@ -375,7 +377,7 @@ class PetugasController extends Controller
                     $item->in_item_unit          = $warrItem->warr_item_unit;
                     $item->save();
                 }
-
+            WarrentModel::where('id_warrent',$id)->update([ 'warr_status' => 'selesai' ]);
             return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
 
         } elseif ($aksi == 'proses-ambil') {
@@ -447,6 +449,7 @@ class PetugasController extends Controller
      					->join('tbl_orders', 'id_order', 'order_id')
                         ->join('tbl_slots','id_slot','slot_id')
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
+                        ->orderBy('in_item_name','ASC')
       					->where('id_order', $id)
      					->get();
   		}elseif ($check->order_category == 'pengeluaran') {
@@ -777,8 +780,8 @@ class PetugasController extends Controller
     {
         $cekOrder = DB::table('tbl_orders')->where('id_order', $id)->first();
         if($cekOrder->order_category == 'penyimpanan') {
-            $item = DB::table('tbl_items_incoming')
-                        ->join('tbl_orders_data', 'id_order_data', 'order_data_id')
+            $item = DB::table('tbl_orders_data')
+                        ->join('tbl_items_incoming', 'id_item_incoming', 'item_id')
                         ->join('tbl_slots','id_slot','slot_id')
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
                         ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_orders_data.order_id')

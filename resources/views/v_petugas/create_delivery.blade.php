@@ -191,7 +191,7 @@
                     success: function(res) {
                         if (res) {
                             $("#item_qty" + target).empty();
-                            $("#item" + target).select2();
+                            // $("#item" + target).select2();
                             $("#item" + target).append('<option value="">-- Pilih Barang --</option>');
                             $.each(res, function(index, row) {
                                 $("#item_qty" + target).append(
@@ -220,7 +220,7 @@
                     success: function(res) {
                         if (res) {
                             $("#slot_id" + target).empty()
-                            $("#slot_id" + target).select2()
+                            // $("#slot_id" + target).select2()
                             $("#slot_id" + target).append('<option value="">-- Pilih Pallet --</option>')
                             $.each(res, function(index, row) {
                                 $("#slot_id" + target).append(

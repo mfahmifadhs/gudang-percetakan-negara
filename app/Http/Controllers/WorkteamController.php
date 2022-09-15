@@ -38,13 +38,14 @@ class WorkteamController extends Controller
     public function showLetter(Request $request, $aksi, $id)
     {
         if ($aksi == 'detail-surat-pengajuan') {
-            $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->first();
+            $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->where('id_app_letter', $id)->first();
             $cek        = DB::table('tbl_appletters')->where('id_app_letter', $id)->first();
             if ($cek->appletter_purpose == 'penyimpanan') {
                 $item   = DB::table('tbl_appletters_entry')
                             ->join('tbl_appletters', 'id_app_letter','appletter_id')
                             ->join('tbl_items_category', 'id_item_category','item_category_id')
                             ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
+                            ->where('appletter_id', $id)
                             ->get();
             } else {
                 $item   = DB::table('tbl_appletters_exit')
@@ -55,7 +56,6 @@ class WorkteamController extends Controller
                             ->where('appletter_id', $id)
                             ->get();
             }
-
             return view('v_workteam.detail_surat_pengajuan', compact('appletter', 'item'));
 
             // Proses surat pengajuan ditolak

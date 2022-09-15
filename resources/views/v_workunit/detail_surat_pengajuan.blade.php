@@ -63,10 +63,9 @@
                                             <th>No</th>
                                             <th>Jenis Barang</th>
                                             <th>Nama Barang</th>
-                                            <th>Merk/Tipe</th>
                                             <th>Jumlah</th>
                                             <th>Satuan</th>
-                                            <th>Kondisi</th>
+                                            <th>Keterangan</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -80,7 +79,6 @@
                                             <td>{{ $dataItem->appletter_item_description }}</td>
                                             <td>{{ $dataItem->appletter_item_qty }}</td>
                                             <td>{{ $dataItem->appletter_item_unit }}</td>
-                                            <td>{{ $dataItem->item_condition_name }}</td>
                                             <td>{{ $dataItem->appletter_item_status }}</td>
                                         </tr>
                                         @endforeach
@@ -93,7 +91,7 @@
                                             <th>No</th>
                                             <th>Jenis Barang</th>
                                             <th>Nama Barang</th>
-                                            <th>Merk/Tipe</th>
+                                            <th>Keterangan</th>
                                             <th>Jumlah Diambil</th>
                                             <th>Satuan</th>
                                             <th>Penyimpanan</th>

@@ -22,7 +22,7 @@
                                                 surat permohonan pengajuan dibuat pada aplikasi <a href="https://srikandi.arsip.go.id/" target="_blank">SRIKANDI</a>.</small>
                                         </label>
                                         <div class="form-floating mt-2">
-                                            <input type="file" class="form-control" name="upload_spm" accept="application/pdf" placeholder="Upload Barang" required>
+                                            <input type="file" class="form-control" name="upload_spm" accept="application/pdf" placeholder="Upload Barang">
                                             <label for="name">Upload File (Format .pdf)</label>
                                         </div>
                                     </div>
@@ -46,7 +46,7 @@
                                                     <th class="text-center">No</th>
                                                     <th style="width: 22%;">Jenis Barang</th>
                                                     <th style="width: 20%;">Nama Barang</th>
-                                                    <th style="width: 20%;">Merk/Tipe</th>
+                                                    <th style="width: 20%;">Keterangan</th>
                                                     <th style="width: 10%;">Jumlah</th>
                                                     <th style="width: 10%;">Satuan</th>
                                                     <th>Kondisi</th>

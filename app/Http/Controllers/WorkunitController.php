@@ -97,7 +97,7 @@ class WorkunitController extends Controller
             return view('v_workunit.detail_surat_perintah', compact('warrent','item'));
 
         } elseif ($aksi == 'penyimpanan') {
-            $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->first();
+            $appletter  = DB::table('tbl_appletters')->join('tbl_workunits','id_workunit','workunit_id')->where('id_app_letter', $id)->first();
             $item       = DB::table('tbl_appletters_entry')->select('tbl_items_category.*','tbl_items_condition.*','appletter_item_name as item_name',
                             'appletter_item_description as item_description','appletter_item_qty as item_qty', 'appletter_item_unit as item_unit')
                             ->join('tbl_appletters', 'id_app_letter','appletter_id')
@@ -124,10 +124,15 @@ class WorkunitController extends Controller
         } elseif ($aksi == 'proses') {
             if ($id == 'penyimpanan') {
                 // Buat Surat Perintah Penyimpanan
+                if ($request->upload_warr != null) {
+                    $filename  = $request->upload_warr->getClientOriginalName();
+                    $request->upload_warr->move('data_file/surat_perintah/', $filename);
+                } else {
+                    $filename = null;
+                }
+
                 $warrent   = new WarrentModel();
                 $file      = $request->file('upload_warr');
-                $filename  = $request->upload_warr->getClientOriginalName();
-                $request->upload_warr->move('data_file/surat_perintah/', $filename);
                 $warrent->id_warrent         = $request->input('id_warrent');
                 $warrent->appletter_id       = $request->input('appletter_id');
                 $warrent->workunit_id        = Auth::user()->workunit_id;
@@ -190,7 +195,7 @@ class WorkunitController extends Controller
             return redirect('unit-kerja/surat-perintah/daftar/seluruh-surat-perintah')->with('success','Berhasil membuat surat perintah');
         } elseif ($aksi == 'konfirmasi-penapisan') {
             // Upadate status surat perintah
-            WarrentModel::where('id_warrent', $id)->update([ 'warr_status' => 'selesai' ]);
+            WarrentModel::where('id_warrent', $id)->update([ 'warr_status' => 'proses barang' ]);
 
             // Update screening
             $idScreening = $request->id_screening;
@@ -221,10 +226,15 @@ class WorkunitController extends Controller
 
         }elseif($aksi == 'tambah-pengajuan'){
             // Buat Surat Pengajuan Penyimpanan
+                if ($request->upload_spm != null) {
+                    $filename  = $request->upload_spm->getClientOriginalName();
+                    $request->upload_spm->move('data_file/surat_permohonan/', $filename);
+                } else {
+                    $filename = null;
+                }
+
                 $appletter = new AppLetterModel();
                 $file      = $request->file('upload-spm');
-                $filename  = $request->upload_spm->getClientOriginalName();
-                $request->upload_spm->move('data_file/surat_permohonan/', $filename);
                 $appletter->id_app_letter           = $request->input('id_appletter');
                 $appletter->workunit_id             = Auth::user()->workunit_id;
                 $appletter->appletter_file          = $filename;
@@ -238,7 +248,7 @@ class WorkunitController extends Controller
                 $idItem  = $request->item_category_id;
                 foreach($idItem as $i => $category_id) {
                     $warrEntry    = new AppLetterEntryModel();
-                    $warrEntry->id_appletter_entry           = $request->id_appletter_entry[$i];
+                    $warrEntry->id_appletter_entry           = 'spm_item_'.rand(1000, 9999).$i;
                     $warrEntry->appletter_id                 = $request->id_appletter;
                     $warrEntry->item_category_id             = $category_id;
                     $warrEntry->appletter_item_name          = $request->appletter_item_name[$i];
