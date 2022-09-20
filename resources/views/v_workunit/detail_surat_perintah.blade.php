@@ -120,9 +120,9 @@
                                                     <input type="hidden" name="id_screening[]" value="{{ $itemExit->id_item_screening }}">
                                                     {{ $no++ }}
                                                 </td>
-                                                <td>{{ $itemExit->in_item_name.' '.$itemExit->in_item_merk }}</td>
-                                                <td class="text-center">{{ $itemExit->warr_item_pick.' '.$itemExit->in_item_unit }}</td>
-                                                <td class="text-center">{{ $itemExit->item_received.' '.$itemExit->in_item_unit }}</td>
+                                                <td>{{ $itemExit->item_name.' '.$itemExit->item_description }}</td>
+                                                <td class="text-center">{{ $itemExit->item_volume.' '.$itemExit->item_unit }}</td>
+                                                <td class="text-center">{{ $itemExit->item_received.' '.$itemExit->item_unit }}</td>
                                                 <td class="text-center">
                                                     @if($itemExit->status_screening == 'sesuai')
                                                     <b>sesuai</b>
@@ -207,10 +207,10 @@
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $itemExit->item_category_name }}</td>
-                                            <td>{{ $itemExit->in_item_name }}</td>
-                                            <td>{{ $itemExit->in_item_merk }}</td>
+                                            <td>{{ $itemExit->item_name }}</td>
+                                            <td>{{ $itemExit->item_description }}</td>
                                             <td>{{ $itemExit->warr_item_pick }}</td>
-                                            <td>{{ $itemExit->in_item_unit }}</td>
+                                            <td>{{ $itemExit->item_unit }}</td>
                                             <td>{{ $itemExit->item_condition_name }}</td>
                                         </tr>
                                         @endforeach

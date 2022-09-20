@@ -147,13 +147,16 @@
                                             <input type="hidden" name="item_id[]" value="{{ $itemExit->item_id }}">
                                             {{ $no++ }}
                                         </td>
-                                        <td>{{ $itemExit->in_item_name }}</td>
-                                        <td>{{ $itemExit->in_item_merk }}</td>
-                                        <td class="text-center">{{ $itemExit->warr_item_pick }}</td>
+                                        <td>{{ $itemExit->item_name }}</td>
+                                        <td>{{ $itemExit->item_description }}</td>
+                                        <td class="text-center">
+                                            <input type="hidden" name="item_volume[]" value="{{ $itemExit->warr_item_pick }}">
+                                            {{ $itemExit->warr_item_pick }}
+                                        </td>
                                         <td class="text-center">
                                             <input type="text" class="form-control" name="item_received[]" placeholder="Jumlah diambil" required>
                                         </td>
-                                        <td class="text-center">{{ $itemExit->in_item_unit }}</td>
+                                        <td class="text-center">{{ $itemExit->item_unit }}</td>
                                         <td>
                                             <select name="status_screening[]" class="form-control">
                                                 <option value="sesuai">sesuai</option>

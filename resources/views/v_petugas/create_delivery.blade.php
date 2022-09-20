@@ -71,6 +71,7 @@
                                         <th>Jumlah</th>
                                         <th>Pilih Gudang</th>
                                         <th>Pilih Pallet</th>
+                                        <th>Kapasitas Slot</th>
                                     </tr>
                                 </thead>
                                 <?php $no = 1; ?>
@@ -79,7 +80,7 @@
                                     <tr>
                                         <td>
                                             <input type="hidden" name="warrent_id" value="{{ $dataItem->warrent_id }}">
-                                            <input type="hidden" name="idData[{{$i}}]" value="{{ 'DATA_'.\Carbon\Carbon::now()->format('dmy').rand(100,999).$i }}">
+                                            <input type="hidden" name="idData[{{$i}}]" value="{{ 'DATA'.\Carbon\Carbon::now()->format('dmy').rand(100,999).$i }}">
                                             {{ $no++ }}
                                         </td>
                                         <td>
@@ -102,6 +103,13 @@
                                         <td>
                                             <select name="slot_id[]" id="slot_id{{$i}}" class="form-control">
                                                 <option value="">-- Pilih Pallet --</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="slot_status[]" class="form-control">
+                                                <option value="tersedia">tersedia</option>
+                                                <option value="kosong">kosong</option>
+                                                <option value="penuh">penuh</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -148,7 +156,7 @@
                 $("#input-item-entry").append(
                     `<tr class="input-item-entry">
                         <td>
-                        <input type="hidden" name="idData[`+ j +`]" value="{{ 'DATA_'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}`+no+`">
+                        <input type="hidden" name="idData[`+ j +`]" value="{{ 'DATA'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}`+no+`">
                         ` + no + `
                         </td>
                             <td>
@@ -171,6 +179,13 @@
                             <td>
                                 <select name="slot_id[]" id="slot_id` + j + `" class="form-control">
                                     <option value="">-- Pilih Pallet --</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="slot_status[]" class="form-control">
+                                    <option value="tersedia">tersedia</option>
+                                    <option value="kosong">kosong</option>
+                                    <option value="penuh">penuh</option>
                                 </select>
                             </td>
                         </tr>`

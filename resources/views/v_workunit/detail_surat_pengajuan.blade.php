@@ -104,10 +104,10 @@
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $dataItem->item_category_name }}</td>
-                                            <td>{{ $dataItem->in_item_name }}</td>
-                                            <td>{{ $dataItem->in_item_merk }}</td>
+                                            <td>{{ $dataItem->item_name }}</td>
+                                            <td>{{ $dataItem->item_description }}</td>
                                             <td>{{ $dataItem->item_pick }}</td>
-                                            <td>{{ $dataItem->in_item_unit }}</td>
+                                            <td>{{ $dataItem->item_unit }}</td>
                                             <td>{{ $dataItem->slot_id }}</td>
                                             <td>{{ $dataItem->appletter_item_status }}</td>
                                         </tr>

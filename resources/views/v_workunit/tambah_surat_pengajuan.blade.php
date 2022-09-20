@@ -243,7 +243,7 @@
                             $("#item" + target).append('<option value="">-- Pilih Barang --</option>');
                             $.each(res, function(index, row) {
                                 $("#item" + target).append(
-                                    '<option value="' + row.id_item_incoming + '">' + row.in_item_name + '</option>'
+                                    '<option value="' + row.id_item + '">' + row.item_name + '</option>'
                                 )
                             });
                         } else {

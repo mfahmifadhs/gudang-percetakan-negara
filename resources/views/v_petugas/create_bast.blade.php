@@ -133,12 +133,12 @@
                   @foreach($item as $item)
                   <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $item->in_item_code }}</td>
-                    <td>{{ $item->in_item_nup }}</td>
-                    <td>{{ $item->in_item_name }}</td>
-                    <td>{{ $item->in_item_merk }}</td>
+                    <td>{{ $item->item_code }}</td>
+                    <td>{{ $item->item_nup }}</td>
+                    <td>{{ $item->item_name }}</td>
+                    <td>{{ $item->item_description }}</td>
                     <td>{{ $item->total_item }}</td>
-                    <td>{{ $item->in_item_unit }}</td>
+                    <td>{{ $item->item_unit }}</td>
                     <td>{{ $item->item_condition_name }}</td>
                     <td>{{ $item->id_slot.' / '.$item->id_warehouse }}</td>
                   </tr>

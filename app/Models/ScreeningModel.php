@@ -17,6 +17,7 @@ class ScreeningModel extends Model
         'warrent_id',
         'order_id',
         'item_id',
+        'item_volume',
         'item_received',
         'status_screening',
         'screening_notes',

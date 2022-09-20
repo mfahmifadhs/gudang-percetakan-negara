@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="{{ asset('dist/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+  <style type="text/css">
+        @media print {
+            footer {page-break-after: always;}
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -77,27 +82,28 @@
             <th>Kode Barang</th>
             <th>NUP</th>
             <th>Nama Barang</th>
+            <th>Keterangan</th>
             <th>Jumlah</th>
             <th>Satuan</th>
             <th>Kondisi</th>
             <th>Tahun</th>
-            <th>Keterangan</th>
           </tr>
         </thead>
         <?php $no = 1;?>
         <tbody>
-          @foreach($item as $item)
+          @foreach($item as $i => $item)
           <tr>
             <td>{{ $no++ }}</td>
-            <td>{{ $item->in_item_code }}</td>
-            <td>{{ $item->in_item_nup }}</td>
-            <td>{{ $item->in_item_name }}</td>
+            <td>{{ $item->item_code }}</td>
+            <td>{{ $item->item_nup }}</td>
+            <td>{{ $item->item_name }}</td>
+            <td>{{ $item->item_description }}</td>
             <td>{{ $item->total_item }}</td>
-            <td>{{ $item->in_item_unit }}</td>
+            <td>{{ $item->item_unit }}</td>
             <td>{{ $item->item_condition_name }}</td>
-            <td>{{ $item->in_item_purchase }}</td>
-            <td>{{ $item->in_item_merk }}</td>
+            <td>{{ $item->item_purchase }}</td>
           </tr>
+          @if($i % 3 == 2 ) <p style="page-break-before: always;"></p> @endif
           @endforeach
         </tbody>
       </table>

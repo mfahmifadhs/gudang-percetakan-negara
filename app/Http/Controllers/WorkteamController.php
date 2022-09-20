@@ -50,9 +50,9 @@ class WorkteamController extends Controller
             } else {
                 $item   = DB::table('tbl_appletters_exit')
                             ->join('tbl_appletters', 'id_app_letter','appletter_id')
-                            ->join('tbl_items_incoming', 'id_item_incoming','item_id')
-                            ->join('tbl_items_category', 'id_item_category','in_item_category')
-                            ->join('tbl_items_condition', 'id_item_condition','in_item_condition')
+                            ->join('tbl_items', 'id_item','item_id')
+                            ->join('tbl_items_category', 'id_item_category','item_category_id')
+                            ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
                             ->where('appletter_id', $id)
                             ->get();
             }

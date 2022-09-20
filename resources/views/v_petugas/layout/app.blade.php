@@ -179,16 +179,6 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{{ url('petugas/barang/daftar/keluar') }}" class="nav-link
-            {{ Request::is('petugas/daftar-barang/keluar') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-th-large"></i>
-              <p>
-                Kategori Barang
-              </p>
-            </a>
-          </li>
-          <li class="nav-header font-weight-bold">Laporan</li>
         </ul>
       </nav>
     </div>

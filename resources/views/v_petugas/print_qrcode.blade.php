@@ -63,14 +63,14 @@
                         </tr>
                         <tr>
                             <td>
-                                <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->in_item_name.' '.$dataItem->in_item_merk }}</label></center>
+                                <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->item_name.' '.$dataItem->item_description }}</label></center>
                             </td>
                             <td rowspan="5" style="padding: 12px;text-align:center;margin-top: 5vh;text-transform:capitalize;">
                                 {!! QrCode::size(400)->generate("DETAIL INFORMASI BARANG : \n\n".
                                     "Asal Unit Kerja : \n".$dataItem->workunit_name. "\n\n".
-                                    "Nama Barang : \n".$dataItem->in_item_name. "\n\n".
-                                    "Keterangan : \n".$dataItem->in_item_merk. "\n\n".
-                                    "Jumlah : \n".$dataItem->in_item_qty.' '.$dataItem->in_item_unit. "\n\n".
+                                    "Nama Barang : \n".$dataItem->item_name. "\n\n".
+                                    "Keterangan : \n".$dataItem->item_description. "\n\n".
+                                    "Jumlah : \n".$dataItem->item_qty.' '.$dataItem->item_unit. "\n\n".
                                     "Tanggal Masuk : \n".\Carbon\Carbon::parse($dataItem->order_dt)->isoFormat('DD MMMM Y'). "\n\n".
                                     "Lokasi Penyimpanan : \n". $dataItem->id_slot." / ".$dataItem->warehouse_name
 

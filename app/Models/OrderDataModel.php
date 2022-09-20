@@ -14,11 +14,9 @@ class OrderDataModel extends Model
 
     protected $fillable = [
         'id_order_data',
-        'order_id',
         'item_id',
         'slot_id',
-        'itemcategory_id',
         'deadline',
-        'total_item',
+        'total_item'
     ];
 }

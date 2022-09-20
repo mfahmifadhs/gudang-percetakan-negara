@@ -38,6 +38,7 @@
             <div class="col-md-12 form-group">
                 <form action="{{ url('petugas/barang/proses-ambil/'. $order->id_order) }}" method="POST">
                     @csrf
+                    <input type="hidden" name="warrent_id" value="{{ $id }}">
                     <div class="card card-outline card-body">
                         <div class="card-header">
                             <div class="row">
@@ -72,10 +73,13 @@
                                             <input type="hidden" name="item_pick[]" value="{{ $dataItem->warr_item_pick }}">
                                             {{ $no++ }}
                                         </td>
-                                        <td>{{ $dataItem->in_item_name }}</td>
+                                        <td>{{ $dataItem->item_name }}</td>
                                         <td>{{ $dataItem->slot_id.' / '.$dataItem->warehouse_name }}</td>
-                                        <td>{{ $dataItem->warr_item_pick.' '.$dataItem->in_item_unit }}</td>
-                                        <td>{{ $dataItem->total_item - $dataItem->warr_item_pick.' '.$dataItem->in_item_unit }} </td>
+                                        <td>{{ $dataItem->warr_item_pick.' '.$dataItem->item_unit }}</td>
+                                        <td>
+                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->total_item - $dataItem->warr_item_pick }}">
+                                            {{ $dataItem->total_item - $dataItem->warr_item_pick.' '.$dataItem->item_unit }}
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
