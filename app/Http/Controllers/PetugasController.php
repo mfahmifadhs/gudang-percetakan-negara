@@ -399,7 +399,7 @@ class PetugasController extends Controller
                 $data->save();
 
                 $hist = new HistoryModel();
-                $hist->id_history       = 'hist_'.Carbon::now()->format('ddmy').$i;
+                $hist->id_history       = 'hist_'.Carbon::now()->format('dmyhis').$i;
                 $hist->hist_date        = Carbon::now();
                 $hist->order_id         = $id;
                 $hist->item_id          = Str::replace('warr_entry_', 'ITEM', $request->item_id[$i]);

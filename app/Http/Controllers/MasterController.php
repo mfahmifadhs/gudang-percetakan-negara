@@ -315,6 +315,7 @@ class MasterController extends Controller
             $users->password      = Hash::make($request->input('password'));
             $users->password_text = $request->password;
             $users->status_id     = $request->input('status_id');
+            $users->created_at    = Carbon::now();
             $users->save();
             return redirect('admin-master/pengguna/daftar/semua')->with('success','Berhasil menambah pengguna baru');
 

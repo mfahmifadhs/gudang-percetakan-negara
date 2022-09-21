@@ -11,11 +11,6 @@
   <link rel="stylesheet" href="{{ asset('dist/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-  <style type="text/css">
-        @media print {
-            footer {page-break-after: always;}
-        }
-    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -103,7 +98,6 @@
             <td>{{ $item->item_condition_name }}</td>
             <td>{{ $item->item_purchase }}</td>
           </tr>
-          @if($i % 3 == 2 ) <p style="page-break-before: always;"></p> @endif
           @endforeach
         </tbody>
       </table>

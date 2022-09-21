@@ -107,7 +107,10 @@
                                         </td>
                                         <td>{{ $itemEntry->warr_item_name }}</td>
                                         <td>{{ $itemEntry->warr_item_description }}</td>
-                                        <td class="text-center">{{ $itemEntry->warr_item_qty }}</td>
+                                        <td class="text-center">
+                                            <input type="hidden" name="item_volume[]" value="{{ $itemEntry->warr_item_qty }}">
+                                            {{ $itemEntry->warr_item_qty }}
+                                        </td>
                                         <td class="text-center">
                                             <input type="text" class="form-control" name="item_received[]" placeholder="Jumlah diterima" required>
                                         </td>

@@ -37,7 +37,7 @@
                                         <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($dataDelivery->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
                                         <span style="font-size: 13px;" class="float-left"><label>{{ $dataDelivery->workunit_name }}</label></span>
                                         <span class="float-right">
-                                            <h6>{{ $dataDelivery->workunit_id }}</h6>
+                                            <h6>{{ $dataDelivery->order_total_item }}</h6>
                                         </span>
                                         <hr class="mt-4">
                                     </div>
