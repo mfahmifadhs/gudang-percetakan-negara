@@ -13,19 +13,17 @@
             <div class="row">
               <div class="card card-outline card-primary">
                 <div class="card-body">
-                  <table id="table-1" class="table table-bordered table-responsive text-capitalize" style="color: black;">
+                  <table id="table-1" class="table table-border text-capitalize" style="color: black;">
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>Pemilik</th>
-                        <th>Kode Barang</th>
-                        <th>NUP</th>
-                        <th>Nama Barang</th>
+                        <th>Unit Kerja</th>
+                        <th>Nama</th>
+                        <th>Keterangan</th>
                         <th>Jumlah</th>
                         <th>Satuan</th>
                         <th>Tahun Perolehan</th>
                         <th>Kondisi</th>
-                        <th>Lok. Penyimpanan</th>
                       </tr>
                     </thead>
                     <?php $no = 1;?>
@@ -34,14 +32,12 @@
                       <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $dataItem->workunit_name }}</td>
-                        <td>{{ $dataItem->in_item_code }}</td>
-                        <td>{{ $dataItem->in_item_nup }}</td>
-                        <td>{{ $dataItem->in_item_name.' '.$dataItem->in_item_merk }}</td>
-                        <td>{{ $dataItem->in_item_qty }}</td>
-                        <td>{{ $dataItem->in_item_unit }}</td>
-                        <td>{{ $dataItem->in_item_purchase }}</td>
+                        <td>{{ $dataItem->item_name }}</td>
+                        <td>{{ $dataItem->item_description }}</td>
+                        <td>{{ $dataItem->item_qty }}</td>
+                        <td>{{ $dataItem->item_unit }}</td>
+                        <td>{{ $dataItem->item_purchase }}</td>
                         <td>{{ $dataItem->item_condition_name }}</td>
-                        <td>{{ $dataItem->id_slot.'/'.$dataItem->warehouse_name }}</td>
                       </tr>
                       @endforeach
                     </tbody>

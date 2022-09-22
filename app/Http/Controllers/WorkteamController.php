@@ -104,11 +104,8 @@ class WorkteamController extends Controller
     public function showItem(Request $request, $aksi, $id)
     {
         if ($aksi == 'daftar') {
-            $item = DB::table('tbl_items_incoming')
-                        ->join('tbl_items_condition','id_item_condition','in_item_condition')
-                        ->join('tbl_orders_data','id_order_data','order_data_id')
-                        ->join('tbl_slots','id_slot','slot_id')
-                        ->join('tbl_warehouses','id_warehouse','warehouse_id')
+            $item = DB::table('tbl_items')
+                        ->join('tbl_items_condition','id_item_condition','item_condition_id')
                         ->join('tbl_orders','id_order','order_id')
                         ->join('tbl_workunits','id_workunit','workunit_id')
                         ->get();

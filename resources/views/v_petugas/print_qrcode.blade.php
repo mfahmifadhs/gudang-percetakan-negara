@@ -66,7 +66,7 @@
                                 <center><label style="font-size: 70px;text-transform:capitalize;">{{ $dataItem->item_name.' '.$dataItem->item_description }}</label></center>
                             </td>
                             <td rowspan="5" style="padding: 12px;text-align:center;margin-top: 5vh;text-transform:capitalize;">
-                                {!! QrCode::size(400)->generate("DETAIL INFORMASI BARANG : \n\n".
+                                {!! QrCode::size(500)->generate("DETAIL INFORMASI BARANG : \n\n".
                                     "Asal Unit Kerja : \n".$dataItem->workunit_name. "\n\n".
                                     "Nama Barang : \n".$dataItem->item_name. "\n\n".
                                     "Keterangan : \n".$dataItem->item_description. "\n\n".

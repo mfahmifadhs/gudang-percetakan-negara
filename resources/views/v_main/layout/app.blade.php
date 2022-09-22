@@ -74,12 +74,18 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    @if(Auth::user() != null && Auth::user()->role_id == 2)
+                    <a href="{{ url('tim-kerja/dashboard') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
+                    @else
                     <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
+                    @endif
                     <a href="#" class="nav-item nav-link">Gudang</a>
                     <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
                     @if(Auth::user() != null && Auth::user()->role_id == 3)
                         <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
                         <a href="{{ url('unit-kerja/surat/pengajuan/pengambilan') }}" class="nav-item nav-link">Pengambilan</a>
+                    @elseif(Auth::user() != null && Auth::user()->role_id == 2)
+                        <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @endif
                 </div>
                 @if(Auth::user() == null)
@@ -96,8 +102,6 @@
                         @if(Auth::user()->role_id == 3)
                         <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class="dropdown-item">Surat Pengajuan</a>
                         <a href="{{ url('unit-kerja/surat-perintah/daftar/semua') }}" class="dropdown-item">Surat Perintah</a>
-                        @elseif(Auth::user()->role_id == 2)
-                        <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="dropdown-item">Daftar Barang</a>
                         @endif
                         <a href="{{ route('signout') }}" class="dropdown-item">Keluar</a>
                     </div>

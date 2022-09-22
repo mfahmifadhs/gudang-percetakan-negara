@@ -827,6 +827,7 @@ class PetugasController extends Controller
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
                         ->join('tbl_orders', 'tbl_orders.id_order', 'tbl_items.order_id')
                         ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                        ->orderBy('slot_id','ASC')
                         ->where('id_order', $id)
                         ->get();
         } else {
