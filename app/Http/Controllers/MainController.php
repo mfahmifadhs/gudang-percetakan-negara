@@ -25,4 +25,17 @@ class MainController extends Controller
     {
         return view('v_main.index');
     }
+
+    public function warehouse(Request $request, $aksi)
+    {
+        if($aksi == 'daftar') {
+            //Daftar Seluruh Gudang
+            $warehouses = DB::table('tbl_warehouses')
+                            ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
+                            ->paginate(6);
+
+            return view('v_main.gudang', compact('warehouses'));
+
+        }
+    }
 }

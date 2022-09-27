@@ -426,7 +426,9 @@ class WorkunitController extends Controller
     {
         if ($id == 'daftar') {
             $result = DB::table('tbl_items')
+                        ->join('tbl_orders','id_order','order_id')
                         ->where('item_category_id', $request->kategori)
+                        ->where('workunit_id', Auth::user()->workunit_id)
                         ->get();
 
         } elseif($id == 'penyimpanan') {
@@ -440,6 +442,7 @@ class WorkunitController extends Controller
                         ->join('tbl_slots','id_slot','slot_id')
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
                         ->where('slot_id', $request->idWarehouse)
+                        ->where('id_item', $request->idItem)
                         ->get();
         }
         return response()->json($result);

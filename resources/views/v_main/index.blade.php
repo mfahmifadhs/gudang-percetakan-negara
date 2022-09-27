@@ -6,13 +6,13 @@
   <div class="container-xxl py-5">
     <div class="container" style="margin-top: 100px;">
       <div class="row g-5">
-        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="col-lg-6">
           <div class="position-relative overflow-hidden h-100" style="min-height: 400px;">
             <img class="position-absolute w-100 h-100 pt-5 pe-5" src="{{ asset('dist-main/img/gudang-pn.jpg') }}" alt="" style="object-fit: cover;">
             <img class="position-absolute top-0 end-0 bg-white ps-2 pb-2" src="{{ asset('dist-main/img/roadmap-gudang-pn.jpg') }}" alt="" style="width: 200px; height: 200px;">
           </div>
         </div>
-        <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="col-lg-6">
           <div class="h-100">
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">#GudangPercetakanNegara</div>
             <h1 class="display-6 mb-5">Gudang Percetakan Negara Kemenkes RI</h1>

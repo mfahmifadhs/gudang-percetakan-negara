@@ -6,7 +6,7 @@
 <div class="container-xxl py-5">
     <div class="container" style="margin-top: 100px;">
         <div class="row g-5">
-            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
+            <div class="col-lg-12">
                 <div class="h-100">
                     <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">#GudangPercetakanNegara</div>
                     <h1 class="display-6 mb-4 text-capitalize">surat perintah {{ $aksi }}</h1>
@@ -21,7 +21,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="col-md-12 mb-4" data-wow-delay="0.3s">
+                    <div class="col-md-12 mb-4">
                         <div class="causes-item d-flex flex-column bg-light border-top border-5 border-primary rounded-top overflow-hidden h-100" style="color: black;">
                             <form action="{{ url('unit-kerja/surat-perintah/proses/'. $aksi) }}" method="POST" enctype="multipart/form-data">
                                 @csrf

@@ -33,6 +33,7 @@ Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.pos
 Route::group(['prefix' => 'main', 'as' => 'main.'], function () {
     Route::get('dashboard', function() { return view('v_main.index'); });
     Route::get('prosedur', function() { return view('v_main.prosedur'); });
+    Route::get('gudang/{aksi}', [MainController::class, 'warehouse']);
 });
 
 

@@ -79,7 +79,7 @@
                     @else
                     <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                     @endif
-                    <a href="#" class="nav-item nav-link">Gudang</a>
+                    <a href="{{ url('main/gudang/daftar') }}" class="nav-item nav-link {{ Request::is('main/gudang/daftar') ? 'active' : '' }}">Gudang</a>
                     <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
                     @if(Auth::user() != null && Auth::user()->role_id == 3)
                         <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
