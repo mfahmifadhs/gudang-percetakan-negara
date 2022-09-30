@@ -24,7 +24,102 @@ class MasterController extends Controller
 {
     public function index()
     {
-        return view('v_admin_master.index');
+        $totalDelivery  = DB::table('tbl_orders')->where('order_category','penyimpanan')->count();
+        $totalPickup    = DB::table('tbl_orders')->where('order_category','pengeluaran')->count();
+        $totalItemEntry = DB::table('tbl_items')->count();
+        $totalItemExit  = DB::table('tbl_historys')->where('order_id','like', '%'.'PBK_'.'%')->count();
+        $workunit       = DB::table('tbl_workunits')->orderBy('workunit_name', 'ASC')->get();
+        $warehouse      = DB::table('tbl_warehouses')->orderBy('status_id', 'ASC')->get();
+        $itemCategory   = DB::table('tbl_items_category')->get();
+        $items          = DB::table('tbl_orders_data')->select('id_item','item_name','workunit_name','item_category_name','item_qty','warehouse_name')
+                            ->join('tbl_slots','id_slot','slot_id')
+                            ->join('tbl_warehouses','id_warehouse','warehouse_id')
+                            ->join('tbl_items','id_item','item_id')
+                            ->join('tbl_items_category','id_item_category','item_category_id')
+                            ->join('tbl_orders','id_order','order_id')
+                            ->join('tbl_workunits','id_workunit','workunit_id')
+                            ->groupBy('id_item','item_name','workunit_name','item_category_name','item_qty','warehouse_name')
+                            ->orderBy('item_name', 'ASC')
+                            ->get();
+        $chartItem      = $this->getChartItem();
+        return view('v_admin_master.index', compact('totalDelivery','totalPickup','totalItemEntry','totalItemExit','workunit','items','warehouse','itemCategory','chartItem'));
+    }
+
+    public function getChartItem()
+    {
+        $dataBarang      = DB::table('tbl_items')->join('tbl_items_condition','id_item_condition','item_condition_id')
+            ->join('tbl_items_category','id_item_category','item_category_id')
+            ->get();
+
+        $dataJenisBarang = DB::table('tbl_items_category')->get();
+        foreach ($dataJenisBarang as $data) {
+            $dataArray[] = $data->item_category_name;
+            $dataArray[] = $dataBarang->where('item_category_name', $data->item_category_name)->count();
+            $dataChart[] = $dataArray;
+            unset($dataArray);
+        }
+        // dd($dataChart);
+        $chart = json_encode($dataChart);
+        return $chart;
+    }
+
+    public function searchChartData(Request $request)
+    {
+        $dataBarang = DB::table('tbl_orders_data')->select('id_item','item_name','workunit_name','item_category_name','item_qty','warehouse_name')
+                        ->join('tbl_slots','id_slot','slot_id')
+                        ->join('tbl_warehouses','id_warehouse','warehouse_id')
+                        ->join('tbl_items','id_item','item_id')
+                        ->join('tbl_items_category','id_item_category','item_category_id')
+                        ->join('tbl_orders','id_order','order_id')
+                        ->join('tbl_workunits','id_workunit','workunit_id')
+                        ->groupBy('id_item','item_name','workunit_name','item_category_name','item_qty','warehouse_name');
+
+        $dataJenisBarang = DB::table('tbl_items_category')->get();
+        // dd($request->all());
+
+        if($request->hasAny(['workunit', 'item_category','warehouse'])){
+            if($request->workunit){
+                $dataSearch = $dataBarang->where('workunit_id', $request->workunit);
+            }
+            if($request->item_category){
+                $dataSearch = $dataBarang->where('item_category_id', $request->item_category);
+            }
+            if($request->warehouse){
+                $dataSearch = $dataBarang->where('warehouse_id', $request->warehouse);
+            }
+
+            $dataSearch = $dataSearch->get();
+
+        }else {
+            $dataSearch = $dataBarang->get();
+        }
+
+        // dd($dataSearch);
+        foreach ($dataJenisBarang as $data) {
+            $dataArray[]        = $data->item_category_name;
+            $dataArray[]        = $dataSearch->where('item_category_name', $data->item_category_name)->count();
+            $dataChart[]        = $dataArray;
+            unset($dataArray);
+        }
+
+        $chart = json_encode($dataChart);
+        $table = json_encode($dataSearch);
+
+        if(count($dataSearch) > 0){
+            return response([
+                'status'    => true,
+                'total'     => count($dataSearch),
+                'message'   => 'success',
+                'data'      => $chart,
+                'dataTable' => $table
+            ], 200);
+        }else {
+            return response([
+                'status'    => true,
+                'total'     => count($dataSearch),
+                'message'   => 'not found'
+            ], 200);
+        }
     }
 
     // =====================================
@@ -67,7 +162,6 @@ class MasterController extends Controller
                                 ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
                                 ->where('warehouse_id', $id)
                                 ->first();
-
             // SELECT RACK
 
             $rack_pallet_one_lvl1   = DB::table('tbl_rack_details')
@@ -147,64 +241,56 @@ class MasterController extends Controller
     public function showItem(Request $request, $aksi, $id)
     {
         if($aksi == 'daftar'){
+            $itemCategory = DB::table('tbl_items_category')->get();
             // Daftar barang masuk
-            $item_incoming  = DB::table('tbl_items_incoming')
-                                ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-                                ->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-                                ->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-                                ->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
-                                ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-                                ->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-                                ->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-                                ->where('order_category','Pengiriman')
-                                ->where('in_item_qty','!=', 0)
-                                ->get();
+            $items  = DB::table('tbl_orders_data')
+                        ->join('tbl_slots','id_slot','slot_id')
+                        ->join('tbl_warehouses','.id_warehouse','warehouse_id')
+                        ->join('tbl_items','id_item','item_id')
+                        ->join('tbl_items_category','id_item_category','item_category_id')
+                        ->join('tbl_items_condition','id_item_condition','.item_condition_id')
+                        ->join('tbl_orders','id_order','order_id')
+                        ->join('tbl_workunits','id_workunit','workunit_id')
+                        ->where('order_category','penyimpanan')
+                        ->get();
 
-           $item_pickup     = DB::table('tbl_items_exit')
-                                ->join('tbl_items_incoming','tbl_items_incoming.id_item_incoming','tbl_items_exit.item_incoming_id')
-                                ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-                                ->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-                                ->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-                                ->join('tbl_orders','tbl_orders.id_order','tbl_items_exit.order_id')
-                                ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-                                ->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-                                ->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
-                                ->where('order_category','Pengeluaran')
-                                ->get();
+            $itemExit   = DB::table('tbl_historys')
+                            ->join('tbl_orders', 'id_order', 'tbl_historys.order_id')
+                            ->join('tbl_items', 'id_item', 'item_id')
+                            ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                            ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                            ->join('tbl_items_category','id_item_category','item_category_id')
+                            ->where('order_category','pengeluaran')
+                            ->get();
 
-            $item_category  = DB::table('tbl_items_category')->get();
-
-            return view('v_admin_master.show_item', compact('item_incoming','item_pickup','item_category','id'));
+            return view('v_admin_master.show_item', compact('items','itemExit','itemCategory'));
 
         }elseif($aksi == 'slot'){
+            $itemCategory = DB::table('tbl_items_category')->get();
             //Daftar barang berdasarkan slot
-            $item_incoming  = DB::table('tbl_items_incoming')
-                                ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-                                ->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-                                ->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-                                ->join('tbl_orders','tbl_orders.id_order','tbl_orders_data.order_id')
-                                ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-                                ->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-                                ->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
+            $items  = DB::table('tbl_orders_data')
+                                ->join('tbl_slots','id_slot','slot_id')
+                                ->join('tbl_warehouses','.id_warehouse','warehouse_id')
+                                ->join('tbl_items','id_item','item_id')
+                                ->join('tbl_items_category','id_item_category','item_category_id')
+                                ->join('tbl_items_condition','id_item_condition','.item_condition_id')
+                                ->join('tbl_orders','id_order','order_id')
+                                ->join('tbl_workunits','id_workunit','workunit_id')
                                 ->where('slot_id', $id)
-                                ->where('in_item_qty','!=', 0)
+                                ->where('order_category','penyimpanan')
                                 ->get();
 
-           $item_pickup     = DB::table('tbl_items_exit')
-                                ->join('tbl_items_incoming','tbl_items_incoming.id_item_incoming','tbl_items_exit.item_incoming_id')
-                                ->join('tbl_orders_data','tbl_orders_data.id_order_data','tbl_items_incoming.order_data_id')
-                                ->join('tbl_items_category','tbl_items_category.id_item_category','tbl_orders_data.itemcategory_id')
-                                ->leftjoin('tbl_items_condition','tbl_items_condition.id_item_condition','tbl_items_incoming.in_item_condition')
-                                ->join('tbl_orders','tbl_orders.id_order','tbl_items_exit.order_id')
-                                ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_orders.workunit_id')
-                                ->join('tbl_slots','tbl_slots.id_slot','tbl_orders_data.slot_id')
-                                ->join('tbl_warehouses','.tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
+           $itemExit     = DB::table('tbl_historys')
+                                ->join('tbl_orders', 'id_order', 'tbl_historys.order_id')
+                                ->join('tbl_items', 'id_item', 'item_id')
+                                ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                                ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                                ->join('tbl_items_category','id_item_category','item_category_id')
                                 ->where('slot_id', $id)
+                                ->where('order_category','pengeluaran')
                                 ->get();
 
-            $item_category  = DB::table('tbl_items_category')->get();
-
-            return view('v_admin_master.show_item', compact('item_incoming','item_pickup','item_category','id'));
+            return view('v_admin_master.show_item', compact('items','itemExit','itemCategory','id'));
 
         }elseif($aksi == 'tambah-kategori'){
             //Tambah kategori barang

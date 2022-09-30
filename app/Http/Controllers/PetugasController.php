@@ -163,6 +163,10 @@ class PetugasController extends Controller
             $pallet         = DB::table('tbl_slots_names')
                                 ->join('tbl_slots','tbl_slots.id_slot','tbl_slots_names.pallet_id')
                                 ->get();
+            $slot           = DB::table('tbl_slots')
+                                ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
+                                ->where('warehouse_id', $id)
+                                ->first();
             // SELECT RACK
             $rack_pallet_one_lvl1   = DB::table('tbl_rack_details')
                                         ->join('tbl_slots', 'tbl_slots.id_slot', 'tbl_rack_details.id_slot_rack')
@@ -205,17 +209,41 @@ class PetugasController extends Controller
                                         ->where('rack_level', 'Atas')
                                         ->get();
 
-            return view('v_petugas.detail_warehouse', compact('warehouse','warehouse09b','warehouse05b','pallet',
+            return view('v_petugas.detail_warehouse', compact('warehouse','warehouse09b','warehouse05b','pallet','slot',
             'rack_pallet_one_lvl1','rack_pallet_one_lvl2','rack_pallet_two_lvl1','rack_pallet_two_lvl2','rack_pallet_three_lvl1',
             'rack_pallet_three_lvl2','rack_pallet_four_lvl1','rack_pallet_four_lvl2',));
 
         }elseif($aksi == 'slot') {
+            $itemCategory = DB::table('tbl_items_category')->get();
             // Slot
             $slot   = DB::table('tbl_slots')
                         ->join('tbl_warehouses','tbl_warehouses.id_warehouse','tbl_slots.warehouse_id')
                         ->where('id_slot', $id)
+                        ->first();
+
+            $items  = DB::table('tbl_orders_data')
+                        ->join('tbl_slots','id_slot','slot_id')
+                        ->join('tbl_warehouses','.id_warehouse','warehouse_id')
+                        ->join('tbl_items','id_item','item_id')
+                        ->join('tbl_items_category','id_item_category','item_category_id')
+                        ->join('tbl_items_condition','id_item_condition','.item_condition_id')
+                        ->join('tbl_orders','id_order','order_id')
+                        ->join('tbl_workunits','id_workunit','workunit_id')
+                        ->where('order_category','penyimpanan')
+                        ->where('slot_id', $id)
                         ->get();
-            return view('v_petugas.detail_slot', compact('slot'));
+
+            $itemExit   = DB::table('tbl_historys')
+                            ->join('tbl_orders', 'id_order', 'tbl_historys.order_id')
+                            ->join('tbl_items', 'id_item', 'item_id')
+                            ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                            ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                            ->join('tbl_items_category','id_item_category','item_category_id')
+                            ->where('order_category','pengeluaran')
+                            ->where('slot_id', $id)
+                            ->get();
+
+            return view('v_petugas.detail_slot', compact('slot', 'items', 'itemExit','itemCategory'));
         }
     }
 

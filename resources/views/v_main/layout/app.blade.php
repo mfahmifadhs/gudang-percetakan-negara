@@ -84,6 +84,8 @@
                     @if(Auth::user() != null && Auth::user()->role_id == 3)
                         <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
                         <a href="{{ url('unit-kerja/surat/pengajuan/pengambilan') }}" class="nav-item nav-link">Pengambilan</a>
+
+                        <a href="{{ url('unit-kerja/menu-barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @elseif(Auth::user() != null && Auth::user()->role_id == 2)
                         <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @endif

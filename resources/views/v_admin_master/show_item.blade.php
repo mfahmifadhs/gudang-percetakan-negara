@@ -74,24 +74,24 @@
                   </thead>
                   <?php $no = 1;?>
                   <tbody>
-                    @foreach($item_incoming as $incoming)
+                    @foreach($items as $dataItem)
                     <tr>
-                      @if($incoming->in_item_code == null)
+                      @if($dataItem->item_code == null)
                       <td>-</td>
                       @else
-                      <td>{{ $incoming->in_item_code }}</td>
+                      <td>{{ $dataItem->item_code }}</td>
                       @endif
-                      @if($incoming->in_item_code == null)
+                      @if($dataItem->item_code == null)
                       <td>-</td>
                       @else
-                      <td>{{ $incoming->in_item_nup }}</td>
+                      <td>{{ $dataItem->in_item_nup }}</td>
                       @endif
-                      <td>{{ $incoming->item_category_name }}</td>
-                      <td>{{ $incoming->in_item_name }}</td>
-                      <td>{{ $incoming->in_item_qty.' '.$incoming->in_item_unit }}</td>
-                      <td>{{ $incoming->slot_id }}</td>
-                      <td>{{ $incoming->workunit_name }}</td>
-                      <td>{{ \Carbon\Carbon::parse($incoming->order_dt)->isoFormat('DD MMMM Y') }}</td>
+                      <td>{{ $dataItem->item_category_name }}</td>
+                      <td>{{ $dataItem->item_name }}</td>
+                      <td>{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
+                      <td>{{ $dataItem->slot_id }}</td>
+                      <td>{{ $dataItem->workunit_name }}</td>
+                      <td>{{ \Carbon\Carbon::parse($dataItem->order_dt)->isoFormat('DD MMMM Y') }}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -113,24 +113,24 @@
                   </thead>
                   <?php $no = 1;?>
                   <tbody>
-                    @foreach($item_pickup as $pickup)
+                    @foreach($itemExit as $dataItemExit)
                     <tr>
-                      @if($pickup->in_item_code == null)
+                      @if($dataItemExit->item_code == null)
                       <td>-</td>
                       @else
-                      <td>{{ $pickup->in_item_code }}</td>
+                      <td>{{ $dataItemExit->item_code }}</td>
                       @endif
-                      @if($pickup->in_item_code == null)
+                      @if($dataItemExit->item_code == null)
                       <td>-</td>
                       @else
-                      <td>{{ $pickup->in_item_nup }}</td>
+                      <td>{{ $dataItemExit->item_nup }}</td>
                       @endif
-                      <td>{{ $pickup->item_category_name }}</td>
-                      <td>{{ $pickup->in_item_name }}</td>
-                      <td>{{ $pickup->in_item_qty.' '.$pickup->in_item_unit }}</td>
-                      <td>{{ $pickup->slot_id }}</td>
-                      <td>{{ $pickup->workunit_name }}</td>
-                      <td>{{ \Carbon\Carbon::parse($pickup->order_dt)->isoFormat('DD MMMM Y') }}</td>
+                      <td>{{ $dataItemExit->item_category_name }}</td>
+                      <td>{{ $dataItemExit->item_name }}</td>
+                      <td>{{ $dataItemExit->item_qty.' '.$dataItemExit->item_unit }}</td>
+                      <td>{{ $dataItemExit->slot_id }}</td>
+                      <td>{{ $dataItemExit->workunit_name }}</td>
+                      <td>{{ \Carbon\Carbon::parse($dataItemExit->order_dt)->isoFormat('DD MMMM Y') }}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -147,7 +147,7 @@
                     </tr>
                   </thead>
                   <?php $no = 1;?>
-                  @foreach($item_category as $category)
+                  @foreach($itemCategory as $category)
                   <tbody>
                     <tr>
                       <td>{{ $no++ }}</td>
@@ -161,10 +161,10 @@
                           <a class="dropdown-item" href="{{ url('admin-master/barang/ubah-kategori/'. $category->id_item_category) }}">
                             Ubah
                           </a>
-                          <a class="dropdown-item" href="{{ url('admin-master/barang/hapus-kategori/'. $category->id_item_category) }}"
+                          <!-- <a class="dropdown-item" href="{{ url('admin-master/barang/hapus-kategori/'. $category->id_item_category) }}"
                           onclick="return confirm('Yakin ingin menghapus data kategori ini ?')">
                             Hapus
-                          </a>
+                          </a> -->
                         </div>
                       </td>
                     </tr>

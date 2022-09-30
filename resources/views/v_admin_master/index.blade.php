@@ -3,216 +3,262 @@
 @section('content')
 
 <div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Dashboard v2</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard v2</li>
-        </ol>
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Selamat Datang, <b>{{ Auth::user()->full_name }}</b></h1>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
-    <!-- Info boxes -->
-    <div class="row">
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box">
-          <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+    <div class="container-fluid">
+        <!-- Total Administrasi -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3638/3638928.png" width="70">
 
-          <div class="info-box-content">
-            <span class="info-box-text">CPU Traffic</span>
-            <span class="info-box-number">
-              10
-              <small>%</small>
-            </span>
-          </div>
-          <!-- /.info-box-content -->
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Barang Masuk</span>
+                        <span class="info-box-number">
+                            {{ $totalItemEntry }}
+                            <small>barang</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3638/3638928.png" width="70">
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Barang Keluar</span>
+                        <span class="info-box-number">
+                            {{ $totalItemExit }}
+                            <small>barang</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="clearfix hidden-md-up"></div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3091/3091609.png" width="70">
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Pengiriman</span>
+                        <span class="info-box-number">
+                            {{ $totalDelivery }}
+                            <small>pengiriman</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3091/3091609.png" width="70">
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Pengeluaran</span>
+                        <span class="info-box-number">
+                            {{ $totalPickup }}
+                            <small>pengambilan</small>
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-          <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+        <!-- Grafik -->
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="card card-outline card-primary text-center" style="height: 100%;">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <select id="" class="form-control" name="workunit">
+                                    <option value="">-- Pilih Unit Kerja --</option>
+                                    @foreach($workunit as $dataWorkunit)
+                                    <option value="{{ $dataWorkunit->id_workunit }}">{{ $dataWorkunit->workunit_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <select id="" class="form-control" name="item_category">
+                                    <option value="">-- Pilih Jenis Barang --</option>
+                                    @foreach($itemCategory as $dataItemCategory)
+                                    <option value="{{ $dataItemCategory->id_item_category }}">{{ $dataItemCategory->item_category_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <select id="" class="form-control" name="warehouse">
+                                    <option value="">-- Pilih Gudang --</option>
+                                    @foreach($warehouse as $dataWarehouse)
+                                    <option value="{{ $dataWarehouse->id_warehouse }}">{{ $dataWarehouse->warehouse_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group mr-2">
+                                <div class="row">
 
-          <div class="info-box-content">
-            <span class="info-box-text">Likes</span>
-            <span class="info-box-number">41,410</span>
-          </div>
-          <!-- /.info-box-content -->
+                                    <a id="searchChartData" class="btn btn-primary ml-2" value="1">
+                                        <i class="fas fa-search"></i> Cari
+                                    </a>
+                                    <a href="{{ url('super-user/aadb/dashboard') }}" class="btn btn-danger ml-2">
+                                        <i class="fas fa-undo"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="konten-statistik">
+                        <div id="konten-chart">
+                            <div id="piechart" style="height: 500px;"></div>
+                        </div>
+                        <div class="table">
+                            <table id="table-barang" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Unit Kerja</th>
+                                        <th>Jenis Barang</th>
+                                        <th>Nama Barang</th>
+                                        <th>Jumlah Barang</th>
+                                        <th>Gudang</th>
+                                    </tr>
+                                </thead>
+                                @php $no = 1; @endphp
+                                <tbody id="daftar-barang">
+                                    @foreach($items as $dataItem)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $dataItem->workunit_name }}</td>
+                                        <td>{{ $dataItem->item_category_name }}</td>
+                                        <td>{{ $dataItem->item_name }}</td>
+                                        <td>{{ $dataItem->item_qty }}</td>
+                                        <td>{{ $dataItem->warehouse_name }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-
-      <!-- fix for small devices only -->
-      <div class="clearfix hidden-md-up"></div>
-
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-          <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">Sales</span>
-            <span class="info-box-number">760</span>
-          </div>
-          <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <div class="info-box mb-3">
-          <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-
-          <div class="info-box-content">
-            <span class="info-box-text">New Members</span>
-            <span class="info-box-number">2,000</span>
-          </div>
-          <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-      </div>
-      <!-- /.col -->
     </div>
-    <!-- /.row -->
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">Monthly Recap Report</h5>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <div class="btn-group">
-                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                  <i class="fas fa-wrench"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" role="menu">
-                  <a href="#" class="dropdown-item">Action</a>
-                  <a href="#" class="dropdown-item">Another action</a>
-                  <a href="#" class="dropdown-item">Something else here</a>
-                  <a class="dropdown-divider"></a>
-                  <a href="#" class="dropdown-item">Separated link</a>
-                </div>
-              </div>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-8">
-                <p class="text-center">
-                  <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                </p>
-
-                <div class="chart">
-                  <!-- Sales Chart Canvas -->
-                  <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
-                </div>
-                <!-- /.chart-responsive -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4">
-                <p class="text-center">
-                  <strong>Goal Completion</strong>
-                </p>
-
-                <div class="progress-group">
-                  Add Products to Cart
-                  <span class="float-right"><b>160</b>/200</span>
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-primary" style="width: 80%"></div>
-                  </div>
-                </div>
-                <!-- /.progress-group -->
-
-                <div class="progress-group">
-                  Complete Purchase
-                  <span class="float-right"><b>310</b>/400</span>
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-danger" style="width: 75%"></div>
-                  </div>
-                </div>
-
-                <!-- /.progress-group -->
-                <div class="progress-group">
-                  <span class="progress-text">Visit Premium Page</span>
-                  <span class="float-right"><b>480</b>/800</span>
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-success" style="width: 60%"></div>
-                  </div>
-                </div>
-
-                <!-- /.progress-group -->
-                <div class="progress-group">
-                  Send Inquiries
-                  <span class="float-right"><b>250</b>/500</span>
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-warning" style="width: 50%"></div>
-                  </div>
-                </div>
-                <!-- /.progress-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- ./card-body -->
-          <div class="card-footer">
-            <div class="row">
-              <div class="col-sm-3 col-6">
-                <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                  <h5 class="description-header">$35,210.43</h5>
-                  <span class="description-text">TOTAL REVENUE</span>
-                </div>
-                <!-- /.description-block -->
-              </div>
-              <!-- /.col -->
-              <div class="col-sm-3 col-6">
-                <div class="description-block border-right">
-                  <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                  <h5 class="description-header">$10,390.90</h5>
-                  <span class="description-text">TOTAL COST</span>
-                </div>
-                <!-- /.description-block -->
-              </div>
-              <!-- /.col -->
-              <div class="col-sm-3 col-6">
-                <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                  <h5 class="description-header">$24,813.53</h5>
-                  <span class="description-text">TOTAL PROFIT</span>
-                </div>
-              </div>
-              <div class="col-sm-3 col-6">
-                <div class="description-block">
-                  <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                  <h5 class="description-header">1200</h5>
-                  <span class="description-text">GOAL COMPLETIONS</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
+
+@section('js')
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    let cekAksi = []
+    let chart
+    let dataChart = JSON.parse(`<?php echo $chartItem; ?>`)
+
+    google.charts.load('current', {
+        'packages': ['corechart']
+    });
+    google.charts.setOnLoadCallback(function() {
+        drawChart(dataChart)
+    });
+
+    function drawChart(dataChart) {
+        chartData = [
+            ['Barang', 'Jumlah']
+        ]
+        dataChart.forEach(data => {
+            chartData.push(data)
+        })
+        var data = google.visualization.arrayToDataTable(chartData);
+        var options = {
+            title: 'Total Barang',
+            legend: {
+                'position': 'left',
+                'alignment': 'center'
+            },
+        }
+        chart = new google.visualization.PieChart(document.getElementById('piechart'))
+        chart.draw(data, options)
+    }
+
+    $('body').on('click', '#searchChartData', function() {
+        let workunit        = $('select[name="workunit"').val()
+        let item_category   = $('select[name="item_category"').val()
+        let warehouse       = $('select[name="warehouse"').val()
+        let url = ''
+        if (workunit || item_category || warehouse) {
+            url             = '<?= url("/admin-master/grafic?workunit='+workunit+'&item_category='+item_category+'&warehouse='+warehouse+'") ?>'
+        } else {
+            url             = '<?= url("/admin-master/grafik") ?>'
+        }
+        jQuery.ajax({
+            url: url,
+            type: "GET",
+            success: function(res) {
+                if (res.message == 'success') {
+                    let no = 1
+                    $('.notif-tidak-ditemukan').remove();
+                    $('#konten-chart').show();
+                    let data      = JSON.parse(res.data)
+                    let dataTable = JSON.parse(res.dataTable)
+                    drawChart(data)
+                    $("#daftar-barang").empty()
+                    $.each(dataTable, function(index, row) {
+                        $("#daftar-barang").append(
+                            `<tr>
+                                <td>`+ no++ +`</td>
+                                <td>`+ row.workunit_name +`</td>
+                                <td>`+ row.item_category_name +`</td>
+                                <td>`+ row.item_name +`</td>
+                                <td>`+ row.item_qty +`</td>
+                                <td>`+ row.warehouse_name +`</td>
+                            </tr>`
+                        )
+                    })
+                } else {
+                    $('.notif-tidak-ditemukan').remove();
+                    $('#konten-chart').hide();
+                    var html = '';
+                    html += '<div class="notif-tidak-ditemukan">'
+                    html += '<div class="card bg-secondary py-4">'
+                    html += '<div class="card-body text-white">'
+                    html += '<h5 class="mb-4 font-weight-bold text-center">'
+                    html += 'Data tidak dapat ditemukan'
+                    html += '</h5>'
+                    html += '</div>'
+                    html += '</div>'
+                    html += '</div>'
+                    $('#konten-statistik').append(html);
+                    $("#daftar-barang").empty()
+                }
+            },
+        })
+    })
+
+    $(function() {
+        $("#table-barang").DataTable({
+            "responsive": false,
+            "lengthChange": false,
+            "autoWidth": false,
+            "info": false,
+            "paging": false,
+            "searching": false,
+            "sort": false
+        });
+    });
+</script>
+@endsection
 
 @endsection

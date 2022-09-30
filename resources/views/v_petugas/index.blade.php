@@ -7,12 +7,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Dashboard</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
+                <h1 class="m-0">Selamat Datang, <b>{{ Auth::user()->full_name }}</b></h1>
             </div>
         </div>
     </div>
@@ -71,7 +66,7 @@
                                     @endforeach
                                     <div class="col-md-12">
                                         <p class="mb-0" style="font-size: 14px;">
-                                            <a href="{{ url('petugas/daftar-aktivitas/pengeluaran') }}" class="fw-bold text-primary">
+                                            <a href="{{ url('petugas/aktivitas/daftar/pengeluaran') }}" class="fw-bold text-primary">
                                                 <i class="fas fa-arrow-circle-right"></i> Lihat semua pengeluaran
                                             </a>
                                         </p>

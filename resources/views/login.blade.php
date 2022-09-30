@@ -41,11 +41,11 @@
                   <p style="color:white;margin: auto;">{{ $message }}</p>
                 </div>
                 @endif
-              </div> 
+              </div>
               <form action="{{ route('login.post') }}" method="POST">
-                @csrf             
+                @csrf
                 <div class="form-group first">
-                  <label for="username">Nomor Induk Pegawai (NIP)</label>
+                  <label for="username">Username</label>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -59,11 +59,11 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input type="password" class="form-control" name="password" id="myInput" placeholder="Masukan Password" minlength="6">  
+                    <input type="password" class="form-control" name="password" id="myInput" placeholder="Masukan Password" minlength="6">
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="d-flex mb-5 align-items-center">
                   <label class="control control--checkbox mb-0"><span class="caption">Lihat Password</span>
                     <input type="checkbox" onclick="myFunction()">
@@ -79,8 +79,8 @@
         </div>
       </div>
     </div>
-    
-    
+
+
 
     <script src="{{ asset('dist/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('dist/js/login.min.js') }}"></script>

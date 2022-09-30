@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('gudang/{aksi}/{id}', [MasterController::class, 'showWarehouse']);
         Route::get('unit-kerja/{aksi}/{id}', [MasterController::class, 'showWorkunit']);
         Route::get('pengguna/{aksi}/{id}', [MasterController::class, 'showUser']);
+        Route::get('grafic', [MasterController::class, 'searchChartData']);
         Route::get('json/{aksi}/{id}', [MasterController::class, 'showJson']);
 
         Route::post('pengguna/{aksi}/{id}', [MasterController::class, 'showUser']);
@@ -114,7 +115,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('surat-perintah/{aksi}/{id}', [WorkunitController::class, 'showWarrent']);
         Route::post('surat/{aksi}/{id}', [WorkunitController::class, 'showLetter']);
 
-        Route::get('menu-barang', [WorkunitController::class, 'showItem']);
+        Route::get('menu-barang/{aksi}/{id}', [WorkunitController::class, 'showItem']);
         Route::get('menu-gudang', [WorkunitController::class, 'showWarehouse']);
         Route::get('menu-panduan', [WorkunitController::class, 'showGuide']);
         Route::get('menu-surat-perintah', [WorkunitController::class, 'showWarrent']);

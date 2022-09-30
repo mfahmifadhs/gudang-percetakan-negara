@@ -4,7 +4,7 @@
 
 <div class="container-xxl py-5">
     <div class="container" style="margin-top: 150px;">
-        <div class="text-center mx-auto" data-wow-delay="0.01s" style="max-width: 700px;">
+        <div class="text-center mx-auto" style="max-width: 700px;">
             <div class="d-inline-block rounded-pill bg-secondary text-primary py-1 px-3 mb-3">#GudangPercetakanNegara</div>
             <h1 class="display-6 mb-5">Gudang Percetakan Negara Kemenkes RI</h1>
         </div>

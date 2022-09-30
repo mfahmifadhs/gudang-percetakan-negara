@@ -422,6 +422,25 @@ class WorkunitController extends Controller
         }
     }
 
+     // =====================================
+    //             DAFTAR BARANG
+    // =====================================
+
+    public function showItem(Request $request, $aksi, $id)
+    {
+        if ($aksi == 'daftar') {
+            $item = DB::table('tbl_items')
+                        ->join('tbl_items_condition','id_item_condition','item_condition_id')
+                        ->join('tbl_orders','id_order','order_id')
+                        ->join('tbl_workunits','id_workunit','workunit_id')
+                        ->where('workunit_id', Auth::user()->workunit_id)
+                        ->get();
+
+            return view('v_workunit.daftar_barang', compact('item'));
+        }
+    }
+
+
     public function getItem(Request $request, $id)
     {
         if ($id == 'daftar') {
