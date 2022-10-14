@@ -6,6 +6,10 @@
   <title>Gudang Percetakan Negara</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ asset('dist-main/img/logo-kemenkes-icon.png') }}">
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
