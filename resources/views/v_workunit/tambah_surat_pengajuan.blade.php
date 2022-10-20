@@ -21,10 +21,10 @@
                                             <small>
                                                 surat permohonan pengajuan dibuat pada aplikasi <a href="https://srikandi.arsip.go.id/" target="_blank">SRIKANDI</a>.</small>
                                         </label>
-                                        <div class="form-floating mt-2">
-                                            <input type="file" class="form-control" name="upload_spm" accept="application/pdf" placeholder="Upload Barang">
-                                            <label for="name">Upload File (Format .pdf)</label>
-                                        </div>
+                                        <div class="mt-2">
+                                            <input type="file" class="form-control bg-white" name="upload_spm" accept="application/pdf" placeholder="Upload Barang">
+                                            <label class="col-form-label text-muted"><small>Upload File (Format .pdf)</small></label>
+					</div>
                                     </div>
                                     @if($id == 'penyimpanan')
                                     <input type="hidden" name="purpose" value="penyimpanan">
