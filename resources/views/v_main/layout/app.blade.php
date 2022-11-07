@@ -77,7 +77,7 @@
                     @if(Auth::user() != null && Auth::user()->role_id == 2)
                     <a href="{{ url('tim-kerja/dashboard') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                     @else
-                    <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
+                    <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Berandaasdasd</a>
                     @endif
                     <a href="{{ url('main/gudang/daftar') }}" class="nav-item nav-link {{ Request::is('main/gudang/daftar') ? 'active' : '' }}">Gudang</a>
                     <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
