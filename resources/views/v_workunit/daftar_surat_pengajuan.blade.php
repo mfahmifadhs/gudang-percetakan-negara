@@ -13,7 +13,7 @@
             <div class="row">
               <div class="card card-outline card-primary">
                 <div class="card-body">
-                  <table id="table-1" class="table table-bordered table-striped table-responsive text-center text-capitalize" style="color: black;">
+                  <table id="table-1" class="table table-bordered text-center text-capitalize border" style="color: black;">
                     <thead>
                       <tr>
                         <th>No</th>

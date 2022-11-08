@@ -93,7 +93,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-3 form-group">
                                 <select id="" class="form-control" name="item_category">
                                     <option value="">-- Pilih Jenis Barang --</option>
                                     @foreach($itemCategory as $dataItemCategory)
@@ -101,7 +101,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-3 form-group">
                                 <select id="" class="form-control" name="warehouse">
                                     <option value="">-- Pilih Gudang --</option>
                                     @foreach($warehouse as $dataWarehouse)
@@ -109,9 +109,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 form-group mr-2">
+                            <div class="col-md-2 form-group float-right">
                                 <div class="row">
-
                                     <a id="searchChartData" class="btn btn-primary ml-2" value="1">
                                         <i class="fas fa-search"></i> Cari
                                     </a>
@@ -123,35 +122,41 @@
                         </div>
                     </div>
                     <div class="card-body" id="konten-statistik">
-                        <div id="konten-chart">
-                            <div id="piechart" style="height: 500px;"></div>
-                        </div>
-                        <div class="table">
-                            <table id="table-barang" class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Unit Kerja</th>
-                                        <th>Jenis Barang</th>
-                                        <th>Nama Barang</th>
-                                        <th>Jumlah Barang</th>
-                                        <th>Gudang</th>
-                                    </tr>
-                                </thead>
-                                @php $no = 1; @endphp
-                                <tbody id="daftar-barang">
-                                    @foreach($items as $dataItem)
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $dataItem->workunit_name }}</td>
-                                        <td>{{ $dataItem->item_category_name }}</td>
-                                        <td>{{ $dataItem->item_name }}</td>
-                                        <td>{{ $dataItem->item_qty }}</td>
-                                        <td>{{ $dataItem->warehouse_name }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div id="konten-chart">
+                                    <div id="piechart" style="height: 500px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="table">
+                                    <table id="table-barang" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Unit Kerja</th>
+                                                <th>Jenis Barang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang</th>
+                                                <th>Gudang</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="daftar-barang">
+                                            @php $no = 1; $googleChartData1 = json_decode($chartItem) @endphp
+                                            @foreach ($googleChartData1->items as $dataItem)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $dataItem->workunit_name }}</td>
+                                                <td>{{ $dataItem->item_category_name }}</td>
+                                                <td>{{ $dataItem->item_name }}</td>
+                                                <td>{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
+                                                <td>{{ $dataItem->warehouse_id }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,45 +168,69 @@
 @section('js')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    let cekAksi = []
-    let chart
-    let dataChart = JSON.parse(`<?php echo $chartItem; ?>`)
+    $(function() {
+        $("#table-barang").DataTable({
+            "responsive": true,
+            "lengthChange": true,
+            "autoWidth": true,
+            "info": true,
+            "paging": true,
+            "searching": true,
+            pageLength: 5,
+            lengthMenu: [
+                [5, 10, 25, -1],
+                [5, 10, 25, 'Semua']
+            ]
+        })
+    })
 
+    let chart
+    let chartData = JSON.parse(`<?php echo $chartItem; ?>`)
+    let dataChart = chartData.all
     google.charts.load('current', {
         'packages': ['corechart']
-    });
+    })
     google.charts.setOnLoadCallback(function() {
         drawChart(dataChart)
-    });
+    })
 
     function drawChart(dataChart) {
+
         chartData = [
-            ['Barang', 'Jumlah']
+            ['Jenis Barang', 'Jumlah']
         ]
+        console.log(dataChart)
         dataChart.forEach(data => {
             chartData.push(data)
         })
+
         var data = google.visualization.arrayToDataTable(chartData);
+
         var options = {
-            title: 'Total Barang',
+            title: 'Total Barang Tersimpan di Gudang',
+            is3D: false,
+            height: 500,
             legend: {
-                'position': 'left',
-                'alignment': 'center'
+                'position': 'bottom',
+                'alignment': 'center',
+                'maxLines': '2'
             },
         }
-        chart = new google.visualization.PieChart(document.getElementById('piechart'))
-        chart.draw(data, options)
+
+        chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
     }
 
     $('body').on('click', '#searchChartData', function() {
-        let workunit        = $('select[name="workunit"').val()
-        let item_category   = $('select[name="item_category"').val()
-        let warehouse       = $('select[name="warehouse"').val()
+        let workunit = $('select[name="workunit"').val()
+        let item_category = $('select[name="item_category"').val()
+        let warehouse = $('select[name="warehouse"').val()
         let url = ''
         if (workunit || item_category || warehouse) {
-            url             = '<?= url("/admin-master/grafic?workunit='+workunit+'&item_category='+item_category+'&warehouse='+warehouse+'") ?>'
+            url = '<?= url("/admin-master/grafic?workunit='+workunit+'&item_category='+item_category+'&warehouse='+warehouse+'") ?>'
         } else {
-            url             = '<?= url("/admin-master/grafik") ?>'
+            url = '<?= url("/admin-master/grafik") ?>'
         }
         jQuery.ajax({
             url: url,
@@ -211,19 +240,19 @@
                     let no = 1
                     $('.notif-tidak-ditemukan').remove();
                     $('#konten-chart').show();
-                    let data      = JSON.parse(res.data)
+                    let data = JSON.parse(res.data)
                     let dataTable = JSON.parse(res.dataTable)
                     drawChart(data)
                     $("#daftar-barang").empty()
                     $.each(dataTable, function(index, row) {
                         $("#daftar-barang").append(
                             `<tr>
-                                <td>`+ no++ +`</td>
-                                <td>`+ row.workunit_name +`</td>
-                                <td>`+ row.item_category_name +`</td>
-                                <td>`+ row.item_name +`</td>
-                                <td>`+ row.item_qty +`</td>
-                                <td>`+ row.warehouse_name +`</td>
+                                <td>` + no++ + `</td>
+                                <td>` + row.workunit_name + `</td>
+                                <td>` + row.item_category_name + `</td>
+                                <td>` + row.item_name + `</td>
+                                <td>` + row.item_qty + `</td>
+                                <td>` + row.warehouse_name + `</td>
                             </tr>`
                         )
                     })
@@ -246,18 +275,6 @@
             },
         })
     })
-
-    $(function() {
-        $("#table-barang").DataTable({
-            "responsive": false,
-            "lengthChange": false,
-            "autoWidth": false,
-            "info": false,
-            "paging": false,
-            "searching": false,
-            "sort": false
-        });
-    });
 </script>
 @endsection
 

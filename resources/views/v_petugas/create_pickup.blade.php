@@ -58,7 +58,7 @@
                                         <th>No</th>
                                         <th>Barang</th>
                                         <th>Penyimpanan</th>
-                                        <th>Jumlah Pengambilan</th>
+                                        <th>Jumlah Pengeluaran</th>
                                         <th>Sisa Stok Barang</th>
                                     </tr>
                                 </thead>
@@ -77,15 +77,15 @@
                                         <td>{{ $dataItem->slot_id.' / '.$dataItem->warehouse_name }}</td>
                                         <td>{{ $dataItem->warr_item_pick.' '.$dataItem->item_unit }}</td>
                                         <td>
-                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->total_item - $dataItem->warr_item_pick }}">
-                                            {{ $dataItem->total_item - $dataItem->warr_item_pick.' '.$dataItem->item_unit }}
+                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->item_qty - $dataItem->warr_item_pick }}">
+                                            {{ $dataItem->item_qty - $dataItem->warr_item_pick.' '.$dataItem->item_unit }}
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot></tfoot>
                             </table>
-                            <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('Apakah pengambilan barang sudah benar ?')">Submit</button>
+                            <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('Apakah pengeluaran barang sudah benar ?')">Submit</button>
                         </div>
                     </div>
 

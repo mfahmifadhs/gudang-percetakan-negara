@@ -23,7 +23,7 @@
                     <div class="col-md-12">
                         <div class="card card-outline card-primary">
                             <div class="card-header">
-                                <h4 class="font-weight-bold card-title">PENGIRIMAN</h4>
+                                <h4 class="font-weight-bold card-title">PENYIMPANAN</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">

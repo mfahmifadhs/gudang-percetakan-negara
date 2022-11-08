@@ -89,7 +89,7 @@
                                                 <th>Jumlah</th>
                                                 <th>Satuan</th>
                                                 <th>Kondisi</th>
-                                                <th>Status</th>
+                                                <th>Status Pengajuan</th>
                                             </tr>
                                         </thead>
                                         <?php $no = 1; ?>

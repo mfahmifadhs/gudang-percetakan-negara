@@ -2,7 +2,6 @@
 
 @section('content')
 
-<!-- About Start -->
 <div class="container-xxl py-5">
     <div class="container" style="margin-top: 100px;">
         <div class="row g-5">
@@ -189,7 +188,7 @@
                             </tr>`
                     )
                 }
-            } else if (id == 'pengambilan') {
+            } else if (id == 'pengeluaran') {
                 $(".input-item-exit").empty();
                 let no = 2
                 let i

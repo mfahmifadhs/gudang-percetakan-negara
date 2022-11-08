@@ -43,6 +43,18 @@
                             @endif
                         </p>
                     </div>
+                    @if ($appletter->appletter_status != 'proses')
+                    <div class="col-md-12 mb-2">
+                        <h6>Keterangan :</h6>
+                        <p class="mt-2">
+                            @if($appletter->appletter_note == null)
+                            <textarea name="appletter_note" class="form-control" rows="5"></textarea>
+                            @else
+                            <textarea name="appletter_note" class="form-control" rows="5" readonly>{{ $appletter->appletter_note }}</textarea>
+                            @endif
+                        </p>
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="col-md-9 form-group">
@@ -66,7 +78,7 @@
                                             <th>Jumlah</th>
                                             <th>Satuan</th>
                                             <th>Keterangan</th>
-                                            <th>Status</th>
+                                            <th>Status Pengajuan</th>
                                         </tr>
                                     </thead>
                                     <?php $no = 1; ?>
@@ -95,7 +107,7 @@
                                             <th>Jumlah Diambil</th>
                                             <th>Satuan</th>
                                             <th>Penyimpanan</th>
-                                            <th>Status</th>
+                                            <th>Status Pengajuan</th>
                                         </tr>
                                     </thead>
                                     <?php $no = 1; ?>

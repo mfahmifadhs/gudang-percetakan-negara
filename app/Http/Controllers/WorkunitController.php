@@ -448,6 +448,7 @@ class WorkunitController extends Controller
                         ->join('tbl_orders','id_order','order_id')
                         ->where('item_category_id', $request->kategori)
                         ->where('workunit_id', Auth::user()->workunit_id)
+                        ->where('item_qty', '!=', 0)
                         ->get();
 
         } elseif($id == 'penyimpanan') {

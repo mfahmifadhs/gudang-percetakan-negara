@@ -83,7 +83,7 @@
                     <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
                     @if(Auth::user() != null && Auth::user()->role_id == 3)
                         <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
-                        <a href="{{ url('unit-kerja/surat/pengajuan/pengambilan') }}" class="nav-item nav-link">Pengambilan</a>
+                        <a href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}" class="nav-item nav-link">Pengeluaran</a>
 
                         <a href="{{ url('unit-kerja/menu-barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @elseif(Auth::user() != null && Auth::user()->role_id == 2)

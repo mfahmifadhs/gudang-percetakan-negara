@@ -386,16 +386,16 @@ class PetugasController extends Controller
         } elseif ($aksi == 'pengeluaran') {
             $order      = DB::table('tbl_orders')->where('warrent_id', $id)->first();
             $warehouse  = DB::table('tbl_warehouses')->where('status_id','1')->get();
-            $item       = DB::table('tbl_items')
-                            ->join('tbl_warrents_exit', 'item_id','id_item')
+            $item       = DB::table('tbl_warrents_exit')
                             ->join('tbl_warrents', 'id_warrent','warrent_id')
+                            ->join('tbl_items', 'id_item','item_id')
                             ->join('tbl_slots','id_slot','slot_id')
                             ->join('tbl_warehouses','id_warehouse','warehouse_id')
                             ->join('tbl_items_category', 'id_item_category','item_category_id')
                             ->join('tbl_items_condition', 'id_item_condition','item_condition_id')
-                            ->join('tbl_orders_data','tbl_orders_data.slot_id','tbl_warrents_exit.slot_id')
                             ->where('id_warrent', $id)
                             ->get();
+
             return view('v_petugas.create_pickup', compact('id','order','warehouse','item'));
         } elseif ($aksi == 'proses-simpan') {
             $warrItemId = $request->item_id;
@@ -445,6 +445,7 @@ class PetugasController extends Controller
             return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
 
         } elseif ($aksi == 'proses-ambil') {
+
             $idSlotUpd       = $request->slot_id;
             foreach($idSlotUpd as $i => $slot_id) {
                 $stockItemSlot = DB::table('tbl_orders_data')
@@ -470,6 +471,14 @@ class PetugasController extends Controller
                 $hist->hist_total_item  = $request->item_pick[$i];
                 $hist->save();
 
+            }
+
+            // Update Stok
+            $item = $request->item_id;
+            foreach ($item as $i => $id_item)
+            {
+                DB::table('tbl_items')->where('id_item', $id_item)
+                    ->update(['item_qty' => $request->item_stock[$i]]);
             }
 
 
@@ -527,7 +536,6 @@ class PetugasController extends Controller
                         ->join('tbl_orders', 'id_order', 'tbl_historys.order_id')
                         ->join('tbl_slots','id_slot','slot_id')
                         ->join('tbl_warehouses','id_warehouse','warehouse_id')
-                        ->join('tbl_orders_data','tbl_orders_data.slot_id','tbl_historys.slot_id')
                         ->where('id_order', $id)
                         ->get();
   		}
