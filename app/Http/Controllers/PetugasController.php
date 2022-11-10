@@ -109,7 +109,7 @@ class PetugasController extends Controller
             $cekScreening = DB::table('tbl_items_screening')->count();
             $idItem       = $request->item_id;
             foreach($idItem as $i => $item_id) {
-                $idScreening  = Carbon::now()->format('dmy').$cekScreening . $i;
+                $idScreening  = Carbon::now()->format('dmy').$cekScreening + $i;
                 $screening = new ScreeningModel();
                 $screening->id_item_screening   = $idScreening;
                 $screening->warrent_id          = $id;
