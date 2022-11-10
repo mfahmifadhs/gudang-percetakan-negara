@@ -108,7 +108,7 @@
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
                                                     <td>
-                                                        <select name="id_item_category[]" class="form-control bg-white kategori" data-idtarget="1">
+                                                        <select name="id_item_category[]" class="form-control bg-white kategori" data-idtarget="1" required>
                                                             <option value="">-- Pilih Jenis Barang --</option>
                                                             @foreach($item_ctg as $dataCategory)
                                                             <option value="{{ $dataCategory->id_item_category }}">{{ $dataCategory->item_category_name }}</option>
@@ -116,12 +116,12 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="id_item_code[]" class="form-control bg-white detailItem" id="item1" data-idtarget="1">
+                                                        <select name="id_item_code[]" class="form-control bg-white detailItem" id="item1" data-idtarget="1" required>
                                                             <option value="">-- Pilih Barang --</option>
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select name="id_order_data[]" class="form-control bg-white detailWarehouse " id="data1" data-idtarget="1">
+                                                        <select name="id_order_data[]" class="form-control bg-white detailWarehouse " id="data1" data-idtarget="1" required>
                                                             <option value="">-- Pilih Lokasi Penyimpanan --</option>
                                                         </select>
                                                     </td>

@@ -77,8 +77,8 @@
                                         <td>{{ $dataItem->slot_id.' / '.$dataItem->warehouse_name }}</td>
                                         <td>{{ $dataItem->warr_item_pick.' '.$dataItem->item_unit }}</td>
                                         <td>
-                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->item_qty - $dataItem->warr_item_pick }}">
-                                            {{ $dataItem->item_qty - $dataItem->warr_item_pick.' '.$dataItem->item_unit }}
+                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->item_qty - $item->sum('warr_item_pick') }}">
+                                            {{ $dataItem->item_qty - $item->sum('warr_item_pick').' '. $dataItem->item_unit }}
                                         </td>
                                     </tr>
                                     @endforeach

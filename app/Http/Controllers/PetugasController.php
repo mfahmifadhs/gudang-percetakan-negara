@@ -445,18 +445,17 @@ class PetugasController extends Controller
             return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
 
         } elseif ($aksi == 'proses-ambil') {
-
             $idSlotUpd       = $request->slot_id;
             foreach($idSlotUpd as $i => $slot_id) {
                 $stockItemSlot = DB::table('tbl_orders_data')
                                     ->join('tbl_items','id_item','item_id')
                                     ->where('slot_id', $slot_id)
                                     ->where('tbl_items.order_id','like','PBM_'.'%')
-                                    ->pluck('total_item')->first();
+                                    ->first();
 
                 OrderDataModel::where('slot_id', $slot_id)->join('tbl_items','id_item','item_id')
                 ->where('tbl_items.order_id','like','PBM_'.'%')->update([
-                    'total_item' => $request->item_stock[$i]
+                    'total_item' => ($stockItemSlot->total_item - $request->item_pick[$i])
                 ]);
             }
 
