@@ -124,13 +124,13 @@
                     <div class="row text-center">
                         <div class="col-md-6">
                             <h5 class="font-weight-bold text-center">PIHAK PERTAMA</h5>
-                            <h6 class="text-underline" style="margin-top: 20%;">Nurhuda</h6>
-                            <h6>Pengelola Gudang</h6>
+                            <h5 class="text-underline" style="margin-top: 20%;">Nurhuda</h5>
+                            <h5>Pengelola Gudang</h5>
                         </div>
                         <div class="col-md-6">
                             <h5 class="font-weight-bold text-center">PIHAK KEDUA</h5>
-                            <h6 class="text-underline text-capitalize" style="margin-top: 20%;">{{ $bast->order_emp_name }}</h6>
-                            <h6 class="text-capitalize">{{ $bast->order_emp_position }}</h6>
+                            <h5 class="text-underline text-capitalize" style="margin-top: 20%;">{{ $bast->order_emp_name }}</h5>
+                            <h5 class="text-capitalize">{{ $bast->order_emp_position }}</h5>
                         </div>
                     </div>
                 </div>
