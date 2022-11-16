@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="{{ asset('dist/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <style type="text/css">
+        @media print {
+            footer {page-break-after: always;}
+        }
+    </style>
 </head>
 
 <body>
@@ -40,7 +45,6 @@
         </div>
         <div class="row text-capitalize" style="font-size: 22px;">
             <div class="col-md-12 form-group text-capitalize">
-                <p class="m-0">Nomor : {{ $bast->id_order }}</p>
                 <p class="m-0">Perihal : {{ $bast->order_category }} Barang</p>
             </div>
             <div class="col-md-12 mt-4">
@@ -104,36 +108,31 @@
                             <td>{{ $item->item_unit }}</td>
                             <td>{{ $item->item_condition_name }}</td>
                         </tr>
+                        @if($i % 3 == 2 ) <p style="page-break-after: avoid;"></p> @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
             <div class="col-md-12 form-group mb-4">
                 <p class="text-justify mt-4">
                     Barang diterima/diserahkan sesuai dengan catatan kondisi yang tertera dalam surat perintah yang merupakan satu kesatuan dari berita acara ini. Demikian Berita Acara Serah Terima Barang ini dibuat sebagai bukti yang sah sebanyak 2 rangkap dan ditandatangani oleh <span class="font-weight-bold">PIHAK PERTAMA</span> dan <span class="font-weight-bold">PIHAK KEDUA</span>.
                 </p>
             </div>
-            <div class="col-md-6 form-group mt-4">
-                <div class="text-center">
-                    <h5 class="font-weight-bold text-center">PIHAK PERTAMA</h5>
-
-                    <p style="margin-top: 30%;">
-                    <h6 class="text-underline">Nurhuda</h6>
-                    <div style="border: 1px; width: 20%;"></div>
-                    <h6>Pengelola Gudang</h6>
-                    </p>
-                </div>
-
-            </div>
-            <div class="col-md-6 form-group mt-4">
-                <div class="text-center">
-                    <h5 class="font-weight-bold text-center">PIHAK KEDUA</h5>
-
-                    <p style="margin-top: 30%;">
-                    <h6 class="text-underline text-capitalize">{{ $bast->order_emp_name }}</h6>
-                    <div style="border: 1px; width: 20%;"></div>
-                    <h6 class="text-capitalize">{{ $bast->order_emp_position }}</h6>
-                    </p>
+            <div class="col-md-12">
+                <div class="page">
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <h5 class="font-weight-bold text-center">PIHAK PERTAMA</h5>
+                            <h6 class="text-underline" style="margin-top: 20%;">Nurhuda</h6>
+                            <h6>Pengelola Gudang</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="font-weight-bold text-center">PIHAK KEDUA</h5>
+                            <h6 class="text-underline text-capitalize" style="margin-top: 20%;">{{ $bast->order_emp_name }}</h6>
+                            <h6 class="text-capitalize">{{ $bast->order_emp_position }}</h6>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
