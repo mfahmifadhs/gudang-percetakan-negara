@@ -32,7 +32,8 @@ class MainController extends Controller
             //Daftar Seluruh Gudang
             $warehouses = DB::table('tbl_warehouses')
                             ->join('tbl_status','tbl_status.id_status','tbl_warehouses.status_id')
-                            ->paginate(6);
+                            ->orderBy('id_warehouse','ASC')
+                            ->get();
 
             return view('v_main.gudang', compact('warehouses'));
 
