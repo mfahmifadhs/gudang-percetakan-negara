@@ -300,6 +300,7 @@ class WorkunitController extends Controller
                             ->join('tbl_workunits','tbl_workunits.id_workunit','tbl_appletters.workunit_id')
                             ->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')
                             ->where('workunit_id', Auth::user()->workunit_id)
+                            ->orderBy('appletter_date', 'DESC')
                             ->get();
             return view('v_workunit.daftar_surat_pengajuan', compact('appletter'));
 
@@ -448,6 +449,7 @@ class WorkunitController extends Controller
                         ->join('tbl_orders','id_order','order_id')
                         ->where('item_category_id', $request->kategori)
                         ->where('workunit_id', Auth::user()->workunit_id)
+                        ->where('item_qty', '!=', 0)
                         ->get();
 
         } elseif($id == 'penyimpanan') {

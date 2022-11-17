@@ -30,13 +30,13 @@
                                 <div class="row">
                                     <div class="col-md-12 p-4 text-capitalize">
                                         <label class="mb-2">
-                                            <b> informasi pengirim/pengambil barang </b><br>
-                                            <small>seluruh informasi pengirim/pengambil barang, wajib diisi</small>
+                                            <b> informasi penyimpanan/pengeluaran barang </b><br>
+                                            <small>seluruh informasi penyimpanan/pengeluaran barang, wajib diisi</small>
                                         </label>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <small> Tanggal Pengiriman/Pengambilan</small>
+                                                    <small> Tanggal Penyimpanan/Pengeluaran</small>
                                                     <input type="date" class="form-control" name="warr_dt" required>
                                                 </div>
                                                 <div class="col-md-4">
@@ -64,7 +64,7 @@
                                     @if($aksi == 'penyimpanan')
                                     <div class="col-md-12 p-4 text-capitalize">
                                         <p>
-                                            <b>data barang yang akan dikirim</b> <br> <small>pastikan seluruh informasi barang terisi</small>
+                                            <b>data barang yang akan disimpan</b> <br> <small>pastikan seluruh informasi barang terisi</small>
                                         </p>
                                         <table class="table table-responsive" style="color: black;">
                                             <thead>
@@ -119,7 +119,7 @@
                                     @else
                                     <div class="col-md-12 p-4 text-capitalize">
                                         <p>
-                                            <b>data barang yang akan diambil</b> <br> <small>pastikan seluruh informasi barang terisi</small>
+                                            <b>data barang yang akan dikeluarkan</b> <br> <small>pastikan seluruh informasi barang terisi</small>
                                         </p>
                                         <table class="table table-responsive" style="color: black;">
                                             <thead>

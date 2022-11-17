@@ -47,18 +47,24 @@ class MasterController extends Controller
 
     public function getChartItem()
     {
-        $dataBarang      = DB::table('tbl_items')->join('tbl_items_condition','id_item_condition','item_condition_id')
+        $dataBarang      = DB::table('tbl_orders_data','id_order_data','order_data_id')
+            ->join('tbl_items','id_item','item_id')
+            ->join('tbl_items_condition','id_item_condition','item_condition_id')
             ->join('tbl_items_category','id_item_category','item_category_id')
+            ->join('tbl_slots','id_slot','slot_id')
+            ->join('tbl_orders','id_order','order_id')
+            ->join('tbl_workunits','id_workunit','workunit_id')
             ->get();
 
         $dataJenisBarang = DB::table('tbl_items_category')->get();
         foreach ($dataJenisBarang as $data) {
             $dataArray[] = $data->item_category_name;
             $dataArray[] = $dataBarang->where('item_category_name', $data->item_category_name)->count();
-            $dataChart[] = $dataArray;
+            $dataChart['all'][] = $dataArray;
             unset($dataArray);
         }
-        // dd($dataChart);
+
+        $dataChart['items'] = $dataBarang;
         $chart = json_encode($dataChart);
         return $chart;
     }

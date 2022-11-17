@@ -18,12 +18,7 @@
             <div class="col-md-6 mb-4">
                 <div class="card" style="height: 100%;">
                     <div class="card-header">
-                        <span style="float:left;">
-                            <h5 class="card-title mt-2">{{ $dataWarehouse->warehouse_name }}</h5>
-                        </span>
-                        <span style="float:right;">
-                            <h5 class="card-title mt-2">Gudang</h5>
-                        </span>
+                        <h5 class="card-title mt-2">{{ $dataWarehouse->warehouse_name }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="row" style="font-size: 14px;">
@@ -37,20 +32,8 @@
                                         <p>{{ $dataWarehouse->id_warehouse }}</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Model Penyimpanan</label>
-                                        <p>{{ $dataWarehouse->warehouse_category }}</p>
-                                    </div>
-                                    <div class="col-md-6">
                                         <label>Nama Gudang</label>
                                         <p>{{ $dataWarehouse->warehouse_name }}</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Status</label>
-                                        @if($dataWarehouse->status_id == 1)
-                                        <p class="text-success font-weight-bold" readonly>Aktif</p>
-                                        @elseif($dataWarehouse->status_id == 2)
-                                        <p class="text-danger font-weight-bold" readonly>Tidak Aktif</p>
-                                        @endif
                                     </div>
                                     <div class="col-md-12">
                                         <label>Keterangan</label>
@@ -63,7 +46,6 @@
                 </div>
             </div>
             @endforeach
-            {{ $warehouses->links("pagination::bootstrap-4") }}
         </div>
     </div>
 </section>

@@ -7,12 +7,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Pengiriman Barang</h1>
+        <h1>Penyimpanan Barang</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{ url('unit-kerja/dashboard') }}">Dashboard</a></li>
-          <li class="breadcrumb-item active">Pengiriman Barang</li>
+          <li class="breadcrumb-item active">Penyimpanan Barang</li>
         </ol>
       </div>
     </div>

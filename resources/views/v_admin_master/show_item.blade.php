@@ -21,11 +21,11 @@
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
+      <!-- <div class="col-md-12">
         <a href="{{ url('admin-master/barang/tambah-kategori/baru') }}" class="btn btn-primary btn-sm float-right">
           <i class="fas fa-plus-circle"></i> <br> Ketegori
         </a>
-      </div>
+      </div> -->
       <div class="col-md-12 form-group">
         @if ($message = Session::get('success'))
         <div class="alert alert-success">

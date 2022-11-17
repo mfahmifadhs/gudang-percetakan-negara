@@ -46,7 +46,7 @@
           <!-- /.card-header -->
           <div class="card-body">
             <form action="{{ url('petugas/ambil-barang') }}" method="POST">
-              @csrf 
+              @csrf
               <div class="row">
                 <!-- Informasi Pengirim -->
                 <div class="col-md-12">
@@ -62,7 +62,7 @@
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-6">
-                          <label>Kode Pengambilan : </label>
+                          <label>Kode Pengeluaran : </label>
                           <div class="input-group mb-3">
                             <input type="text" name="id_order" class="form-control" value="PBK-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}" readonly>
                           </div>
@@ -78,14 +78,14 @@
                         <div class="col-md-6">
                           <label>Petugas : </label>
                           <div class="input-group mb-3">
-                            <input type="text" name="order_emp_name" class="form-control text-capitalize" 
+                            <input type="text" name="order_emp_name" class="form-control text-capitalize"
                             placeholder="Nama petugas diperintahkan" required>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <label>Jabatan : </label>
                           <div class="input-group mb-3">
-                            <input type="text" name="order_emp_position" class="form-control text-capitalize" 
+                            <input type="text" name="order_emp_position" class="form-control text-capitalize"
                             placeholder="Jabatan petugas yang diperintahkan" required>
                           </div>
                         </div>
@@ -171,7 +171,7 @@
                 </div>
                 <!-- Submit -->
                 <div class="col-md-12">
-                  <button type="submit" class="btn btn-primary float-right font-weight-bold" 
+                  <button type="submit" class="btn btn-primary float-right font-weight-bold"
                   onclick="return confirm('Apaka Penempatan Barang Sudah Benar ?')">
                     SUBMIT
                   </button>
@@ -201,7 +201,7 @@
 
     // Menampilkan Workunit
     $( "#select2-workunit" ).select2({
-      ajax: { 
+      ajax: {
         url: "{{ url('petugas/select2-workunit') }}",
         type: "post",
         dataType: 'json',
@@ -228,7 +228,7 @@
           type:"GET",
           url:"/petugas/json-get-mainunit?workunit="+workunit,
           dataType: 'JSON',
-          success:function(res){               
+          success:function(res){
             if(res){
               $("#mainunit").empty();
               $.each(res,function(mainunit_name,id_mainunit){
@@ -243,11 +243,11 @@
        });
       }else{
         $("#mainunit").empty();
-      }      
+      }
     });
     // Menampilkan Barang
     $( "#select2-item").select2({
-      ajax: { 
+      ajax: {
         url: "{{ url('petugas/select2-item') }}",
         type: "post",
         dataType: 'json',
@@ -333,7 +333,7 @@
 
       // Menampilkan Barang
       $( "#select2-item-more" + i).select2({
-        ajax: { 
+        ajax: {
           url: "{{ url('petugas/select2-item') }}",
           type: "post",
           dataType: 'json',
@@ -396,7 +396,7 @@
       });
     });
 
-    
+
     // Menghapus Item
     $(document).on('click', '#remove-more-item', function() {
       $(this).parents('tr').remove();

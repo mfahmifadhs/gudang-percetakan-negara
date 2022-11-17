@@ -23,7 +23,7 @@
                     <div class="col-md-12">
                         <div class="card card-outline card-primary">
                             <div class="card-header">
-                                <h4 class="font-weight-bold card-title">PENGIRIMAN</h4>
+                                <h4 class="font-weight-bold card-title">PENYIMPANAN</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -60,7 +60,7 @@
                                         <span style="font-size: 12px;">{{ \Carbon\Carbon::parse($pickup->order_dt)->isoFormat('DD MMMM Y') }}</span><br>
                                         <span style="font-size: 13px;" class="float-left"><label>{{ $pickup->workunit_name }}</label></span>
                                         <span class="float-right">
-                                            <h6>{{ $pickup->workunit_id }}</h6>
+                                            <h6>{{ $pickup->order_total_item }}</h6>
                                         </span>
                                     </div>
                                     @endforeach

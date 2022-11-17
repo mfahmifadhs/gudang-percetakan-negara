@@ -37,7 +37,7 @@
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-text text-center text-muted">Total Barang Masuk</span>
-                                                <span class="info-box-number text-center text-muted mb-0">{{ $item->item_qty.' '.$item->item_unit }}</span>
+                                                <span class="info-box-number text-center text-muted mb-0">{{ ($item->item_qty + $itemExit->total_exit).' '.$item->item_unit }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-text text-center text-muted">Stok Barang</span>
-                                                <span class="info-box-number text-center text-muted mb-0">{{ $item->item_qty - $itemExit->total_exit.' '.$item->item_unit }}</span>
+                                                <span class="info-box-number text-center text-muted mb-0">{{ $item->item_qty.' '.$item->item_unit }}</span>
                                             </div>
                                         </div>
                                     </div>
