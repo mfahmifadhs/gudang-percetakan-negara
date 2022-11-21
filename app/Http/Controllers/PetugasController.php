@@ -15,6 +15,7 @@ use App\Models\ScreeningModel;
 use App\Models\User;
 use App\Models\WarrentModel;
 use App\Models\HistoryModel;
+use App\Models\WarrentExitModel;
 use DB;
 use Auth;
 use Hash;
@@ -282,6 +283,7 @@ class PetugasController extends Controller
 
             $items    = DB::table('tbl_orders_data')
                             ->join('tbl_items','id_item','item_id')
+                            ->join('tbl_orders','id_order','order_id')
                             ->where('item_id', $id)
                             ->get();
 
@@ -289,6 +291,7 @@ class PetugasController extends Controller
                             ->join('tbl_orders','id_order','order_id')
                             ->where('id_order','like', '%'.'PBK_'.'%')
                             ->where('item_id',$id)->first();
+
             return view('v_petugas.detail_item', compact('item','items','itemExit'));
 
 
@@ -445,14 +448,14 @@ class PetugasController extends Controller
             return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
 
         } elseif ($aksi == 'proses-ambil') {
+            // dd($request->all());
             $idSlotUpd       = $request->slot_id;
             foreach($idSlotUpd as $i => $slot_id) {
                 $stockItemSlot = DB::table('tbl_orders_data')
                                     ->join('tbl_items','id_item','item_id')
                                     ->where('slot_id', $slot_id)
-                                    ->where('tbl_items.order_id','like','PBM_'.'%')
+                                    ->where('item_id', $request->item_id[$i])
                                     ->first();
-
                 OrderDataModel::where('slot_id', $slot_id)->join('tbl_items','id_item','item_id')
                 ->where('tbl_items.order_id','like','PBM_'.'%')->update([
                     'total_item' => ($stockItemSlot->total_item - $request->item_pick[$i])
@@ -460,6 +463,7 @@ class PetugasController extends Controller
             }
 
             $idSlotAdd       = $request->slot_id;
+
             foreach($idSlotAdd as $i => $slot_id) {
                 $hist = new HistoryModel();
                 $hist->id_history       = 'hist_'.Carbon::now()->format('dmyhis').$i;
@@ -472,12 +476,16 @@ class PetugasController extends Controller
 
             }
 
-            // Update Stok
-            $item = $request->item_id;
-            foreach ($item as $i => $id_item)
-            {
-                DB::table('tbl_items')->where('id_item', $id_item)
-                    ->update(['item_qty' => $request->item_stock[$i]]);
+            $pick  = WarrentExitModel::select('warrent_id','item_id', DB::raw('sum(warr_item_pick) as total'))
+                    ->where('warrent_id', $request->warrent_id)
+                    ->groupBy('warrent_id', 'item_id')
+                    ->get();
+
+            foreach ($pick as $item_pick ) {
+                $stock = ItemModel::where('id_item', $item_pick->item_id)->first();
+                ItemModel::where('id_item', $item_pick->item_id)->update([
+                    'item_qty' => $stock->item_qty - $item_pick->total
+                ]);
             }
 
 
@@ -538,7 +546,7 @@ class PetugasController extends Controller
                         ->where('id_order', $id)
                         ->get();
   		}
-
+            dd($id);
     	$bast     	= DB::table('tbl_orders')
       					->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_orders.workunit_id')
                       	->join('tbl_mainunits','tbl_mainunits.id_mainunit','tbl_workunits.mainunit_id')

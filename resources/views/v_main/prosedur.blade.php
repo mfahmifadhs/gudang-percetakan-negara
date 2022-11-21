@@ -8,7 +8,7 @@
       <div class="col-lg-12">
         <div class="h-100">
           <div class="row">
-            <img src="{{ asset('dist-main/img/prosedur-penyimpanan.png') }}" alt="Prosedur Penyimpanan Barang">
+            <img src="https://raw.githubusercontent.com/mfahmifadhs/gudang-percetakan-negara/master/public/dist-main/img/prosedur-penyimpanan.png" alt="Prosedur Penyimpanan Barang">
           </div>
         </div>
       </div>

@@ -26,29 +26,29 @@
                     </thead>
                     <?php $no = 1;?>
                     <tbody>
-                      @foreach($appletter as $appletter)
+                      @foreach($appletter as $dataAppletter)
                       <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
-                        <td>{{ $appletter->appletter_purpose }}</td>
-                        <td>{{ $appletter->appletter_total_item }} barang</td>
-                        <td>{{ $appletter->appletter_status }}</td>
+                        <td>{{ \Carbon\Carbon::parse($dataAppletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}</td>
+                        <td>{{ $dataAppletter->appletter_purpose }}</td>
+                        <td>{{ $dataAppletter->appletter_total_item }} barang</td>
+                        <td>{{ $dataAppletter->appletter_status }}</td>
                         <td>
                           <div class="dropdown">
                             <a href="#" class="dropdown-toggle btn btn-primary" data-bs-toggle="dropdown">
                               <i class="fas fa-bars"></i>
                             </a>
                             <div class="dropdown-menu m-0">
-                              @if($appletter->appletter_status == 'diterima' && $appletter->appletter_purpose == 'penyimpanan')
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/penyimpanan/'. $appletter->id_app_letter) }}">
+                              @if($dataAppletter->appletter_status == 'diterima' && $dataAppletter->appletter_purpose == 'penyimpanan' && $dataAppletter->appletter_process == 'false')
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/penyimpanan/'. $dataAppletter->id_app_letter) }}">
                                 Buat Surat Perintah
                               </a>
-                              @elseif($appletter->appletter_status == 'diterima' && $appletter->appletter_purpose == 'pengeluaran')
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/pengeluaran/'. $appletter->id_app_letter) }}">
+                              @elseif($dataAppletter->appletter_status == 'diterima' && $dataAppletter->appletter_purpose == 'pengeluaran' && $dataAppletter->appletter_process == 'false')
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat-perintah/pengeluaran/'. $dataAppletter->id_app_letter) }}">
                                 Buat Surat Perintah
                               </a>
                               @endif
-                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/detail-surat-pengajuan/'. $appletter->id_app_letter) }}">
+                              <a class="dropdown-item" href="{{ url('unit-kerja/surat/detail-surat-pengajuan/'. $dataAppletter->id_app_letter) }}">
                                 Detail
                               </a>
                             </div>

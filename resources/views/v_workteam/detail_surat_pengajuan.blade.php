@@ -37,13 +37,13 @@
                         <div class="col-md-12 mb-2">
                             <h6>Status Pengajuan :</h6>
                             <p class="mt-2">
-                                <select name="appletter_status" class="form-control bg-white">
+                                <select name="appletter_status" class="form-control bg-white" required>
                                     @if($appletter->appletter_status == 'diterima')
                                     <option value="diterima">Diterima</option>
                                     @elseif($appletter->appletter_status == 'ditolak')
                                     <option value="diterima">Diterima</option>
                                     @else
-                                    <option value="proses">Proses</option>
+                                    <option value="">Proses</option>
                                     <option value="diterima">Diterima</option>
                                     <option value="ditolak">Ditolak</option>
                                     @endif
@@ -113,8 +113,9 @@
                                                         <option value="tolak">Ditolak</option>
                                                         @elseif($dataItem->appletter_item_status == 'terima')
                                                         <option value="terima">Diterima</option>
-                                                        @endif
+                                                        @else
                                                         <option value="tolak">Ditolak</option>
+                                                        @endif
                                                     </select>
                                                 </td>
                                                 @endforeach

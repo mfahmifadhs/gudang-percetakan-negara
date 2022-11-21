@@ -167,7 +167,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <textarea name="order_note" class="form-control" cols="30" rows="2"></textarea>
+                                            <textarea name="screening_item[]" class="form-control" cols="30" rows="2"></textarea>
                                         </td>
                                     </tr>
                                     @endforeach
