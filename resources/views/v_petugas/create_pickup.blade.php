@@ -59,7 +59,6 @@
                                         <th>Barang</th>
                                         <th>Penyimpanan</th>
                                         <th>Jumlah Pengeluaran</th>
-                                        <th>Sisa Stok Barang</th>
                                     </tr>
                                 </thead>
                                 <?php $no = 1; ?>
@@ -76,10 +75,6 @@
                                         <td>{{ $dataItem->item_name }}</td>
                                         <td>{{ $dataItem->slot_id.' / '.$dataItem->warehouse_name }}</td>
                                         <td>{{ $dataItem->warr_item_pick.' '.$dataItem->item_unit }}</td>
-                                        <td>
-                                            <input type="hidden" name="item_stock[]" value="{{ $dataItem->item_qty - $item->sum('warr_item_pick') }}">
-                                            {{ $dataItem->item_qty - $item->sum('warr_item_pick').' '. $dataItem->item_unit }}
-                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

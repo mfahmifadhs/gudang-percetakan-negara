@@ -192,6 +192,10 @@ class WorkunitController extends Controller
                 }
             }
 
+            AppLetterModel::where('id_app_letter', $request->input('appletter_id'))->update([
+                'appletter_process' => 'true'
+            ]);
+
             return redirect('unit-kerja/surat-perintah/daftar/seluruh-surat-perintah')->with('success','Berhasil membuat surat perintah');
         } elseif ($aksi == 'konfirmasi-penapisan') {
             // Upadate status surat perintah
@@ -242,6 +246,7 @@ class WorkunitController extends Controller
                 $appletter->appletter_total_item    = $request->input('total_item');
                 $appletter->appletter_date          = Carbon::now();
                 $appletter->appletter_status        = 'proses';
+                $appletter->appletter_process       = 'false';
                 $appletter->save();
 
             if ($id == 'penyimpanan') {

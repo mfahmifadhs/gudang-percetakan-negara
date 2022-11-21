@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
@@ -17,18 +18,15 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        if ($role == 'admin-master' && auth()->user()->role_id != 1) {
+        if(Auth::user() == null){
+            return redirect('/')->with('failed','Anda tidak memiliki akses!');
+        } elseif ($role == 'admin-master' && auth()->user()->role_id != 1) {
             abort(403);
-        }
-
-        if ($role == 'admin-user' && auth()->user()->role_id != 2) {
+        } elseif ($role == 'admin-user' && auth()->user()->role_id != 2) {
             abort(403);
-        }
-
-        if ($role == 'unit-kerja' && auth()->user()->role_id != 3) {
+        } elseif ($role == 'unit-kerja' && auth()->user()->role_id != 3) {
             abort(403);
-        }
-        if ($role == 'petugas' && auth()->user()->role_id != 4) {
+        } elseif ($role == 'petugas' && auth()->user()->role_id != 4) {
             abort(403);
         }
 

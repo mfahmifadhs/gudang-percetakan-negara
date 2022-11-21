@@ -34,6 +34,9 @@ Route::group(['prefix' => 'main', 'as' => 'main.'], function () {
     Route::get('dashboard', function() { return view('v_main.index'); });
     Route::get('prosedur', function() { return view('v_main.prosedur'); });
     Route::get('gudang/{aksi}', [MainController::class, 'warehouse']);
+    Route::get('profil/{aksi}/{id}', [MainController::class, 'Profile']);
+
+    Route::post('profil/{aksi}/{id}', [MainController::class, 'Profile']);
 });
 
 

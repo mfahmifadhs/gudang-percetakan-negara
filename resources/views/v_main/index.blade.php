@@ -29,10 +29,10 @@
               </p>
             </div>
             <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}">
-              <i class="fas fa-boxes"></i> Simpan Barang
+              <i class="fas fa-boxes"></i> Penyimpanan
             </a>
             <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}">
-              <i class="fas fa-people-carry"></i> Ambil Barang
+              <i class="fas fa-people-carry"></i> Pengeluaran
             </a>
           </div>
         </div>
