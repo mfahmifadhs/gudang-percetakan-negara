@@ -40,6 +40,7 @@ class WorkunitController extends Controller
             $warrent  = DB::table('tbl_warrents')
                             ->join('tbl_workunits','id_workunit','workunit_id')
                             ->where('workunit_id', Auth::user()->workunit_id)
+                            ->orderBy('warr_date', 'DESC')
                             ->get();
 
             return view('v_workunit.daftar_surat_perintah', compact('warrent'));
