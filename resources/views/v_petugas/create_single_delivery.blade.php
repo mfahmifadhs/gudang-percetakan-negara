@@ -352,32 +352,32 @@
       if (target == 0) {
         $(".item-add-more-" + target).append(
           '<tr>' +
-            '<td class="pt-3"><input type="number" name="item_bmn['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="number" name="item_nup['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_name['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_merk['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="number" name="item_qty['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_unit['+i+']" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_bmn[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_nup[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_name[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_merk[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_qty[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_unit[]" class="form-control"></td>' +
             '<td class="p-3">' +
               '<a id="remove-more-item" class="btn btn-danger btn-xs"><i class="fas fa-minus-circle"></i> Barang</a>' +
-              '<input type="hidden" name="order_data_id['+i+']" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}0">' +
-              '<input type="hidden" name="id_item_incoming['+i+']" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
+              '<input type="hidden" name="order_data_id[]" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}0">' +
+              '<input type="hidden" name="id_item_incoming[]" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
             '</td>' +
           '</tr>'
         );
       }else{
         $(".item-add-more-" + target).append(
           '<tr>' +
-            '<td class="pt-3"><input type="number" name="item_bmn['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="number" name="item_nup['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_name['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_merk['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="number" name="item_qty['+i+']" class="form-control"></td>' +
-            '<td class="pt-3"><input type="text" name="item_unit['+i+']" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_bmn[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_nup[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_name[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_merk[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="number" name="item_qty[]" class="form-control"></td>' +
+            '<td class="pt-3"><input type="text" name="item_unit[]" class="form-control"></td>' +
             '<td class="p-3">' +
               '<a id="remove-more-item" class="btn btn-danger btn-xs"><i class="fas fa-minus-circle"></i> Barang</a>' +
-              '<input type="hidden" name="order_data_id['+i+']" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
-              '<input type="hidden" name="id_item_incoming['+i+']" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
+              '<input type="hidden" name="order_data_id[]" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
+              '<input type="hidden" name="id_item_incoming[]" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
             '</td>' +
           '</tr>'
         );
@@ -408,7 +408,7 @@
           $(".add-more-section").append(
             '<div class="card more-section">'+
               '<div class="card-header">' +
-                '<input type="hidden" name="id_order_data['+i+']" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
+                '<input type="hidden" name="id_order_data[]" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
                 '<h3 class="card-title font-weight-bold mt-2">['+x+'] Penempatan Penyimpanan Barang </h3>' +
                 '<div class="card-tools">' +
                   '<a type="submit" class="btn btn-danger mr-1 remove-more-pallet">' +
@@ -423,11 +423,11 @@
                 '<div class="row">' +
                   '<div class="col-md-6 form-group">' +
                     '<label>Batas Waktu Penyimpanan</label>' +
-                    '<input type="date" name="deadline['+i+']" class="form-control"value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-D') }}" min="<?= date('Y-m-d'); ?>"placeholder="Batas Waktu Penyimpanan" required>' +
+                    '<input type="date" name="deadline[]" class="form-control"value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-D') }}" min="<?= date('Y-m-d'); ?>"placeholder="Batas Waktu Penyimpanan" required>' +
                   '</div>' +
                   '<div class="col-md-6 form-group">' +
                     '<label>Jenis Barang</label>' +
-                    '<select class="form-control data-itemcategory" name="itemcategory_id['+i+']" required>' +
+                    '<select class="form-control data-itemcategory" name="itemcategory_id[]" required>' +
                       '<option value="">-- Pilih Jenis Barang</option>' +
                       optCategory +
                     '</select>' +
@@ -441,7 +441,7 @@
                   '</div>' +
                   '<div class="col-md-6 form-group">' +
                     '<label>Pilih Slot</label>' +
-                    '<select class="form-control data-slot" id="slot_id-'+i+'" data-target="'+i+'" name="slot_id['+i+']" required>' +
+                    '<select class="form-control data-slot" id="slot_id-'+i+'" data-target="'+i+'" name="slot_id[]" required>' +
                       '<option value="">-- PILIH PALLET --</option>' +
                     '</select>' +
                   '</div>' +
@@ -462,18 +462,18 @@
                         '</thead>' +
                         '<tbody class="text-center item-add-more-'+i+'">' +
                           '<tr>' +
-                            '<td class="pt-3"><input type="number" name="item_bmn['+i+']" class="form-control"></td>' +
-                            '<td class="pt-3"><input type="number" name="item_nup['+i+']" class="form-control"></td>' +
-                            '<td class="pt-3"><input type="text" name="item_name['+i+']" class="form-control"></td>' +
-                            '<td class="pt-3"><input type="text" name="item_merk['+i+']" class="form-control"></td>' +
-                            '<td class="pt-3"><input type="number" name="item_qty['+i+']" class="form-control"></td>' +
-                            '<td class="pt-3"><input type="text" name="item_unit['+i+']" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="number" name="item_bmn[]" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="number" name="item_nup[]" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="text" name="item_name[]" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="text" name="item_merk[]" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="number" name="item_qty[]" class="form-control"></td>' +
+                            '<td class="pt-3"><input type="text" name="item_unit[]" class="form-control"></td>' +
                             '<td class="p-3">' +
                               '<a class="btn btn-primary btn-xs add-more-item" data-target="'+i+'" >' +
                                 '<i class="fas fa-plus"></i> Barang' +
                               '</a>' +
-                              '<input type="hidden" name="order_data_id['+i+']" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
-                              '<input type="hidden" name="id_item_incoming['+i+']" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
+                              '<input type="hidden" name="order_data_id[]" value="DATA-{{ \Carbon\Carbon::now()->isoFormat('DMYYhhmmss') }}'+j+'">' +
+                              '<input type="hidden" name="id_item_incoming[]" value="ITEM-{{ \Carbon\Carbon::now()->isoFormat('hhmmss') }}'+i+'">' +
                             '</td>' +
                           '</tr>' +
                         '</tbody>' +
