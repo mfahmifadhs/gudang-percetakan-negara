@@ -401,6 +401,7 @@ class PetugasController extends Controller
 
             return view('v_petugas.create_pickup', compact('id','order','warehouse','item'));
         } elseif ($aksi == 'proses-simpan') {
+	    
             $warrItemId = $request->item_id;
             $getItem    = DB::table('tbl_warrents_entry')->where('warrent_id', $request->warrent_id)->get();
             foreach($getItem as $i => $warrItem) {
@@ -416,10 +417,10 @@ class PetugasController extends Controller
                 $item->item_unit          = $warrItem->warr_item_unit;
                 $item->item_condition_id  = $warrItem->item_condition_id;
                 $item->item_unit          = $warrItem->warr_item_unit;
-		$item->save();
+                // $item->save();
             }
-
-            $idSlot       = $request->slot_id;
+	
+            //$idSlot       = $request->slot_id;
             foreach($idSlot as $i => $slot_id) {
                 $data = new OrderDataModel();
                 $data->id_order_data = $request->idData[$i];
@@ -427,7 +428,7 @@ class PetugasController extends Controller
                 $data->slot_id       = $slot_id;
                 $data->deadline      = $request->deadline;
                 $data->total_item    = $request->item_qty[$i];
-                $data->save();
+                //$data->save();
 
                 $hist = new HistoryModel();
                 $hist->id_history       = 'hist_'.Carbon::now()->format('dmyhis').$i;
@@ -436,16 +437,14 @@ class PetugasController extends Controller
                 $hist->item_id          = Str::replace('warr_entry_', 'ITEM', $request->item_id[$i]);
                 $hist->slot_id          = $slot_id;
                 $hist->hist_total_item  = $request->item_qty[$i];
-                $hist->save();
-
+                //$hist->save();
                 SlotModel::where('id_slot', $slot_id)->update([
                     'slot_status' => $request->slot_status[$i]
                 ]);
             }
 
             WarrentModel::where('id_warrent',$request->warrent_id)->update([ 'warr_status' => 'selesai' ]);
-
-            return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
+           // return redirect('petugas/buat-bast/'. $id)->with('Berhasil menyimpan barang');
 
         } elseif ($aksi == 'proses-ambil') {
             $idSlotUpd       = $request->slot_id;

@@ -28,9 +28,9 @@
                 </h2>
             </div>
             <div class="col-md-8 text-center">
-                <h2 class="page-header">
+                <h2 class="page-header" style="font-family: Tahoma;">
                     <h5 style="font-size: 30px;"><b>KEMENTERIAN KESEHATAN REPUBLIK INDONESIA</b></h5>
-                    <h6 class="text-uppercase" style="font-size: 30px;"><b>{{ $bast->mainunit_name }}</b></h6>
+                    <h6 class="text-uppercase" style="font-size: 30px;"><b>SEKRETARIAT JENDERAL</b></h6>
                     <p style="font-size: 20px;"><i>Jl. H.R. Rasuna Said Blok X.5 Kav. 4-9, Blok A, 2nd Floor, Jakarta 12950<br>Telp.: (62-21) 5201587, 5201591 Fax. (62-21) 5201591</i></p>
                 </h2>
             </div>
@@ -93,8 +93,7 @@
                             <th>Nama Barang</th>
                             <th>Keterangan</th>
                             <th>Jumlah</th>
-                            <th>Satuan</th>
-                            <th>Kondisi</th>
+			    <th>Penyimpanan</th>
                         </tr>
                     </thead>
                     <?php $no = 1; ?>
@@ -102,11 +101,10 @@
                         @foreach($item as $i => $item)
                         <tr>
                             <td>{{ $no++ }}</td>
-                            <td>{{ $item->item_name }}</td>
-                            <td>{{ $item->item_description }}</td>
-                            <td>{{ $item->total_item }}</td>
-                            <td>{{ $item->item_unit }}</td>
-                            <td>{{ $item->item_condition_name }}</td>
+                            <td style="width:20%;">{{ $item->item_name }}</td>
+                            <td style="width:40%;">{{ $item->item_description }}</td>
+                            <td>{{ $item->total_item.' '.$item->item_unit }}</td>
+                            <td>{{ $item->id_slot.' / '.$item->id_warehouse }}</td>
                         </tr>
                         @if($i % 3 == 2 ) <p style="page-break-after: avoid;"></p> @endif
                         @endforeach
