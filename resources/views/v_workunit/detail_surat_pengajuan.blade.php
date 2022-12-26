@@ -55,12 +55,55 @@
                         </p>
                     </div>
                     @endif
+                    @if($appletter->appletter_status == 'diterima' && $appletter->appletter_process == 'false')
+                    <div class="col-md-12 mb-2">
+                        <a href="{{ url('unit-kerja/surat-perintah/penyimpanan/'. $appletter->id_app_letter) }}" class="btn btn-warning py-2 px-3">
+                            Buat Surat Perintah
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="col-md-9 form-group">
                 <div class="row">
                     <div class="col-md-12 mb-4">
                         <a href="{{ url('unit-kerja/surat/daftar-surat-pengajuan/semua') }}" class=""><i class="fas fa-arrow-alt-circle-left"></i> KEMBALI</a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <h6>Tujuan Pengajuan : </h6>
+                        <p class="mt-2 text-capitalize">
+                            {{ $appletter->appletter_purpose }} barang
+                        </p>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <h6>Tanggal Pengajuan : </h6>
+                        <p class="mt-2">
+                            {{ \Carbon\Carbon::parse($appletter->appletter_date)->isoFormat('HH:mm / DD MMMM Y') }}
+                        </p>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <h6>Surat Pengajuan :</h6>
+                        <p class="mt-2">
+                            <a href="{{ asset('data_file/surat_permohonan/'. $appletter->appletter_file) }}" target="_blank">{{ $appletter->appletter_file }}</a>
+                        </p>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <h6>Status Pengajuan :</h6>
+                        <p class="mt-2">
+                            @if($appletter->appletter_status == 'proses')
+                            <a class="btn btn-outline-primary disabled">
+                                Diproses
+                            </a>
+                            @elseif($appletter->appletter_status == 'ditolak')
+                            <a class="btn btn-outline-danger disabled">
+                                Pengajuan Ditolak
+                            </a>
+                            @else
+                            <a class="btn btn-outline-success disabled">
+                                Pengajuan Diterima
+                            </a>
+                            @endif
+                        </p>
                     </div>
                     <div class="col-md-12">
                         <div class="card">
@@ -82,7 +125,7 @@
                                         </tr>
                                     </thead>
                                     <?php $no = 1; ?>
-                                    <tbody>
+                                    <tbody class="small">
                                         @foreach($item as $dataItem)
                                         <tr>
                                             <td>{{ $no++ }}</td>

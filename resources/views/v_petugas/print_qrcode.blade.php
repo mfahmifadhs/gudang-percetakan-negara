@@ -51,6 +51,7 @@
                     @endif
                 </div>
                 @foreach($item as $i => $dataItem)
+                @for($i = 0; $i < $qty; $i++)
                 <div class="col-12" style="padding:2vh;">
                     <table border="1" style="width: 100%;">
                         <tr>
@@ -90,6 +91,7 @@
 
                     </table>
                 </div>
+                @endfor
                 @if($i % 3 == 2 ) <p style="page-break-before: always;"></p> @endif
                 @endforeach
             </div>

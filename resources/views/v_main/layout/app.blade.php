@@ -60,15 +60,9 @@
         </div>
 
         <nav class="navbar navbar-expand-lg navbar-dark py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-            @if(Auth::user() != null && Auth::user()->role_id == 2)
-            <a href="{{ url('tim-kerja/dashboard') }}" class="navbar-brand ms-4 ms-lg-0">
+            <a href="#" class="navbar-brand ms-4 ms-lg-0">
                 <h1 class="fw-bold text-primary m-0">Gudang <span class="text-white">PN</span></h1>
             </a>
-            @else
-            <a href="{{ url('/') }}" class="navbar-brand ms-4 ms-lg-0">
-                <h1 class="fw-bold text-primary m-0">Gudang <span class="text-white">PN</span></h1>
-            </a>
-            @endif
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -76,18 +70,20 @@
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
                     @if(Auth::user() != null && Auth::user()->role_id == 2)
                     <a href="{{ url('tim-kerja/dashboard') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
+                    @elseif (Auth::user() != null && Auth::user()->role_id == 3)
+                    <a href="{{ url('unit-kerja/dashboard') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                     @else
                     <a href="{{ url('/') }}" class="nav-item nav-link {{ Request::is('/') ? 'active' : '' }}">Beranda</a>
                     @endif
                     <a href="{{ url('main/gudang/daftar') }}" class="nav-item nav-link {{ Request::is('main/gudang/daftar') ? 'active' : '' }}">Gudang</a>
                     <a href="{{ url('main/prosedur') }}" class="nav-item nav-link {{ Request::is('main/prosedur') ? 'active' : '' }}">Prosedur</a>
                     @if(Auth::user() != null && Auth::user()->role_id == 3)
-                        <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
-                        <a href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}" class="nav-item nav-link">Pengeluaran</a>
+                    <a href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}" class="nav-item nav-link">Penyimpanan</a>
+                    <a href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}" class="nav-item nav-link">Pengeluaran</a>
 
-                        <a href="{{ url('unit-kerja/menu-barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
+                    <a href="{{ url('unit-kerja/menu-barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @elseif(Auth::user() != null && Auth::user()->role_id == 2)
-                        <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
+                    <a href="{{ url('tim-kerja/barang/daftar/seluruh-barang') }}" class="nav-item nav-link">Daftar Barang</a>
                     @endif
                 </div>
                 @if(Auth::user() == null)

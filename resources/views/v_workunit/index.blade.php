@@ -44,16 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div id="konten-chart">
-                                        <div id="piechart" style="height: 500px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8 mt-4">
+                        <div class="col-md-12 mt-4">
                             <div class="card">
                                 <div class="card-header">
                                     <b>Tabel Usulan Penyimpanan / Pengeluaran Barang</b>
@@ -93,7 +84,7 @@
                                                             <i class="fas fa-bars"></i>
                                                         </a>
                                                         <div class="dropdown-menu m-0">
-                                                            <a class="dropdown-item" href="{{ url('tim-kerja/surat/detail-surat-pengajuan/'. $dataAppletter->id_app_letter) }}">
+                                                            <a class="dropdown-item" href="{{ url('unit-kerja/surat/detail-surat-pengajuan/'. $dataAppletter->id_app_letter) }}">
                                                                 <i class="fas fa-info-circle"></i> Detail
                                                             </a>
                                                         </div>
@@ -128,45 +119,8 @@
             "info": true,
             "sort": true,
             "paging": true
-        });
-
-        let chart
-        let chartData = JSON.parse(`<?php echo $chartItem; ?>`)
-        let dataChart = chartData.all
-        google.charts.load('current', {
-            'packages': ['corechart']
         })
-        google.charts.setOnLoadCallback(function() {
-            drawChart(dataChart)
-        })
-
-        function drawChart(dataChart) {
-
-            chartData = [
-                ['Unit Kerja', 'Jumlah Barang']
-            ]
-            dataChart.forEach(data => {
-                chartData.push(data)
-            })
-
-            var data = google.visualization.arrayToDataTable(chartData);
-
-            var options = {
-                title: 'Total Barang Tersimpan di Gudang',
-                is3D: false,
-                height: 500,
-                legend: {
-                    'position': 'bottom',
-                    'alignment': 'center',
-                    'maxLines': '2'
-                },
-            }
-
-            chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chart.draw(data, options);
-        }
-    });
+    })
 </script>
 @endsection
 

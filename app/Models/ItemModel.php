@@ -14,6 +14,7 @@ class ItemModel extends Model
     public $timestamps    = false;
 
     protected $fillable = [
+        'id_item',
         'order_id',
         'item_code',
         'item_nup',

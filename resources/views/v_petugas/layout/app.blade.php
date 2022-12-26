@@ -116,11 +116,11 @@
           </li>
           <li class="nav-header font-weight-bold">Aktivitas</li>
           <li class="nav-item">
-            <a href="{{ url('petugas/aktivitas/daftar/pengiriman') }}" class="nav-link
-            {{ Request::is('petugas/pengiriman') ? 'active' : '' }}">
+            <a href="{{ url('petugas/aktivitas/daftar/penyimpanan') }}" class="nav-link
+            {{ Request::is('petugas/penyimpanan') ? 'active' : '' }}">
               <i class="nav-icon fas fa-dolly-flatbed"></i>
               <p>
-                Pengiriman
+                Penyimpanan
               </p>
             </a>
           </li>

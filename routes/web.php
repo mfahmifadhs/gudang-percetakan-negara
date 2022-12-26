@@ -83,7 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('daftar-aktivitas/{id}', [PetugasController::class, 'showActivity']);
         Route::get('daftar-pengeluaran', [PetugasController::class, 'showIssued']);
-        Route::get('pengiriman-barang', [PetugasController::class, 'creteDeliverySingle']);
+        Route::get('penyimpanan-barang', [PetugasController::class, 'creteDeliverySingle']);
         Route::get('pengeluaran-barang', [PetugasController::class, 'createPickupSingle']);
         Route::get('buat-bast/{id}', [PetugasController::class, 'createBAST']);
         Route::get('cetak-bast/{id}', [PetugasController::class, 'printBAST']);
@@ -94,7 +94,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('tambah-kelengkapan-barang/{id}', [PetugasController::class, 'postCompleteItem']);
         Route::post('tambah-barang', [PetugasController::class, 'postDeliverySingle']);
         Route::post('ambil-barang', [PetugasController::class, 'postPickupSingle']);
+        Route::post('aktivitas/{aksi}/{id}', [PetugasController::class, 'showActivity']);
+        Route::post('print-qrcode/{id}', [PetugasController::class, 'printQRCode']);
 
+        Route::post('select2/{id}', [PetugasController::class, 'select2']);
         Route::post('select2-workunit', [PetugasController::class, 'select2Workunit']);
         Route::post('select2-item', [PetugasController::class, 'select2Item']);
         Route::get('json-get-mainunit', [PetugasController::class, 'jsonGetMainunit']);

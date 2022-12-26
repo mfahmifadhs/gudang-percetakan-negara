@@ -53,10 +53,10 @@
                     <img src="https://cdn-icons-png.flaticon.com/512/3091/3091609.png" width="70">
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Total Pengiriman</span>
+                        <span class="info-box-text">Total Penyimpanan</span>
                         <span class="info-box-number">
                             {{ $totalDelivery }}
-                            <small>pengiriman</small>
+                            <small>penyimpanan</small>
                         </span>
                     </div>
                     <!-- /.info-box-content -->

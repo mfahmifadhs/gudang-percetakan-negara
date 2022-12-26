@@ -39,8 +39,8 @@
                                     @endforeach
                                     <div class="col-md-12">
                                         <p class="mb-0" style="font-size: 14px;">
-                                            <a href="{{ url('petugas/aktivitas/daftar/pengiriman') }}" class="fw-bold text-primary">
-                                                <i class="fas fa-arrow-circle-right"></i> Lihat semua pengiriman
+                                            <a href="{{ url('petugas/aktivitas/daftar/penyimpanan') }}" class="fw-bold text-primary">
+                                                <i class="fas fa-arrow-circle-right"></i> Lihat semua penyimpanan
                                             </a>
                                         </p>
                                     </div>
