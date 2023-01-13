@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\AppLetterModel;
 use App\Models\AppLetterEntryModel;
 use App\Models\AppLetterExitModel;
+use App\Models\ItemCategoryModel;
+use App\Models\ItemConditionModel;
 use App\Models\WarrentModel;
 use App\Models\WarrentEntryModel;
 use App\Models\WarrentExitModel;
@@ -31,12 +33,14 @@ class WorkunitController extends Controller
             ->join('tbl_orders', 'id_order', 'order_id')
             ->where('workunit_id', Auth::user()->workunit_id)
             ->get();
+
         $appletter  = DB::table('tbl_appletters')
             ->join('tbl_workunits', 'tbl_workunits.id_workunit', 'tbl_appletters.workunit_id')
             ->join('tbl_mainunits', 'tbl_mainunits.id_mainunit', 'tbl_workunits.mainunit_id')
             ->orderBy('appletter_status', 'ASC')
             ->orderBy('appletter_date', 'DESC')
             ->where('workunit_id', Auth::user()->workunit_id)
+            ->where('appletter_process', 'false')
             ->get();
 
         return view('v_workunit.index', compact('items', 'appletter'));
@@ -108,10 +112,15 @@ class WorkunitController extends Controller
             $item       = DB::table('tbl_appletters_entry')->select(
                 'tbl_items_category.*',
                 'tbl_items_condition.*',
+                'appletter_item_nup as item_nup',
                 'appletter_item_name as item_name',
+                'appletter_item_merktype as item_merktype',
+                'appletter_item_exp as item_exp',
                 'appletter_item_description as item_description',
                 'appletter_item_qty as item_qty',
-                'appletter_item_unit as item_unit'
+                'appletter_item_unit as item_unit',
+                'item_category_id as item_category',
+                'item_condition_id as item_condition',
             )
                 ->join('tbl_appletters', 'id_app_letter', 'appletter_id')
                 ->join('tbl_items_category', 'id_item_category', 'item_category_id')
@@ -126,6 +135,7 @@ class WorkunitController extends Controller
                 'tbl_items_category.*',
                 'tbl_items_condition.*',
                 'item_name as item_name',
+                'item_merktype as item_merktype',
                 'item_description as item_description',
                 'item_pick as item_qty',
                 'item_unit as item_unit',
@@ -172,9 +182,10 @@ class WorkunitController extends Controller
                     $item->id_warr_entry           = $warrEntry;
                     $item->warrent_id              = $request->id_warrent;
                     $item->item_category_id        = $request->item_category_id[$i];
-                    $item->warr_item_code          = $request->item_code[$i];
                     $item->warr_item_nup           = $request->item_nup[$i];
                     $item->warr_item_name          = $request->item_name[$i];
+                    $item->warr_item_merktype      = $request->item_merktype[$i];
+                    $item->warr_item_exp           = $request->item_exp[$i];
                     $item->warr_item_description   = $request->item_description[$i];
                     $item->warr_item_qty           = $request->item_qty[$i];
                     $item->warr_item_unit          = $request->item_unit[$i];
@@ -256,47 +267,85 @@ class WorkunitController extends Controller
             } else {
                 $filename = null;
             }
-
-            $appletter = new AppLetterModel();
-            $file      = $request->file('upload-spm');
-            $appletter->id_app_letter           = $request->input('id_appletter');
-            $appletter->workunit_id             = Auth::user()->workunit_id;
-            $appletter->appletter_file          = $filename;
-            $appletter->appletter_purpose       = $request->purpose;
-            $appletter->appletter_total_item    = $request->input('total_item');
-            $appletter->appletter_date          = Carbon::now();
-            $appletter->appletter_status        = 'proses';
-            $appletter->appletter_process       = 'false';
-            $appletter->save();
-
             if ($id == 'penyimpanan') {
-                $idItem  = $request->item_category_id;
-                foreach ($idItem as $i => $category_id) {
-                    $warrEntry    = new AppLetterEntryModel();
-                    $warrEntry->id_appletter_entry           = 'spm_item_' . rand(1000, 9999) . $i;
-                    $warrEntry->appletter_id                 = $request->id_appletter;
-                    $warrEntry->item_category_id             = $category_id;
-                    $warrEntry->appletter_item_name          = $request->appletter_item_name[$i];
-                    $warrEntry->appletter_item_description   = $request->appletter_item_type[$i];
-                    $warrEntry->appletter_item_qty           = $request->appletter_item_qty[$i];
-                    $warrEntry->appletter_item_unit          = $request->appletter_item_unit[$i];
-                    $warrEntry->item_condition_id            = $request->item_condition_id[$i];
-                    $warrEntry->save();
+                $dataArray['id_appletter']   = $request->id_appletter;
+                $dataArray['purpose']        = $request->purpose;
+                $dataArray['appletter_file'] = $filename;
+                $dataArray['total_item']     = count($request->item_category_id);
+                $letter[] = $dataArray;
+                unset($dataArray);
+
+                foreach ($request->item_category_id as $i => $itemcategoyid) {
+                    $dataArray['item_category']           = $itemcategoyid;
+                    $dataArray['appletter_item_name']        = $request->appletter_item_name[$i];
+                    $dataArray['appletter_item_merktype']    = $request->appletter_item_merktype[$i];
+                    $dataArray['appletter_item_qty']         = $request->appletter_item_qty[$i];
+                    $dataArray['appletter_item_unit']        = $request->appletter_item_unit[$i];
+                    $dataArray['appletter_item_description'] = $request->appletter_item_description[$i];
+                    $dataArray['item_condition']          = $request->item_condition_id[$i];
+                    $item[] = $dataArray;
+                    unset($dataArray);
                 }
+
+                return view('v_workunit.preview_penyimpanan', compact('letter','item', 'id'));
+
+            } elseif ($id == 'update-surat') {
+                AppLetterModel::where('id_app_letter', $request->id_appletter)->update([
+                    'appletter_file' => $filename
+                ]);
+                return redirect('unit-kerja/surat/detail-surat-pengajuan/' . $request->id_appletter)->with('success', 'Berhasil mengupload surat pengajuan');
+
             } else {
-                $idItem  = $request->id_item_code;
-                foreach ($idItem as $i => $item_code) {
-                    $warrExit    = new AppLetterExitModel();
-                    $warrExit->id_appletter_exit = 'spk_item_' . rand(1000, 9999) . $i;
-                    $warrExit->appletter_id      = $request->id_appletter;
-                    $warrExit->item_id           = $item_code;
-                    $warrExit->slot_id           = $request->id_order_data[$i];
-                    $warrExit->item_pick         = $request->item_pick[$i];
-                    $warrExit->save();
+                if ($id == 'proses-simpan' && $request->filename != null) {
+                    $filename = $request->filename;
                 }
+                $appletter = new AppLetterModel();
+                $file      = $request->file('upload-spm');
+                $appletter->id_app_letter           = $request->input('id_appletter');
+                $appletter->workunit_id             = Auth::user()->workunit_id;
+                $appletter->appletter_file          = $filename;
+                $appletter->appletter_purpose       = $request->purpose;
+                $appletter->appletter_total_item    = Count($request->id_item_code);
+                $appletter->appletter_date          = Carbon::now();
+                $appletter->appletter_status        = 'proses';
+                $appletter->appletter_process       = 'false';
+                $appletter->save();
+
+                if ($id == 'proses-simpan') {
+                    $idItem  = $request->id_item_code;
+                    foreach ($idItem as $i => $category_id) {
+                        $itemCtg = ItemCategoryModel::where('item_category_name', $category_id)->first();
+                        $itemCondition = ItemConditionModel::where('item_condition_name', $request->item_condition_id[$i])->first();
+                        $warrEntry    = new AppLetterEntryModel();
+                        $warrEntry->id_appletter_entry           = 'spm_item_' . rand(1000, 9999) . $i;
+                        $warrEntry->appletter_id                 = $request->id_appletter;
+                        $warrEntry->item_category_id             = $itemCtg->id_item_category;
+                        $warrEntry->appletter_item_name          = $request->appletter_item_name[$i];
+                        $warrEntry->appletter_item_merktype      = $request->appletter_item_merktype[$i];
+                        $warrEntry->appletter_item_nup           = $request->appletter_item_nup[$i];
+                        $warrEntry->appletter_item_exp           = $request->appletter_item_exp[$i];
+                        $warrEntry->appletter_item_qty           = $request->appletter_item_qty[$i];
+                        $warrEntry->appletter_item_unit          = strtoupper($request->appletter_item_unit[$i]);
+                        $warrEntry->appletter_item_description   = $request->appletter_item_description[$i];
+                        $warrEntry->item_condition_id            = $itemCondition->id_item_condition;
+                        $warrEntry->save();
+                    }
+                } else {
+                    $idItem  = $request->id_item_code;
+                    foreach ($idItem as $i => $item_code) {
+                        $warrExit    = new AppLetterExitModel();
+                        $warrExit->id_appletter_exit = 'spk_item_' . rand(1000, 9999) . $i;
+                        $warrExit->appletter_id      = $request->id_appletter;
+                        $warrExit->item_id           = $item_code;
+                        $warrExit->slot_id           = $request->id_order_data[$i];
+                        $warrExit->item_pick         = $request->item_pick[$i];
+                        $warrExit->save();
+                    }
+                }
+
+                return redirect('unit-kerja/surat/detail-surat-pengajuan/' . $request->id_appletter)->with('success', 'Berhasil membuat surat pengajuan');
             }
 
-            return redirect('unit-kerja/surat/detail-surat-pengajuan/' . $request->id_appletter)->with('success', 'Berhasil membuat surat pengajuan');
         } elseif ($aksi == 'detail-surat-pengajuan') {
             $bast = DB::table('tbl_warrents')
                 ->join('tbl_appletters', 'id_app_letter', 'appletter_id')
@@ -319,6 +368,8 @@ class WorkunitController extends Controller
                     ->join('tbl_items', 'id_item', 'item_id')
                     ->join('tbl_items_category', 'id_item_category', 'item_category_id')
                     ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                    ->join('tbl_slots', 'id_slot', 'slot_id')
+                    ->join('tbl_warehouses', 'id_warehouse', 'warehouse_id')
                     ->where('appletter_id', $id)
                     ->get();
             }
@@ -479,6 +530,15 @@ class WorkunitController extends Controller
                 ->get();
 
             return view('v_workunit.daftar_barang', compact('item'));
+        } elseif ($aksi == 'detail') {
+            $item = DB::table('tbl_items')
+                ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                ->join('tbl_orders', 'id_order', 'order_id')
+                ->join('tbl_workunits', 'id_workunit', 'workunit_id')
+                ->where('id_item', $id)
+                ->first();
+
+            return view('v_workunit.detail_barang', compact('item'));
         }
     }
 
@@ -491,10 +551,23 @@ class WorkunitController extends Controller
                 ->where('item_category_id', $request->kategori)
                 ->where('workunit_id', Auth::user()->workunit_id)
                 ->where('item_qty', '!=', 0)
+                ->orderBy('item_name','ASC')
                 ->get();
         } elseif ($id == 'penyimpanan') {
+            if ($request->data == ['']) {
+                $slot = [];
+            } else {
+                foreach ($request->data as $data) {
+                    if ($data != null) {
+                        $slot[] = $data;
+                    }
+                }
+            }
+
             $result = DB::table('tbl_orders_data')
                 ->where('item_id', $request->idItem)
+                ->orderBy('slot_id','ASC')
+	            ->whereNotIn('slot_id', $slot)
                 ->get();
         } else {
             $result = DB::table('tbl_orders_data')

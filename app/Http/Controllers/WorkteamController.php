@@ -75,7 +75,10 @@ class WorkteamController extends Controller
                     ->join('tbl_items', 'id_item', 'item_id')
                     ->join('tbl_items_category', 'id_item_category', 'item_category_id')
                     ->join('tbl_items_condition', 'id_item_condition', 'item_condition_id')
+                    ->join('tbl_slots', 'id_slot', 'slot_id')
+                    ->join('tbl_warehouses', 'id_warehouse', 'warehouse_id')
                     ->where('appletter_id', $id)
+                    ->orderBy('item_name', 'ASC')
                     ->get();
             }
             return view('v_workteam.detail_surat_pengajuan', compact('appletter', 'item'));

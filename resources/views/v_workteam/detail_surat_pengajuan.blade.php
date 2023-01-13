@@ -9,7 +9,7 @@
             @csrf
             <div class="row">
                 <div class="col-md-3 form-group">
-                    <div class="row">
+                    <div class="row" style="font-size: 13px;">
                         <div class="col-md-12 mb-2">
                             <h6>Tujuan Pengajuan : </h6>
                             <p class="mt-2 text-capitalize">
@@ -37,7 +37,7 @@
                         <div class="col-md-12 mb-2">
                             <h6>Status Pengajuan :</h6>
                             <p class="mt-2">
-                                <select name="appletter_status" class="form-control bg-white" required>
+                                <select name="appletter_status" class="form-control bg-white" style="font-size: 13px;" required>
                                     @if($appletter->appletter_status == 'diterima')
                                     <option value="diterima">Diterima</option>
                                     @elseif($appletter->appletter_status == 'ditolak')
@@ -54,9 +54,9 @@
                             <h6>Keterangan :</h6>
                             <p class="mt-2">
                                 @if($appletter->appletter_note == null)
-                                <textarea name="appletter_note" class="form-control" rows="5"></textarea>
+                                <textarea name="appletter_note" class="form-control" rows="5" style="font-size: 13px;"></textarea>
                                 @else
-                                <textarea name="appletter_note" class="form-control" rows="5" readonly>{{ $appletter->appletter_note }}</textarea>
+                                <textarea name="appletter_note" class="form-control" rows="5" style="font-size: 13px;" readonly>{{ $appletter->appletter_note }}</textarea>
                                 @endif
                             </p>
                         </div>
@@ -79,35 +79,59 @@
                                 </div>
                                 <div class="card-body">
                                     @if($appletter->appletter_purpose == 'penyimpanan')
-                                    <table id="table-1" class="table" style="color: black;">
+                                    <table id="table-1" class="table" style="color: black;font-size: 13px;">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Jenis Barang</th>
-                                                <th>Nama Barang</th>
-                                                <th>Merk/Tipe</th>
-                                                <th>Jumlah</th>
-                                                <th>Satuan</th>
-                                                <th>Kondisi</th>
-                                                <th>Status Pengajuan</th>
+                                                <th class="text-center" style="width: 1%;">No</th>
+                                                <th style="width: 20%;">Nama Barang</th>
+                                                <th style="width: 5%;">NUP</th>
+                                                <th style="width: 10%;">Jumlah</th>
+                                                <th style="width: 20%;">Keterangan</th>
+                                                <th style="width: 10%;">Expired (Kadaluarsa)</th>
+                                                <th style="width: 10%;">Status Pengajuan</th>
                                             </tr>
                                         </thead>
                                         <?php $no = 1; ?>
                                         <tbody>
                                             @foreach($item as $dataItem)
                                             <tr>
-                                                <td class="pt-3">
+                                                <td>
                                                     <input type="hidden" name="appletter_id[]" value="{{ $dataItem->id_appletter_entry }}">
                                                     {{ $no++ }}
                                                 </td>
-                                                <td class="pt-3">{{ $dataItem->item_category_name }}</td>
-                                                <td class="pt-3">{{ $dataItem->appletter_item_name }}</td>
-                                                <td class="pt-3">{{ $dataItem->appletter_item_description }}</td>
-                                                <td class="pt-3">{{ $dataItem->appletter_item_qty }}</td>
-                                                <td class="pt-3">{{ $dataItem->appletter_item_unit }}</td>
-                                                <td class="pt-3">{{ $dataItem->item_condition_name }}</td>
                                                 <td>
-                                                    <select class="form-control bg-white" name="appletter_item_status[]">
+                                                    {{ $dataItem->item_category_name }} <br>
+                                                    {{ $dataItem->appletter_item_name }}
+                                                </td>
+                                                <td class="pt-3">
+                                                    @if ($dataItem->appletter_item_nup == null)
+                                                    -
+                                                    @else
+                                                    {{ $dataItem->appletter_item_nup }}
+                                                    @endif
+                                                </td>
+                                                <td class="pt-3">
+                                                    {{ $dataItem->appletter_item_qty.' '.$dataItem->appletter_item_unit }}
+                                                </td>
+                                                <td>
+                                                    @if ($dataItem->appletter_item_description != null)
+                                                    {{ $dataItem->appletter_item_description }} <br>
+                                                    Kondisi {{ $dataItem->item_condition_name }}
+                                                    @else
+                                                    <div style="padding-top: 1.2vh;">
+                                                        Kondisi {{ $dataItem->item_condition_name }}
+                                                    </div>
+                                                    @endif
+                                                </td>
+                                                <td class="pt-3">
+                                                    @if ($dataItem->appletter_item_exp == null)
+                                                    -
+                                                    @else
+                                                    {{ \Carbon\carbon::parse($dataItem->appletter_item_exp)->isoFormat('DD MMM Y') }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <select class="form-control bg-white" name="appletter_item_status[]" style="color: black;font-size: 11px;">
                                                         @if($dataItem->appletter_item_status == '')
                                                         <option value="terima">Diterima</option>
                                                         <option value="tolak">Ditolak</option>
@@ -118,46 +142,39 @@
                                                         @endif
                                                     </select>
                                                 </td>
-                                                @endforeach
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                         </thead>
                                     </table>
                                     @else
-                                    <table id="table-1" class="table" style="color: black;">
+                                    <table id="table-1" class="table text-capitalize" style="color: black;font-size: 13px;">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Jenis Barang</th>
-                                                <th>Barang</th>
-                                                <th>Merk/Tipe</th>
-                                                <th>Jumlah Diambil</th>
-                                                <th>Satuan</th>
+                                                <th style="width: 1%;">No</th>
+                                                <th style="width: 20%;">Nama Barang</th>
+                                                <th style="width: 25%;">Keterangan</th>
+                                                <th style="width: 10%;">Volume</th>
+                                                <th style="width: 10%;">Jumlah</th>
+                                                <th style="width: 10%;">Stok</th>
                                                 <th>Penyimpanan</th>
-                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <?php $no = 1; ?>
                                         <tbody>
                                             @foreach($item as $dataItem)
                                             <tr>
-                                                <td>{{ $no++ }}</td>
-                                                <td>{{ $dataItem->item_category_name }}</td>
-                                                <td>{{ $dataItem->item_name }}</td>
+                                                <td class="text-center pt-3">{{ $no++ }}</td>
+                                                <td>{{ $dataItem->item_category_name }} <br>
+                                                    {{ $dataItem->item_name.' '.$dataItem->item_merktype }}
+                                                </td>
                                                 <td>{{ $dataItem->item_description }}</td>
-                                                <td>{{ $dataItem->item_pick }}</td>
-                                                <td>{{ $dataItem->item_unit }}</td>
-                                                <td>{{ $dataItem->slot_id }}</td>
-                                                <td>
-                                                    <select class="form-control bg-white" name="appletter_item_status[]">
-                                                        @if($dataItem->appletter_item_status == '')
-                                                        <option value="terima">Diterima</option>
-                                                        <option value="tolak">Ditolak</option>
-                                                        @elseif($dataItem->appletter_item_status == 'terima')
-                                                        <option value="terima">Diterima</option>
-                                                        @endif
-                                                        <option value="tolak">Ditolak</option>
-                                                    </select>
+                                                <td class="pt-3">{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
+                                                <td class="pt-3">{{ $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
+                                                <td class="pt-3">{{ $dataItem->item_qty - $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
+                                                <td class="pt-3">
+                                                    {{ $dataItem->warehouse_name.' / '.$dataItem->slot_id }}
+                                                    <input type="hidden" name="appletter_item_status[]" value="terima">
                                                 </td>
                                                 @endforeach
                                             </tr>

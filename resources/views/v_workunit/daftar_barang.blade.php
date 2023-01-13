@@ -15,35 +15,60 @@
                             <div class="card-body">
                                 <table id="table-1" class="table table-border text-capitalize" style="color: black;">
                                     <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Unit Kerja</th>
-                                            <th>Nama Barang</th>
-                                            <th>Keterangan</th>
-                                            <th>Jumlah</th>
-                                            <th>Satuan</th>
-                                            <th>Kondisi</th>
+                                        <tr style="font-size: 14px;">
+                                            <th style="width: 1%;">No</th>
+                                            <th style="width: 19%;">Nama Barang</th>
+                                            <th style="width: 15%;">Merk/Type</th>
+                                            <th style="width: 5%;">NUP</th>
+                                            <th style="width: 30%;">Keterangan</th>
+                                            <th style="width: 10%;">Jumlah</th>
+                                            <th style="width: 10%;">Expired</th>
+                                            <th style="width: 10%;">Tanggal Masuk</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <?php $no = 1; ?>
                                     <tbody>
                                         @foreach($item as $dataItem)
-                                        <tr>
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $dataItem->workunit_name }}</td>
-                                            <td>{{ $dataItem->item_name }}</td>
-                                            <td>{{ $dataItem->item_description }}</td>
-                                            <td>{{ $dataItem->item_qty }}</td>
-                                            <td>{{ $dataItem->item_unit }}</td>
-                                            <td>{{ $dataItem->item_condition_name }}</td>
+                                        <tr style="font-size: 13px;">
+                                            <td class="text-center">{{ $no++ }}</td>
+                                            <td>
+                                                {{ $dataItem->item_name }} <br>
+                                                Kondisi : {{ $dataItem->item_condition_name }}
+                                            </td>
+                                            <td class="pt-3">
+                                                @if ($dataItem->item_merktype == null)
+                                                -
+                                                @else
+                                                {{ $dataItem->item_merktype }}
+                                                @endif
+                                            </td>
+                                            <td class="pt-3">
+                                                @if ($dataItem->item_nup == null)
+                                                -
+                                                @else
+                                                {{ $dataItem->item_nup }}
+                                                @endif
+                                            </td>
+                                            <td class="pt-3">{{ $dataItem->item_description }}</td>
+                                            <td class="pt-3">{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
+                                            <td class="pt-3">
+                                                @if ($dataItem->item_exp == null)
+                                                -
+                                                @else
+                                                {{ \Carbon\carbon::parse($dataItem->item_exp)->isoFormat('DD MMM Y') }}
+                                                @endif
+                                            </td>
+                                            <td class="pt-3">
+                                                {{ \Carbon\carbon::parse($dataItem->order_dt)->isoFormat('DD MMM Y') }}
+                                            </td>
                                             <td>
                                                 <div class="dropdown">
                                                     <a href="#" class="dropdown-toggle btn btn-primary" data-bs-toggle="dropdown">
                                                         <i class="fas fa-bars"></i>
                                                     </a>
                                                     <div class="dropdown-menu m-0">
-                                                        <a class="dropdown-item" href="{{ url('tim-kerja/surat/detail-barang/'. $dataItem->id_item) }}">
+                                                        <a class="dropdown-item" href="{{ url('unit-kerja/menu-barang/detail/'. $dataItem->id_item) }}">
                                                             <i class="fas fa-info-circle"></i> Detail
                                                         </a>
                                                     </div>
