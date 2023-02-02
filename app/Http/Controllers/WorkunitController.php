@@ -264,9 +264,13 @@ class WorkunitController extends Controller
             if ($request->upload_spm != null) {
                 $filename  = $request->upload_spm->getClientOriginalName();
                 $request->upload_spm->move('data_file/surat_permohonan/', $filename);
+            } elseif ($request->upload_warr != null) {
+                $filename  = $request->upload_warr->getClientOriginalName();
+                $request->upload_warr->move('data_file/surat_perintah/', $filename);
             } else {
                 $filename = null;
             }
+
             if ($id == 'penyimpanan') {
                 $dataArray['id_appletter']   = $request->id_appletter;
                 $dataArray['purpose']        = $request->purpose;
@@ -294,6 +298,12 @@ class WorkunitController extends Controller
                     'appletter_file' => $filename
                 ]);
                 return redirect('unit-kerja/surat/detail-surat-pengajuan/' . $request->id_appletter)->with('success', 'Berhasil mengupload surat pengajuan');
+
+            } elseif ($id == 'update-surat-perintah') {
+                Warrent::where('id_warrent', $request->id_warrent)->update([
+                    'warr_file' => $filename
+                ]);
+                return redirect('unit-kerja/surat-perintah/detail/' . $request->id_warrent)->with('success', 'Berhasil mengupload surat perintah');
 
             } else {
                 if ($id == 'proses-simpan' && $request->filename != null) {

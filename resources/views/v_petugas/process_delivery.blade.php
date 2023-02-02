@@ -4,7 +4,7 @@
 
 <!-- Content Header -->
 <section class="content-header">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1>Penyimpanan Barang</h1>
@@ -22,7 +22,7 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-md-12 form-group">
                 @if ($message = Session::get('success'))
@@ -38,64 +38,63 @@
             <div class="col-md-12 form-group">
                 <form action="{{ url('petugas/barang/proses-simpan/'. $order->id_order) }}" method="POST">
                     @csrf
-                    <div class="card card-outline card-body">
-                        <div class="card-header">
+                    <div class="card card-outline">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title">
+                                Proses Penyimpanan Barang
+                            </h3>
+                        </div>
+                        @csrf
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
                                     <label>Batas Waktu Penyimpanan</label>
                                     <div class="form-group">
-                                        <input type="date" name="deadline" value="{{ \Carbon\Carbon::now()->isoFormat('Y-MM-DD') }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Jumlah Barang</label>
-                                    <div class="form-group">
-                                        <input type="number" id="total_item" minlength="1" value="{{ $order->order_total_item }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>&nbsp;</label>
-                                    <div class="form-group">
-                                        <div class="col-md-4"><a class="btn btn-primary " id="btn-total">PILIH</a></div>
+                                        <input type="date" name="deadline" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @csrf
-                        <div class="card-body">
-                            <table id="table-1" class="table table-bordered">
+                            <table id="table-1" class="table table-bordered" style="font-size: 14px;">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th style="width: 25%;">Pilih Barang</th>
-                                        <th style="width: 10%;">Jumlah</th>
-                                        <th style="width: 10%;">Satuan</th>
-                                        <th style="width: 20%;">Pilih Gudang</th>
-                                        <th style="width: 20%;">Pilih Pallet</th>
-                                        <th style="width: 10%;">Kapasitas Slot</th>
+                                        <th>Pilih Barang</th>
+                                        <th>Jumlah</th>
+                                        <th>Satuan</th>
+                                        <th>Pilih Gudang</th>
+                                        <th>Pilih Pallet</th>
+                                        <th>Kapasitas</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <?php $no = 1; ?>
                                 <tbody id="section-input">
                                     <tr>
-                                        <td>
+                                        <td class="text-center pt-3">
                                             <input type="hidden" name="warrent_id" value="{{ $order->warrent_id }}">
                                             <input type="hidden" name="idData[]" value="{{ 'DATA'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}">
                                             {{ $no++ }}
                                         </td>
                                         <td>
-                                            <select name="item_id[]" class="form-control item" data-idtarget=0>
+                                            <select name="item_id[]" class="form-control form-control-sm item" data-idtarget=0 style="font-size: 14px;">
                                                 <option value="">-- Pilih Barang --</option>
                                                 @foreach($item as $entryItem)
                                                 <option value="{{ $entryItem->id_item }}">{{ $entryItem->item_name }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td><span id="item_qty0"><input type="text" class="form-control"></span></td>
-                                        <td><span id="item_unit0"><input type="text" class="form-control" readonly></span></td>
                                         <td>
-                                            <select class="form-control warehouse" data-idtarget=0>
+                                            <span id="item_qty0">
+                                                <input type="number" class="form-control form-control-sm" placeholder="satuan" readonly>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span id="item_unit0">
+                                                <input type="text" class="form-control form-control-sm" placeholder="jumlah" readonly>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm warehouse" data-idtarget=0>
                                                 <option value="">-- Pilih Gudang --</option>
                                                 @foreach($warehouse as $dataWarehouse)
                                                 <option value="{{ $dataWarehouse->id_warehouse }}">{{ $dataWarehouse->warehouse_name }}</option>
@@ -103,19 +102,19 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="slot_id[]" id="slot_id0" class="form-control">
+                                            <select name="slot_id[]" id="slot_id0" class="form-control form-control-sm">
                                                 <option value="">-- Pilih Pallet --</option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="slot_status[]" class="form-control">
+                                            <select name="slot_status[]" class="form-control form-control-sm">
                                                 <option value="tersedia">Tersedia</option>
                                                 <option value="kosong">Kosong</option>
                                                 <option value="penuh">Penuh</option>
                                             </select>
                                         </td>
-                                        <td>
-                                            <a id="add-row" class="btn btn-dark text-uppercase font-weight-bold">
+                                        <td class="text-center">
+                                            <a id="add-row" class="btn btn-dark btn-sm text-uppercase font-weight-bold">
                                                 <i class="fas fa-plus-circle"></i>
                                             </a>
                                         </td>
@@ -123,7 +122,9 @@
                                 </tbody>
                                 <tfoot></tfoot>
                             </table>
-                            <button type="submit" class="btn btn-primary mt-2" onclick="return confirm('Apakah penempatan barang sudah benar ?')">Submit</button>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah penempatan barang sudah benar ?')">Submit</button>
                         </div>
                     </div>
 
@@ -148,7 +149,23 @@
             "paging": false,
             "info": false,
             "ordering": false,
-            "searching": false
+            "searching": false,
+            "columnDefs": [{
+                "width": "0%",
+                "targets": 0
+            }, {
+                "width": "20%",
+                "targets": 1
+            }, {
+                "width": "10%",
+                "targets": 2
+            }, {
+                "width": "10%",
+                "targets": 3
+            }, {
+                "width": "0%",
+                "targets": 7
+            }, ]
         })
         // More Item
         $('#add-row').click(function() {
@@ -156,22 +173,30 @@
             ++no
             $("#section-input").append(
                 `<tr class="row-penyimpanan">
-                    <td>
+                    <td class="text-center pt-3">
                         <input type="hidden" name="idData[` + i + `]" value="{{ 'DATA'.\Carbon\Carbon::now()->format('dmy').rand(100,999) }}` + no + `">
                         ` + no + `
                     </td>
                     <td>
-                        <select name="item_id[]" class="form-control item" data-idtarget=` + i + `>
+                        <select name="item_id[]" class="form-control form-control-sm item" data-idtarget=` + i + `>
                             <option value="">-- Pilih Barang --</option>
                             @foreach($item as $entryItem)
                             <option value="{{ $entryItem->id_item }}">{{ $entryItem->item_name }}</option>
                             @endforeach
                         </select>
                     </td>
-                    <td><span id="item_qty` + i + `"><input type="text" class="form-control"></span></td>
-                    <td><span id="item_unit` + i + `"><input type="text" class="form-control" readonly></span></td>
                     <td>
-                        <select class="form-control warehouse" data-idtarget="` + i + `">
+                        <span id="item_qty` + i + `">
+                            <input type="text" class="form-control form-control-sm">
+                        </span>
+                    </td>
+                    <td>
+                        <span id="item_unit` + i + `">
+                            <input type="text" class="form-control form-control-sm" readonly>
+                        </span>
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm warehouse" data-idtarget="` + i + `">
                             <option value="">-- Pilih Gudang --</option>
                             @foreach($warehouse as $dataWarehouse)
                             <option value="{{ $dataWarehouse->id_warehouse }}">{{ $dataWarehouse->warehouse_name }}</option>
@@ -179,19 +204,19 @@
                         </select>
                     </td>
                     <td>
-                        <select name="slot_id[]" id="slot_id` + i + `" class="form-control">
+                        <select name="slot_id[]" id="slot_id` + i + `" class="form-control form-control-sm">
                             <option value="">-- Pilih Pallet --</option>
                         </select>
                     </td>
                     <td>
-                        <select name="slot_status[]" class="form-control">
+                        <select name="slot_status[]" class="form-control form-control-sm">
                             <option value="tersedia">tersedia</option>
                             <option value="kosong">kosong</option>
                             <option value="penuh">penuh</option>
                         </select>
                     </td>
                     <td>
-                        <a id="remove-row" class="btn btn-dark text-uppercase font-weight-bold">
+                        <a id="remove-row" class="btn btn-dark btn-sm text-uppercase font-weight-bold">
                             <i class="fas fa-minus-circle"></i>
                         </a>
                     </td>
@@ -227,10 +252,10 @@
                             $.each(res, function(index, row) {
                                 target > 0 ? qty = row.item_qty - itemQty : qty = row.item_qty
                                 $("#item_qty" + target).append(
-                                    '<input type="number" name="item_qty[]" id="qty' + i + '" class="form-control" value="' + row.item_qty + '" maxLength="' + row.item_qty + '">'
+                                    '<input type="number" name="item_qty[]" id="qty' + i + '" class="form-control form-control-sm" value="' + row.item_qty + '" maxLength="' + row.item_qty + '">'
                                 )
                                 $("#item_unit" + target).append(
-                                    '<input type="text" name="item_unit[]" class="form-control" value="' + row.item_unit + '" readonly>'
+                                    '<input type="text" name="item_unit[]" class="form-control form-control-sm" value="' + row.item_unit + '" readonly>'
                                 )
                                 $("#item" + target).append(
                                     '<option value="' + row.id_item + '">' + row.item_name + '</option>'

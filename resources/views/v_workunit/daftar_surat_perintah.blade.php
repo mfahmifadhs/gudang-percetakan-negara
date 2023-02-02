@@ -41,7 +41,7 @@
                                                 </div>
                                             </td>
                                             <td class="pt-3">{{ $dataWarrent->warr_emp_name.'/'.$dataWarrent->warr_emp_position }}</td>
-                                            <td>{{ $dataWarrent->warr_total_item }} barang</td>
+                                            <td class="pt-3">{{ $dataWarrent->warr_total_item }} barang</td>
                                             <td class="pt-3">
                                                 <div class="mt-1" style="font-size: 10px;">
                                                     @if ($dataWarrent->warr_status == 'proses')

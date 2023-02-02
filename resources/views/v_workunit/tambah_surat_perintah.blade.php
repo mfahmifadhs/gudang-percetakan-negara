@@ -145,10 +145,9 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama Barang</th>
-                                                    <th>Ketersangan</th>
-                                                    <th>Volume</th>
+                                                    <th>Keterangan</th>
                                                     <th>Jumlah</th>
-                                                    <th>Stok</th>
+                                                    <th>Kondisi</th>
                                                     <th>Penyimpanan</th>
                                                 </tr>
                                             </thead>
@@ -165,23 +164,16 @@
                                                         {{ $no++ }}
                                                     </td>
                                                     <td>
-                                                        {{ $dataItem->item_category_name }} <br>
                                                         {{ $dataItem->item_name.' '.$dataItem->item_merktype }}
                                                     </td>
                                                     <td>
-                                                        @if ($dataItem->item_description != null)
-                                                        {{ $dataItem->item_description }} <br>
-                                                        Kondisi {{ $dataItem->item_condition_name }}
-                                                        @else
-                                                        <div style="padding-top: 1.2vh;">
-                                                            Kondisi {{ $dataItem->item_condition_name }}
-                                                        </div>
+                                                        @if ($dataItem->item_description)
+                                                            {{ $dataItem->item_description }}
                                                         @endif
                                                     </td>
-                                                    <td class="pt-3">{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
-                                                    <td class="pt-3">{{ $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
-                                                    <td class="pt-3">{{ $dataItem->item_qty - $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
-                                                    <td class="pt-3">{{ $dataItem->slot_id }}</td>
+                                                    <td>{{ $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
+                                                    <td>{{ $dataItem->item_condition_name }}</td>
+                                                    <td>{{ $dataItem->slot_id }}</td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>

@@ -32,7 +32,7 @@
                         </a>
                         @endif
                     </span>
-                    <form action="{{ url('unit-kerja/surat/tambah-pengajuan/update-surat' ) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('unit-kerja/surat/tambah-pengajuan/update-surat-perintah' ) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label class="col-md-2 mt-2"><b>Surat Pengajuan</b></label>
                         <span class="col-md-10 mt-2">:
@@ -41,12 +41,15 @@
                             @else
                             <input type="hidden" name="id_warrent" value="{{ $warrent->id_warrent }}">
                             <input type="file" class="bg-white" name="upload_warr" accept="application/pdf" style="font-size: 12px;" required> <br>
-                            <span style="font-size: 10px;margin-left: 29.5vh;">Format file (.PDF)</span> <br>
-                            <button type="submit" class="btn btn-primary btn-sm" style="font-size: 10px;margin-left: 29.5vh;" onclick="return confirm('Upload Surat Pengajuan ?')">
-                                <i class="fas fa-upload"></i> Upload
-                            </button>
                             @endif
-                        </span>
+                            <label class="col-md-2 mt-2"><b>&nbsp;</b></label>
+                            <span class="col-md-10 mt-2">&nbsp;
+                                @if ($warrent->warr_file == null)
+                                <button type="submit" class="btn btn-primary btn-sm mt-3" style="font-size: 12px;" onclick="return confirm('Upload Surat Perintah ?')">
+                                    <i class="fas fa-upload"></i> Upload <span style="font-size: 9px;">Format file (.PDF)</span>
+                                </button>
+                                @endif
+                            </span>
                     </form>
                     <span class="col-md-12 mt-2">
                         @if($warrent->warr_status == 'diterima' && $warrent->warr_process == 'false')
@@ -204,11 +207,11 @@
                                         <thead>
                                             <tr style="font-size: 14px;">
                                                 <th>No</th>
+                                                <th>Jenis Barang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Keterangan</th>
-                                                <th>Volume</th>
                                                 <th>Jumlah</th>
-                                                <th>Stok</th>
+                                                <th>Kondisi</th>
                                                 <th>Penyimpanan</th>
                                             </tr>
                                         </thead>
@@ -217,14 +220,12 @@
                                             @foreach($item as $itemExit)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td>
-                                                    {{ $itemExit->item_category_name }} <br>
-                                                    {{ $itemExit->item_name.' '.$itemExit->item_merktype }}
-                                                </td>
-                                                <td class="pt-3">{{ $itemExit->item_qty.' '.$itemExit->item_unit }}</td>
-                                                <td class="pt-3">{{ $itemExit->warr_item_pick.' '.$itemExit->item_unit }}</td>
-                                                <td class="pt-3">{{ $itemExit->item_qty - $itemExit->warr_item_pick.' '.$itemExit->item_unit }}</td>
-                                                <td class="pt-3">{{ $itemExit->slot_id }}</td>
+                                                <td>{{ $itemExit->item_category_name }}</td>
+                                                <td>{{ $itemExit->item_name.' '.$itemExit->item_merktype }}</td>
+                                                <td>{{ $itemExit->item_description }}</td>
+                                                <td>{{ $itemExit->warr_item_pick.' '.$itemExit->item_unit }}</td>
+                                                <td>{{ $itemExit->item_condition_name }}</td>
+                                                <td>{{ $itemExit->slot_id }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

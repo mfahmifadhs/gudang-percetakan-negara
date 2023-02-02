@@ -136,9 +136,7 @@
                                             <th>No</th>
                                             <th>Nama Barang</th>
                                             <th>Keterangan</th>
-                                            <th>Volume</th>
                                             <th>Jumlah</th>
-                                            <th>Stok</th>
                                             <th>Penyimpanan</th>
                                         </tr>
                                     </thead>
@@ -152,9 +150,7 @@
                                                 {{ $dataItem->item_name }}
                                             </td>
                                             <td class="pt-3">{{ $dataItem->item_description }}</td>
-                                            <td class="pt-3">{{ $dataItem->item_qty.' '.$dataItem->item_unit }}</td>
                                             <td class="pt-3">{{ $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
-                                            <td class="pt-3">{{ $dataItem->item_qty - $dataItem->item_pick.' '.$dataItem->item_unit }}</td>
                                             <td class="pt-3">{{ $dataItem->warehouse_name.' / '.$dataItem->slot_id }}</td>
                                         </tr>
                                         @endforeach
