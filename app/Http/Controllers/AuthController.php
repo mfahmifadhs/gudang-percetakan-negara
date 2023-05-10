@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        return view ('login');
+        return view('login');
     }
 
     public function postLogin(Request $request)
@@ -24,9 +24,16 @@ class AuthController extends Controller
             'password'  => 'required',
         ]);
         $credentials = $request->only('nip', 'password');
+
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')->with('success','Berhasil Masuk !');
+
+            $user = User::where('nip', $request->nip)->first();
+            if ($user->status_id == 0) {
+                return redirect("login")->with('failed', 'Akun tidak aktif');
+            }
+            return redirect()->intended('dashboard')->with('success', 'Berhasil Masuk !');
         }
+
         return redirect("login")->with('failed', 'Username atau Password Salah !');
     }
 
@@ -66,29 +73,31 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        if(Auth::check() && Auth::user()->role_id == 1 && Auth::user()->status_id == 1)
-        {
-            return redirect('admin-master/dashboard');
-        }
-        elseif (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status_id == 1)
-        {
-            return redirect('tim-kerja/dashboard');
-        }
-        elseif (Auth::check() && Auth::user()->role_id == 3 && Auth::user()->status_id == 1)
-        {
-            return redirect('unit-kerja/dashboard');
-        }
-        elseif (Auth::check() && Auth::user()->role_id == 4 && Auth::user()->status_id == 1)
-        {
-            return redirect('petugas/dashboard');
-        }
-        else{
-            return redirect("login")->with('failed', 'Anda tidak memiliki akses!');
-        }
+        return redirect(('dashboard'));
+        // if(Auth::check() && Auth::user()->role_id == 1 && Auth::user()->status_id == 1)
+        // {
+        //     return redirect('admin-master/dashboard');
+        // }
+        // elseif (Auth::check() && Auth::user()->role_id == 2 && Auth::user()->status_id == 1)
+        // {
+        //     return redirect('tim-kerja/dashboard');
+        // }
+        // elseif (Auth::check() && Auth::user()->role_id == 3 && Auth::user()->status_id == 1)
+        // {
+        //     return redirect('unit-kerja/dashboard');
+        // }
+        // elseif (Auth::check() && Auth::user()->role_id == 4 && Auth::user()->status_id == 1)
+        // {
+        //     return redirect('petugas/dashboard');
+        // }
+        // else{
+        //     return redirect("login")->with('failed', 'Anda tidak memiliki akses!');
+        // }
     }
 
 
-    public function signOut() {
+    public function signOut()
+    {
         Session::flush();
         Auth::logout();
         return Redirect('/');

@@ -123,7 +123,7 @@
                         <h3 class="text-primary text-capitalize">{{ $item->item_name }}</h3>
                         <p class="text-muted text-capitalize">{{ $item->item_description }}</p>
                         <span>
-                           {!! QrCode::size(100)->generate("http://gudangpn.kemkes.go.id/") !!}
+                           {!! QrCode::size(100)->generate('http://127.0.0.1:8000/barang/'. $item->id_item) !!}
                         </span>
                         <br>
                         <div class="text-muted mt-2">
