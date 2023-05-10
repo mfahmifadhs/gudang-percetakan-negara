@@ -21,7 +21,7 @@ class Dashboard extends Controller
                 ->orderBy('tanggal_pengajuan', 'DESC')
                 ->get();
         }
-
+	
         return view('Pages/dashboard', compact('submission'));
     }
 
