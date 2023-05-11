@@ -113,10 +113,45 @@
                                 <a type="button" class="btn btn-warning btn-sm" data-toggle="dropdown">
                                     <i class="fas fa-bars"></i>
                                 </a>
+
                                 <div class="dropdown-menu">
+                                    @if (Auth::user()->role_id == 3)
+                                        @if (!$row->status_pengajuan_id)
+                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.check', $row->id_pengajuan) }}">
+                                                <i class="fas fa-check-circle"></i> Verifikasi
+                                            </a>
+                                        @endif
+                                    @endif
+
+                                    @if (Auth::user()->role_id == 2)
+                                        @if ($row->status_proses_id == 2)
+                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
+                                                <i class="fas fa-tasks"></i> Penapisan
+                                            </a>
+                                        @endif
+
+                                        @if ($row->status_proses_id == 3)
+                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
+                                                <i class="fas fa-dolly-flatbed"></i> Proses
+                                            </a>
+                                        @endif
+                                    @endif
+
 				    <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
-                                        <i class="fas fa-info-circle"></i> Detail
+                                        <i class="fas fa-info-circle"></i> Detail 
                                     </a>
+
+				    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    @endif
+
+				    @if (Auth::user()->role_id == 1)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.delete', $row->id_pengajuan) }}" onclick="return confirm('Ingin Menghapus Data?')">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </a>
+                                    @endif
 				</div>
                             </td>
 			</tr>
