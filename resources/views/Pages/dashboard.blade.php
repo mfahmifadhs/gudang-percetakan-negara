@@ -126,7 +126,7 @@
                                                 @if (Auth::user()->role_id == 2)
                                                 @if ($row->status_proses_id == 2)
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
-                                                    <i c lass="fas fa-tasks"></i> Penapisan
+                                                    <i class="fas fa-tasks"></i> Penapisan
                                                 </a>
                                                 @endif
 
@@ -137,7 +137,7 @@
                                                 @endif
                                                 @endif
 
-                                                @if (Auth::user()->role_id == $row->user->role_id)
+                                                @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
