@@ -64,7 +64,7 @@
                         </tr>
                     </thead>
                     @php $no = 1; @endphp
-                    <tbody class="text-capitalize">
+                    <tbody>
                         @foreach($submission as $row)
                         <tr>
                             <td class="pt-3 text-center">
@@ -85,28 +85,28 @@
                             </td>
                             <td class="pt-3 text-center">
                                 @if ($row->status_proses_id == 1)
-                                    <span>Menunggu Persetujuan</span>
+                                <span>Menunggu Persetujuan</span>
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id == 4)
-                                    <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : ''}}</span>
-                                    <span>{{ $row->keterangan_proses }}</span>
+                                <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : ''}}</span>
+                                <span>{{ $row->keterangan_proses }}</span>
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id != 4)
-                                    <span>Proses Penapisan</span>
+                                <span>Proses Penapisan</span>
                                 @endif
 
                                 @if ($row->status_proses_id == 3)
-                                    <span>Proses {{ $row->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}</span>
+                                <span>Proses {{ $row->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}</span>
                                 @endif
 
                                 @if ($row->status_proses_id == 4)
-                                    <span>Selesai</span>
+                                <span>Selesai</span>
                                 @endif
 
                                 @if ($row->status_pengajuan_id == 2)
-                                 <span class="text-danger">{{ $row->keterangan_proses }}</span>
+                                <span class="text-danger">{{ $row->keterangan_proses }}</span>
                                 @endif
                             </td>
                             <td class="pt-3 text-center">{{ $row->surat_pengajuan ? '✅' : '❌' }} </td>
@@ -115,27 +115,28 @@
                                 <a type="button" class="btn btn-warning btn-sm" data-toggle="dropdown">
                                     <i class="fas fa-bars"></i>
                                 </a>
+
                                 <div class="dropdown-menu">
                                     @if (Auth::user()->role_id == 3)
-                                        @if (!$row->status_pengajuan_id)
-                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.check', $row->id_pengajuan) }}">
-                                                <i class="fas fa-check-circle"></i> Verifikasi
-                                            </a>
-                                        @endif
+                                    @if (!$row->status_pengajuan_id)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.check', $row->id_pengajuan) }}">
+                                        <i class="fas fa-check-circle"></i> Verifikasi
+                                    </a>
+                                    @endif
                                     @endif
 
                                     @if (Auth::user()->role_id == 2)
-                                        @if ($row->status_proses_id == 2)
-                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
-                                                <i class="fas fa-tasks"></i> Penapisan
-                                            </a>
-                                        @endif
+                                    @if ($row->status_proses_id == 2)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
+                                        <i class="fas fa-tasks"></i> Penapisan
+                                    </a>
+                                    @endif
 
-                                        @if ($row->status_proses_id == 3)
-                                            <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
-                                                <i class="fas fa-dolly-flatbed"></i> Proses
-                                            </a>
-                                        @endif
+                                    @if ($row->status_proses_id == 3)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
+                                        <i class="fas fa-dolly-flatbed"></i> Proses
+                                    </a>
+                                    @endif
                                     @endif
 
                                     @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja)
@@ -149,13 +150,6 @@
                                         <i class="fas fa-trash"></i> Hapus
                                     </a>
                                     @endif
-
-
-                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
-                                        <i class="fas fa-info-circle"></i> Detail
-                                    </a>
-
-
                                 </div>
                             </td>
                         </tr>
