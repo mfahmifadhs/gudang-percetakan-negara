@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Auth;
+use Exception;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -58,6 +59,20 @@ class Pengajuan extends Controller
         }
 
         return view('Pages/Pengajuan/detail', compact('data', 'catatan'));
+    }
+
+    public function Barcode(Request $request, $id) {
+        $item = submissionDetailModel::join('t_pengajuan','id_pengajuan','pengajuan_id')
+                ->where('pengajuan_id', $id)
+                ->get();
+
+        $in_stock  = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_masuk');
+        $out_stock = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_keluar');
+        $stock     = $in_stock - $out_stock;
+        $qty       = $request->qty;
+        $position  = $request->position;
+
+        return view('Pages/Pengajuan/barcode', compact('item','stock','qty','position'));
     }
 
     public function Create(Request $request, $category)
@@ -237,41 +252,46 @@ class Pengajuan extends Controller
 
     public function Update(Request $request, $id)
     {
-        submissionModel::where('id_pengajuan', $id)->update([
-            'tanggal_pengajuan' => $request->tanggal_pengajuan,
-            'keterangan'        => $request->keterangan,
-        ]);
-
-        foreach ($request->id_barang as $i => $id_barang) {
-            submissionDetailModel::where('id_detail', $id_barang)->update([
-                'nama_barang'      => $request->nama_barang[$i],
-                'catatan'          => $request->catatan[$i],
-                'deskripsi'        => $request->deskripsi[$i],
-                'jumlah_pengajuan' => $request->jumlah[$i],
-                'satuan'           => $request->satuan[$i],
-                'keterangan'       => $request->keterangan_barang[$i],
+        try {
+            submissionModel::where('id_pengajuan', $id)->update([
+                'tanggal_pengajuan' => $request->tanggal_pengajuan,
+                'keterangan'        => $request->keterangan,
             ]);
+
+            foreach ($request->id_barang as $i => $id_barang) {
+                submissionDetailModel::where('id_detail', $id_barang)->update([
+                    'nama_barang'      => $request->nama_barang[$i],
+                    'catatan'          => $request->catatan[$i],
+                    'deskripsi'        => $request->deskripsi[$i],
+                    'jumlah_pengajuan' => $request->jumlah[$i],
+                    'satuan'           => $request->satuan[$i],
+                    'keterangan'       => $request->keterangan_barang[$i],
+                ]);
+            }
+
+            $submission = submissionModel::where('id_pengajuan', $id)->first();
+            if (!$submission->surat_pengajuan && $request->surat_pengajuan) {
+                $file  = $request->file('surat_pengajuan');
+                $filename = $file->getClientOriginalName();
+                $surat = $file->storeAs('public/files/surat_pengajuan', $filename);
+                $surat_pengajuan = Crypt::encrypt($surat);
+                submissionModel::where('id_pengajuan', $id)->update(['surat_pengajuan' => $surat_pengajuan]);
+            }
+
+            if (!$submission->surat_perintah && $request->surat_perintah) {
+                $file  = $request->file('surat_perintah');
+                dd($file);
+                $filename = $file->getClientOriginalName();
+                $surat = $file->storePubliclyAs('public/files/surat_perintah', $filename);
+                $surat_perintah = Crypt::encrypt($surat);
+
+                submissionModel::where('id_pengajuan', $id)->update(['surat_perintah' => $surat_perintah]);
+            }
+
+            return redirect()->route('submission.detail', $id)->with('success', 'Berhasil Memperbaharui');
+        } catch (Exception $e) {
+            return redirect()->route('submission.detail', $id)->with('failed', 'Terjadi kesalahan, mohon periksa kembali ukuran atau format file');
         }
-
-        $submission = submissionModel::where('id_pengajuan', $id)->first();
-        if (!$submission->surat_pengajuan && $request->surat_pengajuan) {
-            $file  = $request->file('surat_pengajuan');
-            $filename = $file->getClientOriginalName();
-            $surat = $file->storeAs('public/files/surat_pengajuan', $filename);
-            $surat_pengajuan = Crypt::encrypt($surat);
-            submissionModel::where('id_pengajuan', $id)->update(['surat_pengajuan' => $surat_pengajuan]);
-        }
-
-        if (!$submission->surat_perintah && $request->surat_perintah) {
-            $file  = $request->file('surat_perintah');
-            $filename = $file->getClientOriginalName();
-            $surat = $file->storePubliclyAs('public/files/surat_perintah', $filename);
-            $surat_perintah = Crypt::encrypt($surat);
-
-            submissionModel::where('id_pengajuan', $id)->update(['surat_perintah' => $surat_perintah]);
-        }
-
-        return redirect()->route('submission.detail', $id)->with('success', 'Berhasil Memperbaharui');
     }
 
     public function Delete($id)

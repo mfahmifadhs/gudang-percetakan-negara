@@ -33,8 +33,24 @@
         </div>
         @endif
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
+                    <div class="card-body">
+                        <h6 class="text-bold">Prosedur Pengajuan Penyimpanan/Pengambilan Barang di Gudang Percetakan Negara</h6>
+                        <h6 class="small">
+                            1. Membuat pengajuan penyimpanan atau pengambilan barang, dengan mangupload surat permohonan yang sudah
+                               dibuat melalui Aplikasi Srikandi. <br>
+                            2. Menunggu persetujuan Ketua Tim Kerja Pegudangan Percetakan Negara. <br>
+                            3. Melakukan pengiriman atau pengambilan barang. <br>
+                            4. Proses Penapisan atau pengecekan oleh Petugas Gudang Percetakan Negara. <br>
+                            5. Melakukan penempatan penyimpanan barang atau pengambilan barang. <br>
+                            6. Menyerahkan Berita Acara oleh Petugas Gudang.
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card card-outline card-warning">
                     <div class="card-header border-transparent">
                         <h3 class="card-title">Pengajuan Terbaru</h3><br>
                         <small>Pengajuan yang sedang diproses</small>
@@ -59,7 +75,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($submission->where('status_proses_id', '!=', 4 ) as $i => $row)
+                                    @foreach ($submission->where('status_proses_id', '!=', 4 )->take(5) as $i => $row)
                                     <tr>
                                         <td class="text-center">{{ $i + 1 }}</td>
                                         <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}</td>
@@ -121,12 +137,6 @@
                                                 @endif
                                                 @endif
 
-                                                @if (Auth::user()->role_id == $row->user->role_id)
-                                                <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                @endif
-
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
                                                     <i class="fas fa-info-circle"></i> Detail
                                                 </a>
@@ -146,8 +156,8 @@
 
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
+            <!-- <div class="col-md-4">
+                <div class="card  card-outline card-warning">
                     <div class="card-header border-transparent">
                         <h3 class="card-title">Batas Waktu Penyimpanan</h3><br>
                         <small>Batas Waktu Penyimpanan Kurang dari 1 tahun</small>
@@ -183,15 +193,15 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    @endif
-                                    @endforeach
+                                        @endif
+                                        @endforeach
                                 </tbody>
                             </table>
                         </div>
 
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

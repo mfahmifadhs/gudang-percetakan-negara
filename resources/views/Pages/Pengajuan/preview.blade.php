@@ -55,12 +55,7 @@
                         <label class="col-md-2 col-form-label">Unit Kerja*</label>
                         <div class="col-md-10">
                             <select class="form-control" id="workunit" name="unit_kerja_id">
-                                @foreach ($workunit->where('id_unit_kerja', $data['unit_kerja_id']) as $row)
-                                <option value="{{ $row->id_unit_kerja }}">
-                                    {{ $row->kode_unit_kerja.' - '.$row->nama_unit_kerja }}
-                                </option>
-                                @endforeach
-                                @foreach ($workunit->where('id_unit_kerja', '!=', $data['unit_kerja_id']) as $row)
+                                @foreach ($workunit as $row)
                                 <option value="{{ $row->id_unit_kerja }}">
                                     {{ $row->kode_unit_kerja.' - '.$row->nama_unit_kerja }}
                                 </option>
@@ -75,16 +70,22 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <small class="text-danger">
+                                *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
+                            </small>
+                        </div>
                         <label class="col-md-2 col-form-label">Surat Pengajuan</label>
                         <div class="col-md-10">
                             @if (!$resFile['surat_pengajuan'])
                             <div class="card-footer col-md-12 text-center border border-dark">
                                 <div class="btn btn-default btn-file">
                                     <i class="fas fa-upload"></i> Upload File
-                                    <input type="file" class="form-control image" name="surat_pengajuan" accept="" onchange="displaySelectedFileCountSubmission(this)">
+                                    <input type="file" class="form-control image" name="surat_pengajuan" accept=".pdf" onchange="displaySelectedFileCountSubmission(this)">
                                     <span id="selected-file-count-submission"></span>
                                 </div><br>
-                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">
@@ -102,10 +103,10 @@
                             <div class="card-footer col-md-12 text-center border border-dark">
                                 <div class="btn btn-default btn-file">
                                     <i class="fas fa-upload"></i> Upload File
-                                    <input type="file" class="form-control image" name="surat_perintah" accept="" onchange="displaySelectedFileCountWarrent(this)">
+                                    <input type="file" class="form-control image" name="surat_perintah" accept=".pdf" onchange="displaySelectedFileCountWarrent(this)">
                                     <span id="selected-file-count-warrent"></span>
                                 </div><br>
-                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">
@@ -122,8 +123,8 @@
                     <h4 class="card-title">Informasi Barang</h4>
                 </div>
                 <div class="card-body">
-                @foreach ($resArr as $row)
-                @if ($row['data_barang'])
+                    @foreach ($resArr as $row)
+                    @if ($row['data_barang'])
                     @if ($row['kode_form'] == 101)
                     <b>Barang Milik Negara (BMN)</b>
                     <table id="table-preview-101" class="table table-bordered">
@@ -223,8 +224,8 @@
                         </tbody>
                     </table>
                     @endif
-                @endif
-                @endforeach
+                    @endif
+                    @endforeach
                 </div>
             </div>
             <div class="card-footer text-right">
@@ -246,15 +247,38 @@
         'info': false,
         'searching': false,
         'sorting': false,
-        'columnDefs': [
-            {'width': '0%', 'targets': 0},
-            {'width': '20%', 'targets': 1},
-            {'width': '20%', 'targets': 2},
-            {'width': '10%', 'targets': 3},
-            {'width': '15%', 'targets': 4},
-            {'width': '10%', 'targets': 5},
-            {'width': '15%', 'targets': 6},
-            {'width': '15%', 'targets': 7},
+        'columnDefs': [{
+                'width': '0%',
+                'targets': 0
+            },
+            {
+                'width': '20%',
+                'targets': 1
+            },
+            {
+                'width': '20%',
+                'targets': 2
+            },
+            {
+                'width': '10%',
+                'targets': 3
+            },
+            {
+                'width': '15%',
+                'targets': 4
+            },
+            {
+                'width': '10%',
+                'targets': 5
+            },
+            {
+                'width': '15%',
+                'targets': 6
+            },
+            {
+                'width': '15%',
+                'targets': 7
+            },
         ]
     });
     $("#table-preview-102").DataTable({
@@ -262,13 +286,30 @@
         'info': false,
         'searching': false,
         'sorting': false,
-        'columnDefs': [
-            {'width': '0%', 'targets': 0},
-            {'width': '20%', 'targets': 1},
-            {'width': '25%', 'targets': 2},
-            {'width': '10%', 'targets': 3},
-            {'width': '10%', 'targets': 4},
-            {'width': '15%', 'targets': 5},
+        'columnDefs': [{
+                'width': '0%',
+                'targets': 0
+            },
+            {
+                'width': '20%',
+                'targets': 1
+            },
+            {
+                'width': '25%',
+                'targets': 2
+            },
+            {
+                'width': '10%',
+                'targets': 3
+            },
+            {
+                'width': '10%',
+                'targets': 4
+            },
+            {
+                'width': '15%',
+                'targets': 5
+            },
         ]
     });
 

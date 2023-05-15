@@ -55,13 +55,8 @@
                         <label class="col-md-2 col-form-label">Unit Kerja*</label>
                         <div class="col-md-10">
                             <select class="form-control" id="workunit" name="unit_kerja_id">
-                                @foreach ($workunit->where('kode_unit_kerja', $submission->unit_kerja_id) as $row)
-                                <option value="{{ $row->kode_unit_kerja }}">
-                                    {{ $row->kode_unit_kerja.' - '.$row->nama_unit_kerja }}
-                                </option>
-                                @endforeach
-                                @foreach ($workunit->where('kode_unit_kerja', '!=', $submission->unit_kerja_id) as $row)
-                                <option value="{{ $row->kode_unit_kerja }}">
+                                @foreach ($workunit as $row)
+                                <option value="{{ $row->id_unit_kerja }}">
                                     {{ $row->kode_unit_kerja.' - '.$row->nama_unit_kerja }}
                                 </option>
                                 @endforeach
@@ -75,22 +70,28 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <small class="text-danger">
+                                *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
+                            </small>
+                        </div>
                         <label class="col-md-2 col-form-label">Surat Pengajuan</label>
                         <div class="col-md-10">
                             @if (!$submission->surat_pengajuan)
                             <div class="card-footer col-md-12 text-center border border-dark">
                                 <div class="btn btn-default btn-file">
                                     <i class="fas fa-upload"></i> Upload File
-                                    <input type="file" class="form-control image" name="surat_pengajuan" accept="" onchange="displaySelectedFileCountSubmission(this)">
+                                    <input type="file" class="form-control image" name="surat_pengajuan" accept=".pdf" onchange="displaySelectedFileCountSubmission(this)">
                                     <span id="selected-file-count-submission"></span>
                                 </div><br>
-                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">
-                            <a href="{{ url('/surat/surat-pengajuan/preview/'. $submission->surat_pengajuan) }}" target="_blank">
-                                Lihat Surat
-                            </a>
+                                <a href="{{ url('/surat/surat-pengajuan/preview/'. $submission->surat_pengajuan) }}" target="_blank">
+                                    Lihat Surat
+                                </a>
                             </div>
                             @endif
                         </div>
@@ -102,10 +103,10 @@
                             <div class="card-footer col-md-12 text-center border border-dark">
                                 <div class="btn btn-default btn-file">
                                     <i class="fas fa-upload"></i> Upload File
-                                    <input type="file" class="form-control image" name="surat_perintah" accept="" onchange="displaySelectedFileCountWarrent(this)">
+                                    <input type="file" class="form-control image" name="surat_perintah" accept=".pdf" onchange="displaySelectedFileCountWarrent(this)">
                                     <span id="selected-file-count-warrent"></span>
                                 </div><br>
-                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">

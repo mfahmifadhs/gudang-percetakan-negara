@@ -86,6 +86,12 @@
                             {{ \Carbon\carbon::parse($data->batas_waktu)->isoFormat('DD MMMM Y') }}
                         </div>
                         @endif
+                        <label class="col-md-2">Batas Waktu</label>
+                        <div class="col-md-10">:
+                            <a type="button" data-toggle="modal" data-target="#printBarcode" class="btn btn-warning btn-sm">
+                                <i class="fas fa-qrcode"></i> Cetak QRCode
+                            </a>
+                        </div>
                     @endif
                 </div>
                 <div class="form-group row">
@@ -141,7 +147,7 @@
                                         {{ $row->keterangan }}
                                     </td>
                                     <td class="text-center">
-                                        <a type="button" data-toggle="modal" onclick="showModal('{{ $row->id_detail }}')" class="btn btn-warning btn-sm">
+                                        <a type="button" href="{{ route('item.detail', $row->id_detail) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-pallet"></i>
                                         </a>
                                     </td>
@@ -198,6 +204,38 @@
         </div>
     </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="printBarcode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('submission.barcode', $data->id_pengajuan) }}" method="POST" target="_blank">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Posisi</label>
+                        <select name="position" class="form-control">
+                            <option value="">Atas</option>
+                            <option value="middle">Tengah</option>
+                            <option value="bottom">Bawah</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @foreach ($data->penyimpanan as $i => $row)
 <div class="modal fade" id="placement-{{ $row->id_detail }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

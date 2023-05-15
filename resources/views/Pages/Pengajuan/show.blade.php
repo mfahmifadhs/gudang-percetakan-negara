@@ -89,7 +89,8 @@
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id == 4)
-                                    <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : '' }}</span>
+                                    <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : ''}}</span>
+                                    <span>{{ $row->keterangan_proses }}</span>
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id != 4)
@@ -137,7 +138,7 @@
                                         @endif
                                     @endif
 
-                                    @if (Auth::user()->role_id == $row->user->role_id)
+                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja)
                                     <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>

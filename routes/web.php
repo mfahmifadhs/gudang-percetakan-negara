@@ -152,6 +152,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pengajuan/preview/{id}', [Pengajuan::class, 'Preview'])->name('submission.preview');
     Route::post('pengajuan/update/{id}', [Pengajuan::class, 'Update'])->name('submission.update');
 
+    Route::post('pengajuan/barcode/{id}', [Pengajuan::class, 'Barcode'])->name('submission.barcode');
+
     // Barang
     Route::get('barang/daftar', [Barang::class, 'Show'])->name('item.show');
     Route::get('barang/detail/{id}', [Barang::class, 'Detail'])->name('item.detail');
