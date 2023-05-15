@@ -23,7 +23,7 @@
 
 <section class="content">
     <div class="container-fluid">
-        <form action="{{ route('submission.post', $category) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('submission.post', $category) }}" method="POST">
             @csrf
             <div class="card card-warning card-outline">
                 <div class="card-header">
