@@ -51,13 +51,14 @@
                             <th rowspan="2" class="pb-5">Merek/Tipe</th>
                             <th rowspan="2" class="pb-5">NUP / Masa <br> Kadaluarsa</th>
                             <th rowspan="2" class="pb-5">Total <br> Barang</th>
-                            <th colspan="4">Lokasi <br> Penyimpanan</th>
+                            <th colspan="5">Lokasi <br> Penyimpanan</th>
                         </tr>
                         <tr>
                             <th>Nama Gedung</th>
                             <th>Kode Palet</th>
                             <th>Jumlah Masuk</th>
                             <th>Jumlah Keluar</th>
+                            <th>Sisa Stok</th>
                         </tr>
                     </thead>
                     @php $no = 1; @endphp
@@ -96,6 +97,12 @@
                             <td class="text-center">
                                 @foreach ($row->slot as $subRow)
                                     {{ (int) $subRow->total_keluar.' '.$row->satuan }}
+                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
+                                @endforeach
+                            </td>
+                            <td class="text-center">
+                                @foreach ($row->slot as $subRow)
+                                    {{ (int) $subRow->total_masuk - $subRow->total_keluar.' '.$row->satuan }}
                                     @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
                             </td>

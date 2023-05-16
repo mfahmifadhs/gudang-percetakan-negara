@@ -161,10 +161,56 @@
                                                     <div class="col-6">{{ (int) $row->total_masuk.' '.$item->satuan }}</div>
                                                     <div class="col-5">Jumlah Keluar</div>:
                                                     <div class="col-6">{{ (int) $row->total_keluar.' '.$item->satuan }}</div>
+                                                    <div class="col-5">Sisa Stok</div>:
+                                                    <div class="col-6">{{ (int) $row->total_masuk - $row->total_keluar.' '.$item->satuan }}</div>
+                                                    <div class="col-5">Riwayat</div>:
+                                                    <div class="col-6">
+                                                        <a type="button" class="text-primary" data-toggle="modal" data-target="#exampleModal">
+                                                            Lihat Riwayat
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <hr class="m-0 mb-2">
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="exampleModalLabel">Riwayat Barang</h6>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-2">No</div>
+                                                            <div class="col-4">Tanggal</div>
+                                                            <div class="col-3">Kategori</div>
+                                                            <div class="col-3">Jumlah</div>
+                                                        </div>
+                                                        <hr class="mb-2 mt-2">
+                                                        @foreach ($row->history as $i => $subRow)
+                                                        <div class="row">
+                                                            <div class="col-2">{{ $i + 1 }}</div>
+                                                            <div class="col-4">
+                                                                {{ \Carbon\carbon::parse($subRow->created_at)->isoFormat('DD/MM/Y') }}
+                                                            </div>
+                                                            <div class="col-3">
+                                                                {{ $subRow->kategori == 'masuk' ? 'Penyimpanan' : 'Pengambilan' }}
+                                                            </div>
+                                                            <div class="col-3">
+                                                                {{ $subRow->jumlah.' '.$item->satuan }}
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Tutup</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         @endforeach
@@ -178,5 +224,11 @@
         </section>
     </div>
 </body>
+
+
+<!-- jQuery -->
+<script src="{{ asset('dist/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{ asset('dist/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 </html>

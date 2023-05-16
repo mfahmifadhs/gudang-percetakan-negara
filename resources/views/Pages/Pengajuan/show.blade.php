@@ -56,6 +56,7 @@
                             <th>Tanggal</th>
                             <th>Unit Kerja</th>
                             <th>Perihal</th>
+                            <th>Keterangan</th>
                             <th style="width: 0%;" class="text-center">Total Barang</th>
                             <th style="width: 15%;" class="text-center">Proses <br> Pengajuan</th>
                             <th style="width: 0%;" class="text-center">Surat Pengajuan</th>
@@ -80,6 +81,7 @@
                             <td class="pt-3">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}</td>
                             <td class="pt-3">{{ $row->unitkerja->nama_unit_kerja }} </td>
                             <td class="pt-3">{{ $row->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }} </td>
+                            <td class="pt-3">{{ $row->keterangan }} </td>
                             <td class="pt-3 text-center">
                                 {{ $row->jenis_pengajuan == 'masuk' ? count($row->penyimpanan) : $row->riwayat->count() }}
                             </td>

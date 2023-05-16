@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('dist/plugins/select2/css/select2.min.css') }}">
 </head>
 
-<body class="hold-transition sidebar-mini sidebar-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse">
 
     <div class="wrapper">
 

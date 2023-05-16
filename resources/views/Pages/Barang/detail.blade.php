@@ -85,6 +85,7 @@
                             <th>Kode Palet</th>
                             <th>Jumlah Masuk</th>
                             <th>Jumlah Keluar</th>
+                            <th>Sisa Stok</th>
                             <th>Riwayat</th>
                         </tr>
                     </thead>
@@ -97,6 +98,7 @@
                             <td class="">{{ $row->kode_palet }}</td>
                             <td class="">{{ (int) $row->total_masuk.' '.$item->satuan }}</td>
                             <td class="">{{ (int) $row->total_keluar.' '.$item->satuan }}</td>
+                            <td class="">{{ (int) $row->total_masuk - $row->total_keluar.' '.$item->satuan }}</td>
                             <td class="text-center">
                                 <a type="button" data-toggle="modal" onclick="showModal('{{ $row->id_detail }}')" class="btn btn-warning btn-sm">
                                     <i class="fas fa-history"></i>

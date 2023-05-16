@@ -75,7 +75,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($submission->where('status_proses_id', '!=', 4 )->take(5) as $i => $row)
+                                    @foreach ($submission->where('status_proses_id', '!=', 4) as $i => $row)
                                     <tr>
                                         <td class="text-center">{{ $i + 1 }}</td>
                                         <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}</td>
