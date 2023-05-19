@@ -73,11 +73,7 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-10">
                             <small class="text-danger">
-<<<<<<< HEAD
-                                Untuk pengajuan permohonan darurat. Surat pengajuan dapat dilewati dan di upload nanti.
-=======
                                 *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                             </small>
                         </div>
                         <label class="col-md-2 col-form-label">Surat Pengajuan</label>
