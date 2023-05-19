@@ -73,7 +73,11 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-10">
                             <small class="text-danger">
+<<<<<<< HEAD
                                 Untuk pengajuan permohonan darurat. Surat pengajuan dapat dilewati dan di upload nanti.
+=======
+                                *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
+>>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                             </small>
                         </div>
                         <label class="col-md-2 col-form-label">Surat Pengajuan</label>
@@ -85,7 +89,7 @@
                                     <input type="file" class="form-control image" name="surat_pengajuan" accept=".pdf" onchange="displaySelectedFileCountSubmission(this)">
                                     <span id="selected-file-count-submission"></span>
                                 </div><br>
-                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">
@@ -106,7 +110,7 @@
                                     <input type="file" class="form-control image" name="surat_perintah" accept=".pdf" onchange="displaySelectedFileCountWarrent(this)">
                                     <span id="selected-file-count-warrent"></span>
                                 </div><br>
-                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                             </div>
                             @else
                             <div class="mt-2">
