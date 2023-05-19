@@ -39,11 +39,7 @@
                         <h6 class="text-bold">Prosedur Pengajuan Penyimpanan/Pengambilan Barang di Gudang Percetakan Negara</h6>
                         <h6 class="small">
                             1. Membuat pengajuan penyimpanan atau pengambilan barang, dengan mangupload surat permohonan yang sudah
-<<<<<<< HEAD
                             dibuat melalui Aplikasi Srikandi. <br>
-=======
-                               dibuat melalui Aplikasi Srikandi. <br>
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                             2. Menunggu persetujuan Ketua Tim Kerja Pegudangan Percetakan Negara. <br>
                             3. Melakukan pengiriman atau pengambilan barang. <br>
                             4. Proses Penapisan atau pengecekan oleh Petugas Gudang Percetakan Negara. <br>
@@ -54,11 +50,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-<<<<<<< HEAD
                 <div class="card">
-=======
-                <div class="card card-outline card-warning">
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                     <div class="card-header border-transparent">
                         <h3 class="card-title">Pengajuan Terbaru</h3><br>
                         <small>Pengajuan yang sedang diproses</small>
@@ -83,11 +75,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-<<<<<<< HEAD
                                     @foreach ($submission->where('status_proses_id', '!=', 4) as $i => $row)
-=======
-                                    @foreach ($submission->where('status_proses_id', '!=', 4 )->take(5) as $i => $row)
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                     <tr>
                                         <td class="text-center">{{ $i + 1 }}</td>
                                         <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}</td>
@@ -138,11 +126,7 @@
                                                 @if (Auth::user()->role_id == 2)
                                                 @if ($row->status_proses_id == 2)
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
-<<<<<<< HEAD
                                                     <i class="fas fa-tasks"></i> Penapisan
-=======
-                                                    <i c lass="fas fa-tasks"></i> Penapisan
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                                 </a>
                                                 @endif
 
@@ -153,15 +137,12 @@
                                                 @endif
                                                 @endif
 
-<<<<<<< HEAD
                                                 @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
                                                 @endif
 
-=======
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
                                                     <i class="fas fa-info-circle"></i> Detail
                                                 </a>
@@ -182,11 +163,7 @@
                 </div>
             </div>
             <!-- <div class="col-md-4">
-<<<<<<< HEAD
                 <div class="card">
-=======
-                <div class="card  card-outline card-warning">
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                     <div class="card-header border-transparent">
                         <h3 class="card-title">Batas Waktu Penyimpanan</h3><br>
                         <small>Batas Waktu Penyimpanan Kurang dari 1 tahun</small>

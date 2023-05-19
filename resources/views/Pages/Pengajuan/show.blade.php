@@ -91,12 +91,7 @@
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id == 4)
-<<<<<<< HEAD
                                 <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : '' }}</span>
-=======
-                                <span>Dapat Diproses {{ $row->keterangan_proses ? ','. $row->keterangan_proses : ''}}</span>
-                                <span>{{ $row->keterangan_proses }}</span>
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                 @endif
 
                                 @if ($row->status_proses_id == 2 && Auth::user()->role_id != 4)
@@ -124,46 +119,32 @@
 
                                 <div class="dropdown-menu">
                                     @if (Auth::user()->role_id == 3)
-                                    @if (!$row->status_pengajuan_id)
-                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.check', $row->id_pengajuan) }}">
-                                        <i class="fas fa-check-circle"></i> Verifikasi
-                                    </a>
-                                    @endif
+                                        @if (!$row->status_pengajuan_id)
+                                        <a class="dropdown-item btn" type="button" href="{{ route('submission.check', $row->id_pengajuan) }}">
+                                            <i class="fas fa-check-circle"></i> Verifikasi
+                                        </a>
+                                        @endif
                                     @endif
 
                                     @if (Auth::user()->role_id == 2)
-                                    @if ($row->status_proses_id == 2)
-                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
-                                        <i class="fas fa-tasks"></i> Penapisan
-                                    </a>
-<<<<<<< HEAD
-                                    @endif
+                                        @if ($row->status_proses_id == 2)
+                                        <a class="dropdown-item btn" type="button" href="{{ route('submission.filter', $row->id_pengajuan) }}">
+                                            <i class="fas fa-tasks"></i> Penapisan
+                                        </a>
+                                        @endif
 
-                                    @if ($row->status_proses_id == 3)
-                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
-                                        <i class="fas fa-dolly-flatbed"></i> Proses
-                                    </a>
-                                    @endif
+                                        @if ($row->status_proses_id == 3)
+                                        <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
+                                            <i class="fas fa-dolly-flatbed"></i> Proses
+                                        </a>
+                                        @endif
                                     @endif
 
                                     <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
                                         <i class="fas fa-info-circle"></i> Detail
-=======
-                                    @endif
-
-                                    @if ($row->status_proses_id == 3)
-                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.process', $row->id_pengajuan) }}">
-                                        <i class="fas fa-dolly-flatbed"></i> Proses
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                     </a>
-                                    @endif
-                                    @endif
 
-<<<<<<< HEAD
                                     @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
-=======
-                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja)
->>>>>>> 98cf633a1661b1700ad261ef61abc5d09e9085d9
                                     <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
