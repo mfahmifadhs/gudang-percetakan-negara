@@ -107,7 +107,7 @@ class Pengajuan extends Controller
 
         } else {
             $category  = 'preview';
-            $workunit  = workunitModel::get();
+            $workunit  = workunitModel::where('id_unit_kerja', Auth::user()->pegawai->unit_kerja_id)->get();
             $employee  = employeeModel::get();
             $data      = $request->all();
 
