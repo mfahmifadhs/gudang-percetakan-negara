@@ -117,6 +117,40 @@ class Pengajuan extends Controller
             $file['surat_perintah']  = $suratPerintah ? $request->surat_perintah : null;
             $resFile = $file;
 
+            $list_pengajuan  = submissionModel::count();
+            $total_pengajuan = str_pad($list_pengajuan + 1, 4, 0, STR_PAD_LEFT);
+            $id_pengajuan    = Carbon::now()->isoFormat('DDMMYY').$total_pengajuan;
+
+            $create = new submissionModel();
+            $create->id_pengajuan      = $id_pengajuan;
+            $create->user_id           = Auth::user()->id;
+            $create->pegawai_id        = Auth::user()->pegawai_id;
+            $create->unit_kerja_id     = $request->unit_kerja_id;
+            $create->jenis_pengajuan   = $request->jenis_pengajuan;
+            $create->tanggal_pengajuan = $request->tanggal_pengajuan;
+            $create->keterangan        = $request->keterangan;
+            $create->status_proses_id  = 1;
+            $create->created_at        = Carbon::now();
+            $create->save();
+
+            $submission = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
+            if (!$submission->surat_pengajuan && $request->surat_pengajuan) {
+                $file  = $request->file('surat_pengajuan');
+                $filename = $file->getClientOriginalName();
+                $surat = $file->storeAs('public/files/surat_pengajuan', $filename);
+                $surat_pengajuan = Crypt::encrypt($surat);
+                submissionModel::where('id_pengajuan', $id_pengajuan)->update(['surat_pengajuan' => $surat_pengajuan]);
+            }
+
+            if (!$submission->surat_perintah && $request->surat_perintah) {
+                $file  = $request->file('surat_perintah');
+                $filename = $file->getClientOriginalName();
+                $surat = $file->storePubliclyAs('public/files/surat_perintah', $filename);
+                $surat_perintah = Crypt::encrypt($surat);
+
+                submissionModel::where('id_pengajuan', $id_pengajuan)->update(['surat_perintah' => $surat_perintah]);
+            }
+
             $resItem   = [];
             foreach ($request->file('file_barang') as $key => $file) {
                 $fileArr = Excel::toArray([], $file);
@@ -139,6 +173,20 @@ class Pengajuan extends Controller
                                 'tahun'       => $row[6],
                                 'keterangan'  => $row[7]
                             ];
+
+                            $detail = new submissionDetailModel();
+                            $detail->pengajuan_id       = $id_pengajuan;
+                            $detail->jenis_barang_id    = 441;
+                            $detail->nama_barang        = $row[1];
+                            $detail->catatan            = $row[2];
+                            $detail->keterangan         = $row[7];
+                            $detail->deskripsi          = $row[5];
+                            $detail->kondisi_barang     = $row[4];
+                            $detail->tahun_perolehan    = $row[6];
+                            $detail->jumlah_pengajuan   = $row[3];
+                            $detail->satuan             = 'unit';
+                            $detail->created_at         = Carbon::now();
+                            $detail->save();
                         }
                         $resItem = $dataItem;
                     }
@@ -159,6 +207,20 @@ class Pengajuan extends Controller
                                 'expired'     => $row[6],
                                 'keterangan'  => $row[7]
                             ];
+
+                            $detail = new submissionDetailModel();
+                            $detail->pengajuan_id       = $id_pengajuan;
+                            $detail->jenis_barang_id    = 442;
+                            $detail->nama_barang        = $row[1];
+                            $detail->catatan            = $row[2];
+                            $detail->keterangan         = $row[7];
+                            $detail->deskripsi          = $row[4];
+                            $detail->kondisi_barang     = 'Baik';
+                            $detail->tahun_perolehan    = $row[5];
+                            $detail->jumlah_pengajuan   = $row[2];
+                            $detail->satuan             = $row[3];
+                            $detail->created_at         = Carbon::now();
+                            $detail->save();
                         }
                         $resItem = $dataItem;
                     }
@@ -170,26 +232,30 @@ class Pengajuan extends Controller
             }
         }
 
-        return view('Pages/Pengajuan/preview', compact('category', 'workunit', 'employee', 'data', 'resArr', 'resFile', 'kodeForm'));
+        $pengajuan = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
+
+        return redirect()->route('submission.detail', $id_pengajuan)->with('success', 'Berhasil Membuat Pengajuan');
     }
 
     // Process
 
     public function Store(Request $request, $category)
     {
-        $id_pengajuan = Carbon::now()->isoFormat('DMYYsmh');
+        dd($request->all());
+        $id_pengajuan = $request->id_pengajuan;
+        // $id_pengajuan = Carbon::now()->isoFormat('DMYYsmh');
 
-        $create = new submissionModel();
-        $create->id_pengajuan      = $id_pengajuan;
-        $create->user_id           = Auth::user()->id;
-        $create->pegawai_id        = Auth::user()->pegawai_id;
-        $create->unit_kerja_id     = $request->unit_kerja_id;
-        $create->jenis_pengajuan   = $request->jenis_pengajuan;
-        $create->tanggal_pengajuan = $request->tanggal_pengajuan;
-        $create->keterangan        = $request->keterangan;
-        $create->status_proses_id  = 1;
-        $create->created_at        = Carbon::now();
-        $create->save();
+        // $create = new submissionModel();
+        // $create->id_pengajuan      = $id_pengajuan;
+        // $create->user_id           = Auth::user()->id;
+        // $create->pegawai_id        = Auth::user()->pegawai_id;
+        // $create->unit_kerja_id     = $request->unit_kerja_id;
+        // $create->jenis_pengajuan   = $request->jenis_pengajuan;
+        // $create->tanggal_pengajuan = $request->tanggal_pengajuan;
+        // $create->keterangan        = $request->keterangan;
+        // $create->status_proses_id  = 1;
+        // $create->created_at        = Carbon::now();
+        // $create->save();
 
         $submission = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
         if (!$submission->surat_pengajuan && $request->surat_pengajuan) {

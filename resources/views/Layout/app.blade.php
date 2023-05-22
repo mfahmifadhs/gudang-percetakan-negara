@@ -34,9 +34,9 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <!-- <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{{ asset('dist/img/logo-kemenkes-brown.png') }}" alt="Sistem Informasi Pergudangan" height="200">
-        </div> -->
+        <div class="preloader">
+            <div class="loader"></div>
+        </div>
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-light">
@@ -83,29 +83,22 @@
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
                 <img src="{{ asset('dist/img/logo-kemenkes-icon.png') }}" alt="Sistem Informasi Pergudangan" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">SIP KEMENKES</span>
+                <span class="brand-text font-weight-light">GUDANG PN</span>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
+                <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
                         <a href="#" class="d-block">
-                            {{ in_array(Auth::user()->role_id, [1,2]) ?
-                                Auth::user()->role->nama_role
-                                :
-                                Auth::user()->pegawai->nama_pegawai
-                            }}
+                            <h6>{{ Auth::user()->pegawai->nama_pegawai }}</h6>
                         </a>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- SidebarSearch Form -->
-                <div class="form-inline">
+                <!-- <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
                         <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
@@ -114,7 +107,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">

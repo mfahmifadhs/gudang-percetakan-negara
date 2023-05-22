@@ -123,108 +123,106 @@
                     <h4 class="card-title">Informasi Barang</h4>
                 </div>
                 <div class="card-body">
-                    @foreach ($resArr as $row)
-                    @if ($row['data_barang'])
-                    @if ($row['kode_form'] == 101)
-                    <b>Barang Milik Negara (BMN)</b>
-                    <table id="table-preview-101" class="table table-bordered">
-                        <thead class="text-center medium">
-                            <tr>
-                                <th class="p-4">No</td>
-                                <th class="p-4">Nama Barang</td>
-                                <th class="p-4">Merek/Tipe</td>
-                                <th class="p-4">NUP</td>
-                                <th class="p-4">Kondisi</td>
-                                <th class="p-3">Jumlah <br> Unit</td>
-                                <th class="p-3">Tahun <br> Perolehan</td>
-                                <th class="p-4">Keterangan</td>
-                            </tr>
-                        </thead>
-                        @php $no = 1; @endphp
-                        <tbody class="small">
-                            @foreach($row['data_barang'] as $rowItem)
-                            <tr>
-                                <td class="text-center">
-                                    {{ $no++ }}
-                                </td>
-                                <td>
-                                    <input type="hidden" name="jenis_barang[]" value="441">
-                                    <input type="text" name="nama_barang[]" class="form-control input-border-bottom" value="{{ $rowItem['nama_barang'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="deskripsi[]" class="form-control input-border-bottom" value="{{ $rowItem['deskripsi'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="catatan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['nup'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="kondisi[]" class="form-control input-border-bottom" value="{{ $rowItem['kondisi'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="jumlah[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['jumlah'] }}">
-                                    <input type="hidden" name="satuan[]" value="unit">
-                                </td>
-                                <td class="text-center">
-                                    <input type="text" name="tahun_perolehan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['tahun'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="keterangan_barang[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['keterangan'] }}">
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @else
-                    <b>Barang Persediaan</b>
-                    <table id="table-preview-102" class="table table-bordered">
-                        <thead class="text-center medium">
-                            <tr>
-                                <th class="p-4">No</td>
-                                <th class="p-4">Nama Barang</td>
-                                <th class="p-4">Merek/Tipe</td>
-                                <th class="p-4">Jumlah</td>
-                                <th class="p-4">Satuan</td>
-                                <th class="p-3">Tahun <br> Perolehan</td>
-                                <th class="p-3">Masa <br> Kadaluarsa</td>
-                                <th class="p-4">Keterangan</td>
-                            </tr>
-                        </thead>
-                        @php $no = 1; @endphp
-                        <tbody class="small">
-                            @foreach($row['data_barang'] as $rowItem)
-                            <tr>
-                                <td class="text-center">
-                                    {{ $no++ }}
-                                </td>
-                                <td>
-                                    <input type="hidden" name="jenis_barang[]" value="442">
-                                    <input type="text" name="nama_barang[]" class="form-control input-border-bottom" value="{{ $rowItem['nama_barang'] }}">
-                                    <input type="hidden" name="kondisi[]" class="form-control input-border-bottom" value="Baik">
-                                </td>
-                                <td>
-                                    <input type="text" name="deskripsi[]" class="form-control input-border-bottom" value="{{ $rowItem['deskripsi'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="jumlah[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['jumlah'] }}">
-                                </td>
-                                <td class="text-center">
-                                    <input type="text" name="satuan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['satuan'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="tahun_perolehan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['tahun'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="catatan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['expired'] }}">
-                                </td>
-                                <td>
-                                    <input type="text" name="keterangan_barang[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['keterangan'] }}">
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    @endif
-                    @endif
+                    @foreach ($pengajuan->penyimpanan->take(1) as $row)
+                        @if ($row->jenis_barang_id == '441')
+                        <table id="table-preview-101" class="table table-bordered">
+                            <thead class="text-center medium">
+                                <tr>
+                                    <th class="p-4">No</td>
+                                    <th class="p-4">Nama Barang</td>
+                                    <th class="p-4">Merek/Tipe</td>
+                                    <th class="p-4">NUP</td>
+                                    <th class="p-4">Kondisi</td>
+                                    <th class="p-3">Jumlah <br> Unit</td>
+                                    <th class="p-3">Tahun <br> Perolehan</td>
+                                    <th class="p-4">Keterangan</td>
+                                </tr>
+                            </thead>
+                            @php $no = 1; @endphp
+                            <tbody class="small">
+                                @foreach($pengajuan->penyimpanan as $rowItem)
+                                <tr>
+                                    <td class="text-center">
+                                        {{ $no++ }}
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="id_detail[]" class="form-control" value="{{ $rowItem->id_detail }}">
+                                        <input type="text" name="nama_barang[]" class="form-control input-border-bottom" value="{{ $rowItem->nama_barang }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="deskripsi[]" class="form-control input-border-bottom" value="{{ $rowItem->deskripsi }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="catatan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->catatan }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="kondisi[]" class="form-control input-border-bottom" value="{{ $rowItem->kondisi_barang }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="jumlah[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->jumlah_pengajuan }}">
+                                        <input type="hidden" name="satuan[]" value="unit">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" name="tahun_perolehan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->tahun_perolehan }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="keterangan_barang[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->keterangan }}">
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
+
+                        @if ($row->jenis_barang_id == '442')
+                        <b>Barang Persediaan</b>
+                        <table id="table-preview-102" class="table table-bordered">
+                            <thead class="text-center medium">
+                                <tr>
+                                    <th class="p-4">No</td>
+                                    <th class="p-4">Nama Barang</td>
+                                    <th class="p-4">Merek/Tipe</td>
+                                    <th class="p-4">Jumlah</td>
+                                    <th class="p-4">Satuan</td>
+                                    <th class="p-3">Tahun <br> Perolehan</td>
+                                    <th class="p-3">Masa <br> Kadaluarsa</td>
+                                    <th class="p-4">Keterangan</td>
+                                </tr>
+                            </thead>
+                            @php $no = 1; @endphp
+                            <tbody class="small">
+                                @foreach($pengajuan->penyimpanan as $rowItem)
+                                <tr>
+                                    <td class="text-center">
+                                        {{ $no++ }}
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="id_detail[]" class="form-control" value="{{ $rowItem->id_detail }}">
+                                        <input type="text" name="nama_barang[]" class="form-control input-border-bottom" value="{{ $rowItem->nama_barang }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="deskripsi[]" class="form-control input-border-bottom" value="{{ $rowItem->deskripsi }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="jumlah[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->jumlah_pengajuan }}">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" name="satuan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->satuan }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="tahun_perolehan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->tahun_perolehan }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="catatan[]" class="form-control input-border-bottom text-center" value="{{ $rowItem->catatan }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="keterangan_barang[]" class="form-control input-border-bottom text-center" value="{{ $rowItem['keterangan'] }}">
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
                     @endforeach
                 </div>
             </div>
