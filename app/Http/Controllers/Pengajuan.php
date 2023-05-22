@@ -232,8 +232,6 @@ class Pengajuan extends Controller
             }
         }
 
-        $pengajuan = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
-
         return redirect()->route('submission.detail', $id_pengajuan)->with('success', 'Berhasil Membuat Pengajuan');
     }
 
