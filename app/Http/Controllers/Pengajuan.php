@@ -241,20 +241,21 @@ class Pengajuan extends Controller
 
     public function Store(Request $request, $category)
     {
-        $id_pengajuan = $request->id_pengajuan;
-        // $id_pengajuan = Carbon::now()->isoFormat('DMYYsmh');
+        $list_pengajuan  = submissionModel::count();
+        $total_pengajuan = str_pad($list_pengajuan + 1, 4, 0, STR_PAD_LEFT);
+        $id_pengajuan    = Carbon::now()->isoFormat('DDMMYY').$total_pengajuan;
 
-        // $create = new submissionModel();
-        // $create->id_pengajuan      = $id_pengajuan;
-        // $create->user_id           = Auth::user()->id;
-        // $create->pegawai_id        = Auth::user()->pegawai_id;
-        // $create->unit_kerja_id     = $request->unit_kerja_id;
-        // $create->jenis_pengajuan   = $request->jenis_pengajuan;
-        // $create->tanggal_pengajuan = $request->tanggal_pengajuan;
-        // $create->keterangan        = $request->keterangan;
-        // $create->status_proses_id  = 1;
-        // $create->created_at        = Carbon::now();
-        // $create->save();
+        $create = new submissionModel();
+        $create->id_pengajuan      = $id_pengajuan;
+        $create->user_id           = Auth::user()->id;
+        $create->pegawai_id        = Auth::user()->pegawai_id;
+        $create->unit_kerja_id     = $request->unit_kerja_id;
+        $create->jenis_pengajuan   = $request->jenis_pengajuan;
+        $create->tanggal_pengajuan = $request->tanggal_pengajuan;
+        $create->keterangan        = $request->keterangan;
+        $create->status_proses_id  = 1;
+        $create->created_at        = Carbon::now();
+        $create->save();
 
         $submission = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
         if (!$submission->surat_pengajuan && $request->surat_pengajuan) {
