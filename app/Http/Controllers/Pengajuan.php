@@ -177,6 +177,10 @@ class Pengajuan extends Controller
 
     public function Store(Request $request, $category)
     {
+	if (Auth::user()->nip == 24101) {
+	  dd($request->all());
+	}
+	
         $id_pengajuan = Carbon::now()->isoFormat('DMYYsmh');
 
         $create = new submissionModel();
@@ -190,6 +194,8 @@ class Pengajuan extends Controller
         $create->status_proses_id  = 1;
         $create->created_at        = Carbon::now();
         $create->save();
+
+	
 
         $submission = submissionModel::where('id_pengajuan', $id_pengajuan)->first();
         if (!$submission->surat_pengajuan && $request->surat_pengajuan) {

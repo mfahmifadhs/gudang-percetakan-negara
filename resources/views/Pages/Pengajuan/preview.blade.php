@@ -195,6 +195,7 @@
                             <tr>
                                 <td class="text-center">
                                     {{ $no++ }}
+				    <input type="hidden" name="cobain[]" value={{ count($row['data_barang']) }}>
                                 </td>
                                 <td>
                                     <input type="hidden" name="jenis_barang[]" value="442">
