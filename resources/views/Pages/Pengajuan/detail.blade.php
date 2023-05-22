@@ -23,7 +23,16 @@
 
 <section class="content">
     <div class="container-fluid">
-        @csrf
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p style="color:white;margin: auto;">{{ $message }}</p>
+        </div>
+        @endif
+        @if ($message = Session::get('failed'))
+        <div class="alert alert-danger">
+            <p style="color:white;margin: auto;">{{ $message }}</p>
+        </div>
+        @endif
         <div class="card card-warning card-outline">
             <div class="card-header">
                 <h3 class="card-title">Informasi Pengusul</h3>
@@ -100,7 +109,7 @@
                     </label>
                     <div class="col-md-12">
                         @if ($data->jenis_pengajuan == 'masuk')
-                        <table id="table-preview-101" class="table table-bordered" style="font-size: 15px;">
+                        <table id="table-preview-101" class="table table-bordered table-striped" style="font-size: 15px;">
                             <thead class="text-center">
                                 <tr>
                                     <th class="p-4">No</td>
@@ -116,7 +125,7 @@
                                     <th class="p-3">Jumlah <br> Diterima</td>
                                     <th class="p-4">Satuan</td>
                                     <th class="p-4">Keterangan</td>
-                                    <th class="p-3">Lokasi <br> Penyimpanan</th>
+                                    <!-- <th class="p-3"></th> -->
                                 </tr>
                             </thead>
                             @php $no = 1; @endphp
@@ -125,6 +134,9 @@
                                 <tr>
                                     <td class="text-center">
                                         {{ $no++ }}
+                                        <a href="{{ route('item.detail', $row->id_detail) }}">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
                                     </td>
                                     <td>{{ $row->nama_barang }}</td>
                                     <td>{{ $row->deskripsi }}</td>
@@ -146,11 +158,11 @@
                                     <td class="text-center">
                                         {{ $row->keterangan }}
                                     </td>
-                                    <td class="text-center">
-                                        <a type="button" href="{{ route('item.detail', $row->id_detail) }}" class="btn btn-warning btn-sm">
+                                    <!-- <td class="text-center">
+                                        <a type="button" href="{{ route('item.detail', $row->id_detail) }}" class="btn btn-warning btn-xs">
                                             <i class="fas fa-pallet"></i>
                                         </a>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -162,7 +174,11 @@
                                     <th class="text-center">No</th>
                                     <th>Nama Barang</th>
                                     <th>Deskripsi</th>
-                                    <th>NUP/Masa Kadaluarsa</th>
+                                    @if ($catatan != 'NUP')
+                                        <th class="p-3">{{ $catatan }}</td>
+                                    @else
+                                        <th class="p-4">{{ $catatan }}</td>
+                                    @endif
                                     <th class="text-center">Kondisi</th>
                                     <th class="text-center">Jumlah</th>
                                     <th class="text-center">Satuan</th>
@@ -175,6 +191,9 @@
                                 <tr>
                                     <td class="text-center">
                                         {{ $no++ }}
+                                        <a href="{{ route('item.detail', $row->id_detail) }}">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
                                     </td>
                                     <td>{{ $row->detailPenyimpanan->barang->nama_barang }}</td>
                                     <td>{{ $row->detailPenyimpanan->barang->deskripsi }}</td>
@@ -301,19 +320,10 @@
 @section('js')
 <script>
     $("#table-preview-101").DataTable({
-        'paging': false,
-        'info': false,
-        'searching': false,
-        'sort': false,
-        'columnDefs': [
-            {'width': '0%', 'targets': 0},
-            {'width': '15%', 'targets': 1},
-            {'width': '15%', 'targets': 2},
-            {'width': '10%', 'targets': 3},
-            {'width': '10%', 'targets': 4},
-            {'width': '5%', 'targets': 5},
-            {'width': '5%', 'targets': 6},
-        ]
+        'paging': true,
+        'info': true,
+        'searching': true,
+        'sort': true
     });
 
     $(function() {

@@ -71,17 +71,22 @@
                             </div>
                         </div>
 
-                        @if ($category == 'pengambilan')
                         <div class="form-group row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-10">
+                                <small class="text-danger">
+                                    *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
+                                </small>
+                            </div>
                             <label class="col-md-2 col-form-label">Surat Pengajuan</label>
                             <div class="col-md-10">
                                 <div class="card-footer col-md-12 text-center border border-dark">
                                     <div class="btn btn-default btn-file">
                                         <i class="fas fa-upload"></i> Upload File
-                                        <input type="file" class="form-control image" name="surat_pengajuan" onchange="displaySelectedFileCountSubmission(this)">
+                                        <input type="file" class="form-control image" name="surat_pengajuan" accept=".pdf" onchange="displaySelectedFileCountSubmission(this)">
                                         <span id="selected-file-count-submission"></span>
                                     </div><br>
-                                    <span class="help-block small">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                    <span class="help-block small">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                                 </div>
                             </div>
                         </div>
@@ -91,14 +96,13 @@
                                 <div class="card-footer col-md-12 text-center border border-dark">
                                     <div class="btn btn-default btn-file">
                                         <i class="fas fa-upload"></i> Upload File
-                                        <input type="file" class="form-control image" name="surat_perintah" accept="" onchange="displaySelectedFileCountWarrent(this)">
+                                        <input type="file" class="form-control image" name="surat_perintah" accept=".pdf" onchange="displaySelectedFileCountWarrent(this)">
                                         <span id="selected-file-count-warrent"></span>
                                     </div><br>
-                                    <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                                    <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.pdf)</span>
                                 </div>
                             </div>
                         </div>
-                        @endif
 
                         @if ($category == 'penyimpanan')
                         <div class="form-group row">
