@@ -244,7 +244,7 @@
                                 <tr>
                                     <td class="text-center">1</td>
                                     <td>
-                                        <select class="form-control select-border-bottom warehouse" name="warehouse_id[]" data-id="{{ $row->id_detail }}">
+                                        <select class="form-control select-border-bottom warehouse" name="warehouse_id[]" data-id="{{ $i }}">
                                             <option value="">-- Pilih Gedung --</option>
                                             @foreach ($warehouse as $wh)
                                             <option value="{{ $wh->id_gedung }}">
@@ -254,7 +254,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control select-border-bottom slot" name="slot_id[]" data-id="{{ $row->id_detail }}">
+                                        <select class="form-control select-border-bottom slot" name="slot_id[]" data-id="{{ $i }}">
                                             <option value="">-- Pilih Slot --</option>
                                         </select>
                                     </td>
@@ -278,8 +278,7 @@
                         <a href="#" class="btn btn-success btn-sm btn-add-penyimpanan" data-id="{{ $row->id_detail }}">
                             <i class="fas fa-plus-circle"></i> Tambah Baris
                         </a>
-                        <a href="#" class="btn btn-danger btn-sm btn-delete-row" data-id="{{ $row->id_detail }}"
-                        id="btn-hapus-{{ $row->id_detail }}">
+                        <a href="#" class="btn btn-danger btn-sm btn-delete-row" data-id="{{ $row->id_detail }}" id="btn-hapus-{{ $row->id_detail }}">
                             <i class="fas fa-minus-circle"></i> Hapus Baris
                         </a>
                     </div>
@@ -400,42 +399,40 @@
     }
 
     // Menampilkan slot berdasarkan gedung
-    $(document).ready(function() {
-        $('.warehouse').change(function() {
-            var id_detail = $(this).data('id')
-            var id_gedung = $(this).val()
+    $(document).on('change', '.warehouse', function() {
+        var id_detail = $(this).data('id')
+        var id_gedung = $(this).val()
 
-            if (id_gedung != '') {
-                $.ajax({
-                    url: '{{ route("submission.getSlotByWarehouse") }}',
-                    type: 'POST',
-                    data: {
-                        id_gedung: id_gedung,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('.slot[data-id="' + id_detail + '"]').html(
-                            '<option value="">-- Pilih Slot --</option>'
+        if (id_gedung != '') {
+            $.ajax({
+                url: '{{ route("submission.getSlotByWarehouse") }}',
+                type: 'POST',
+                data: {
+                    id_gedung: id_gedung,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('.slot[data-id="' + id_detail + '"]').html(
+                        '<option value="">-- Pilih Slot --</option>'
+                    )
+                    $.each(data, function(index, slot) {
+                        $('.slot[data-id="' + id_detail + '"]').append(
+                            '<option value="' + slot.id_penyimpanan + '">' + slot.kode_palet + '</option>'
                         )
-                        $.each(data, function(index, slot) {
-                            $('.slot[data-id="' + id_detail + '"]').append(
-                                '<option value="' + slot.id_penyimpanan + '">' + slot.kode_palet + '</option>'
-                            )
-                        });
-                    },
-                    error: function() {
-                        alert('Terjadi kesalahan. Silakan coba lagi.');
-                    }
-                });
-            } else {
-                $slot.html('<option value="">-- Pilih Slot --</option>');
-            }
-        })
+                    });
+                },
+                error: function() {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            });
+        } else {
+            $slot.html('<option value="">-- Pilih Slot --</option>');
+        }
     })
 
     $(document).ready(function() {
-        $('.btn-add-penyimpanan').click(function(e) {
+        $('.btn-add-penyimpanan').on('click', function(e) {
 
             e.preventDefault();
             var id_detail = $(this).data('id')
@@ -463,17 +460,23 @@
                 var lastRow = table.rows[table.rows.length - 1]
                 var newRow = lastRow.cloneNode(true)
                 var inputs = newRow.querySelectorAll('input')
+                var warehouseSelect = newRow.querySelector('.warehouse')
+                var slotSelect = newRow.querySelector('.slot')
 
                 for (var i = 0; i < inputs.length; i++) {
                     inputs[i].value = 0
                 }
 
                 var rowNumber = parseInt(newRow.cells[0].textContent) + 1
+                var dataId = id_detail + '[' + (rowNumber - 1) + ']';
+
                 newRow.cells[0].textContent = rowNumber
                 table.tBodies[0].appendChild(newRow)
                 newRow.querySelector('.sisa-barang').value = sisaBarang;
                 newRow.querySelector('.id-detail').value = id_detail;
                 newRow.querySelector('.satuan').value = satuan;
+                warehouseSelect.setAttribute('data-id', dataId);
+                slotSelect.setAttribute('data-id', dataId);
 
 
 

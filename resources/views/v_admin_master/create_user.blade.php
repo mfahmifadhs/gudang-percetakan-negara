@@ -157,7 +157,6 @@
 
     $('.select2-workunit').change(function(){
       var workunit = $(this).val();
-      console.log(workunit);
       if(workunit){
           $.ajax({
               type:"GET",
