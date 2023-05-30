@@ -118,7 +118,7 @@
                                 <div class="card-footer col-md-12 text-center border border-dark">
                                     <div class="btn btn-default btn-file">
                                         <i class="fas fa-upload"></i> Upload File
-                                        <input type="file" class="form-control image" name="file_barang[]" onchange="displaySelectedFileCountItem(this)" required>
+                                        <input type="file" class="form-control image" name="file_barang[]" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="displaySelectedFileCountItem(this)" required>
                                         <span id="selected-file-count-item"></span>
                                     </div><br>
                                     <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
