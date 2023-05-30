@@ -56,6 +56,10 @@
                     <div class="col-md-10">:
                         {{ $data->unitkerja->nama_unit_kerja }}
                     </div>
+                    <label class="col-md-2">Keterangan</label>
+                    <div class="col-md-10">:
+                        {{ $data->keterangan }}
+                    </div>
                     <label class="col-md-2">Surat Pengajuan</label>
                     <div class="col-md-10">:
                         @if (!$data->surat_pengajuan)
