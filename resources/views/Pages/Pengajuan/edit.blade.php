@@ -57,7 +57,7 @@
                             <select class="form-control" id="workunit" name="unit_kerja_id">
                                 @foreach ($workunit as $row)
                                 <option value="{{ $row->id_unit_kerja }}">
-                                    {{ $row->kode_unit_kerja.' - '.$row->nama_unit_kerja }}
+                                    {{ $row->nama_unit_kerja }}
                                 </option>
                                 @endforeach
                             </select>
