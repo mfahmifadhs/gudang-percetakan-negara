@@ -68,8 +68,8 @@
                             <div class="col-md-7">{{ $item->jumlah_diterima.' '.$item->satuan }}</div>
                             <label class="col-md-4">Sisa Stok</label>:
                             <div class="col-md-7">{{ $stock.' '.$item->satuan }}</div>
-                            <label class="col-md-4">QR Code</label>:
                             @if (Auth::user()->role_id != 4)
+                            <label class="col-md-4">QR Code</label>:
                             <label class="col-md-7">
                                 <a type="button" data-toggle="modal" data-target="#printBarcode" class="btn btn-warning btn-sm">
                                     <i class="fas fa-qrcode"></i> Cetak QRCode
