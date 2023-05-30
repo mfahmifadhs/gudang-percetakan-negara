@@ -50,10 +50,10 @@
             </div>
             <div class="card-body">
                 <table id="table-show" class="table table-bordered table-striped" style="font-size: 15px;">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
                             <th class="text-center">No</th>
-                            <th>Tanggal</th>
+                            <th style="width: 10%;">Tanggal</th>
                             <th>Unit Kerja</th>
                             <th>Perihal</th>
                             <th>Keterangan</th>
@@ -78,7 +78,7 @@
                                 @endif
                                 {{ $no++ }}
                             </td>
-                            <td class="pt-3">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MM Y') }}</td>
+                            <td class="pt-3">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD-MMM-Y') }}</td>
                             <td class="pt-3">{{ $row->unitkerja->nama_unit_kerja }} </td>
                             <td class="pt-3">{{ $row->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }} </td>
                             <td class="pt-3">{{ $row->keterangan }} </td>
