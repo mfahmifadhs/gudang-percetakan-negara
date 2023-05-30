@@ -144,7 +144,7 @@
                                         <i class="fas fa-info-circle"></i> Detail
                                     </a>
 
-                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
+                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4 && $row->status_proses_id != 4)
                                     <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
