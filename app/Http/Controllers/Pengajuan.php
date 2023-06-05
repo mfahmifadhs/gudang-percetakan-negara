@@ -87,6 +87,8 @@ class Pengajuan extends Controller
                 ->join('t_pengajuan', 'id_pengajuan', 'pengajuan_id')
                 ->select('t_penyimpanan_detail.id_detail as stg_detail_id', 't_pengajuan_detail.id_detail as sub_detail_id',
                          't_pengajuan_detail.keterangan','t_pengajuan.*','t_pengajuan_detail.*','t_penyimpanan_detail.*')
+		->orderBy('nama_barang','ASC')
+		->orderBy('penyimpanan_id','ASC')
                 ->get();
         }
 
