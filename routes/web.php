@@ -156,7 +156,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Barang
     Route::get('barang/daftar', [Barang::class, 'Show'])->name('item.show');
-    Route::get('barang/detail/{id}', [Barang::class, 'Detail'])->name('item.detail');
+    Route::get('barang/detail/{ctg}/{id}', [Barang::class, 'Detail'])->name('item.detail');
     Route::post('barang/barcode/{id}', [Barang::class, 'Barcode'])->name('item.barcode');
 
     // Berita Acara

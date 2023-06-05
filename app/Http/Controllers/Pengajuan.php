@@ -239,9 +239,8 @@ class Pengajuan extends Controller
 
     public function Store(Request $request, $category)
     {
-        $list_pengajuan  = submissionModel::count();
-        $total_pengajuan = str_pad($list_pengajuan + 1, 4, 0, STR_PAD_LEFT);
-        $id_pengajuan    = Carbon::now()->isoFormat('DDMMYY').$total_pengajuan;
+        $format       = str_pad(submissionModel::count() + 1, 4, 0, STR_PAD_LEFT);
+        $id_pengajuan = (int) Carbon::now()->isoFormat('YYMMDD').$format;
 
         $create = new submissionModel();
         $create->id_pengajuan      = $id_pengajuan;

@@ -66,7 +66,7 @@
                         @foreach($item as $row)
                         <tr>
                             <td class="text-center">
-                                <a href="{{ route('item.detail', $row->id_detail) }}">
+                                <a href="{{ route('item.detail', ['ctg' => 'masuk', 'id' => $row->id_detail]) }}">
                                     <i class="fas fa-info-circle"></i>
                                 </a>
                                 {{ $no++ }}

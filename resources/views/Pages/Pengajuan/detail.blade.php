@@ -138,7 +138,7 @@
                                 <tr>
                                     <td class="text-center">
                                         {{ $no++ }}
-                                        <a href="{{ route('item.detail', $row->id_detail) }}">
+                                        <a href="{{ route('item.detail', ['ctg' => 'masuk', 'id' => $row->id_detail]) }}">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                     </td>
@@ -162,11 +162,6 @@
                                     <td class="text-center">
                                         {{ $row->keterangan }}
                                     </td>
-                                    <!-- <td class="text-center">
-                                        <a type="button" href="{{ route('item.detail', $row->id_detail) }}" class="btn btn-warning btn-xs">
-                                            <i class="fas fa-pallet"></i>
-                                        </a>
-                                    </td> -->
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -195,7 +190,7 @@
                                 <tr>
                                     <td class="text-center">
                                         {{ $no++ }}
-                                        <a href="{{ route('item.detail', $row->id_detail) }}">
+                                        <a href="{{ route('item.detail', ['ctg' => 'keluar', 'id' => $row->id_riwayat]) }}">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                     </td>

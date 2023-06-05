@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\statusModel;
 use App\Model\storageDetailModel;
+use App\Model\StorageHistory;
 use App\Model\storageModel;
 use App\Model\submissionDetailModel;
 use App\Model\submissionModel;
@@ -34,16 +35,32 @@ class Barang extends Controller
         return view('Pages/Barang/show', compact('item'));
     }
 
-    public function Detail($id) {
-        $item = submissionDetailModel::join('t_pengajuan','id_pengajuan','pengajuan_id')
-                ->where('id_detail', $id)
+    public function Detail($ctg, $id)
+    {
+
+        if ($ctg == 'masuk') {
+            $item = submissionDetailModel::join('t_pengajuan','id_pengajuan','pengajuan_id')
+                    ->where('id_detail', $id)
+                    ->first();
+
+            $in_stock  = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_masuk');
+            $out_stock = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_keluar');
+            $stock     = $in_stock - $out_stock;
+
+            return view('pages.barang.masuk.detail', compact('item','stock'));
+
+        } else {
+            $item = StorageHistory::join('t_penyimpanan_detail','id_detail','penyimpanan_detail_id')
+                ->join('t_pengajuan','id_pengajuan','pengajuan_id')
+                ->where('id_riwayat', $id)
                 ->first();
 
-        $in_stock  = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_masuk');
-        $out_stock = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_keluar');
-        $stock     = $in_stock - $out_stock;
+            $in_stock  = storageDetailModel::where('id_detail', $item->pengajuan_detail_id)->sum('total_masuk');
+            $out_stock = storageDetailModel::where('id_detail', $item->pengajuan_detail_id)->sum('total_keluar');
+            $stock     = $in_stock - $out_stock;
 
-        return view('Pages/Barang/detail', compact('item','stock'));
+            return view('pages.barang.keluar.detail', compact('item','stock'));
+        }
     }
 
 
