@@ -47,7 +47,7 @@ class Barang extends Controller
             $out_stock = storageDetailModel::where('pengajuan_detail_id', $id)->sum('total_keluar');
             $stock     = $in_stock - $out_stock;
 
-            return view('pages.barang.masuk.detail', compact('item','stock'));
+            return view('Pages/Barang/masuk/detail', compact('item','stock'));
 
         } else {
             $item = StorageHistory::join('t_penyimpanan_detail','id_detail','penyimpanan_detail_id')
@@ -59,7 +59,7 @@ class Barang extends Controller
             $out_stock = storageDetailModel::where('id_detail', $item->pengajuan_detail_id)->sum('total_keluar');
             $stock     = $in_stock - $out_stock;
 
-            return view('pages.barang.keluar.detail', compact('item','stock'));
+            return view('Pages/Barang/keluar/detail', compact('item','stock'));
         }
     }
 
