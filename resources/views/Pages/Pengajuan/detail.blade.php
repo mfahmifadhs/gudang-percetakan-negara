@@ -174,9 +174,9 @@
                                     <th>Nama Barang</th>
                                     <th>Deskripsi</th>
                                     @if ($catatan != 'NUP')
-                                        <th class="p-3">{{ $catatan }}</td>
+                                        <th>{{ $catatan }}</td>
                                     @else
-                                        <th class="p-4">{{ $catatan }}</td>
+                                        <th>{{ $catatan }}</td>
                                     @endif
                                     <th class="text-center">Kondisi</th>
                                     <th class="text-center">Jumlah</th>
