@@ -37,28 +37,28 @@
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-2">Tanggal Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Tanggal Pengajuan</label>
+                        <div class="col-md-10 col-7">:
                             {{ \Carbon\carbon::parse($data->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}
                         </div>
-                        <label class="col-md-2">Jenis Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Jenis Pengajuan</label>
+                        <div class="col-md-10 col-7">:
                             {{ $data->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}
                         </div>
-                        <label class="col-md-2">Unit Kerja</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Unit Kerja</label>
+                        <div class="col-md-10 col-7">:
                             {{ $data->pegawai->workunit->nama_unit_kerja }}
                         </div>
-                        <label class="col-md-2">Surat Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Pengajuan</label>
+                        <div class="col-md-10 col-7">:
                             @if (!$data->surat_pengajuan)
                             Tidak ada file yang di upload
                             @else
                             <a href="{{ url('/surat/preview/'. $data->surat_pengajuan) }}" target="_blank">Lihat Surat</a>
                             @endif
                         </div>
-                        <label class="col-md-2">Surat Perintah</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Perintah</label>
+                        <div class="col-md-10 col-7">:
                             @if (!$data->surat_perintah)
                             Tidak ada file yang di upload
                             @else

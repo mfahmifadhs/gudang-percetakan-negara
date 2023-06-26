@@ -78,7 +78,7 @@
                                     @foreach ($submission->where('status_proses_id', '!=', 4) as $i => $row)
                                     <tr>
                                         <td class="text-center">{{ $i + 1 }}</td>
-                                        <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD MMM Y') }}</td>
+                                        <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD/MM/Y') }}</td>
                                         <td>{{ $row->unitkerja->nama_unit_kerja }}</td>
                                         <td>
                                             @if ($row->status_proses_id == 1)

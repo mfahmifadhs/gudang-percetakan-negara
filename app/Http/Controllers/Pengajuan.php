@@ -214,7 +214,7 @@ class Pengajuan extends Controller
                             $detail->pengajuan_id       = $id_pengajuan;
                             $detail->jenis_barang_id    = 442;
                             $detail->nama_barang        = $row[1];
-                            $detail->catatan            = $row[2];
+                            $detail->catatan            = $row[6];
                             $detail->keterangan         = $row[7];
                             $detail->deskripsi          = $row[4];
                             $detail->kondisi_barang     = 'Baik';

@@ -37,28 +37,28 @@
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-2">Tanggal Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Tanggal Pengajuan</label>
+                        <div class="col-md-10 col-8">:
                             {{ \Carbon\carbon::parse($data->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}
                         </div>
-                        <label class="col-md-2">Jenis Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Jenis Pengajuan</label>
+                        <div class="col-md-10 col-8">:
                             {{ $data->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}
                         </div>
-                        <label class="col-md-2">Unit Kerja</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Unit Kerja</label>
+                        <div class="col-md-10 col-8">:
                             {{ $data->pegawai->workunit->nama_unit_kerja }}
                         </div>
-                        <label class="col-md-2">Surat Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Pengajuan</label>
+                        <div class="col-md-10 col-8">:
                             @if (!$data->surat_pengajuan)
                             Tidak ada file yang di upload
                             @else
                             <a href="{{ url('/surat/preview/'. $data->surat_pengajuan) }}" target="_blank">Lihat Surat</a>
                             @endif
                         </div>
-                        <label class="col-md-2">Surat Perintah</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Perintah</label>
+                        <div class="col-md-10 col-8">:
                             @if (!$data->surat_perintah)
                             Tidak ada file yang di upload
                             @else
@@ -71,20 +71,20 @@
                             Informasi Kedatangan <br>
                             <small class="text-danger"></small>
                         </label>
-                        <div class="col-md-2">Tanggal Kedatangan</div>:
-                        <div class="col-md-8">
+                        <div class="col-md-2 col-4">Tanggal Datang</div>:
+                        <div class="col-md-8 col-7">
                             <input type="datetime-local" class="form-control select-border-bottom" name="tanggal_datang" required>
                         </div>
-                        <div class="col-md-2">Nama Petugas</div>:
-                        <div class="col-md-8">
+                        <div class="col-md-2 col-4">Nama Petugas</div>:
+                        <div class="col-md-8 col-7">
                             <input type="text" class="form-control select-border-bottom" name="nama_petugas" required>
                         </div>
-                        <div class="col-md-2">Jabatan</div>:
-                        <div class="col-md-8">
+                        <div class="col-md-2 col-4">Jabatan</div>:
+                        <div class="col-md-8 col-7">
                             <input type="text" class="form-control select-border-bottom" name="jabatan_petugas" required>
                         </div>
-                        <div class="col-md-2">Nomor Mobil</div>:
-                        <div class="col-md-8">
+                        <div class="col-md-2 col-4">Nomor Mobil</div>:
+                        <div class="col-md-8 col-7">
                             <input type="text" class="form-control select-border-bottom text-uppercase" name="nomor_mobil" required>
                         </div>
                     </div>
@@ -96,17 +96,15 @@
                         <div class="col-md-12">
                             @if ($data->jenis_pengajuan == 'masuk')
                             <input type="hidden" name="category" value="masuk">
-                            <table class="table table-bordered" style="font-size: 15px;">
+                            <table class="table table-bordered table-responsive" style="font-size: 15px;">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</td>
-                                        <th>Nama Barang</td>
-                                        <th>Catatan</td>
-                                        <th>Keterangan</td>
-                                        <th style="width: 10%;" class="text-center">Permintaan</td>
+                                        <th style="width: 15%;">Barang</td>
+                                        <th style="width: 10%;" class="text-center">Pengajuan</td>
                                         <th style="width: 10%;" class="text-center">Diterima</td>
                                         <th style="width: 10%;" class="text-center">Satuan</td>
-                                        <th style="width: 20%;">Rencana Penghapusan/Distribusi</td>
+                                        <th>Keterangan</td>
                                     </tr>
                                 </thead>
                                 @php $no = 1; @endphp
@@ -119,8 +117,6 @@
                                             <input type="hidden" name="id_barang[]" value="{{ $row->id_detail }}">
                                         </td>
                                         <td class="pt-3">{{ $row->nama_barang }}</td>
-                                        <td class="pt-3">{{ $row->catatan }}</td>
-                                        <td class="pt-3">{{ $row->deskripsi }}</td>
                                         <td class="pt-3 text-center">
                                             {{ $row->jumlah_pengajuan }}
                                         </td>

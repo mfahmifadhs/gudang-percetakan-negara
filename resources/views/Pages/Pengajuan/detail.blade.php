@@ -111,24 +111,20 @@
                     <label class="col-md-12">
                         Informasi Barang
                     </label>
-                    <div class="col-md-12">
+                    <div class="col-md-12 table-responsive">
                         @if ($data->jenis_pengajuan == 'masuk')
                         <table id="table-preview-101" class="table table-bordered table-striped" style="font-size: 15px;">
                             <thead class="text-center">
                                 <tr>
-                                    <th class="p-4">No</td>
-                                    <th class="p-4">Nama Barang</td>
-                                    <th class="p-4">Merek/Tipe</td>
-                                    <th class="p-4">Kondisi</td>
-                                    @if ($catatan != 'NUP')
-                                        <th class="p-3">{{ $catatan }}</td>
-                                    @else
-                                        <th class="p-4">{{ $catatan }}</td>
-                                    @endif
-                                    <th class="p-3">Jumlah <br> Permintaan</td>
-                                    <th class="p-3">Jumlah <br> Diterima</td>
-                                    <th class="p-4">Satuan</td>
-                                    <th class="p-4">Keterangan</td>
+                                    <th>No</td>
+                                    <th>Nama Barang</td>
+                                    <th>Merek/Tipe</td>
+                                    <th>Kondisi</td>
+                                    <th>{{ $catatan }}</td>
+                                    <th>Pengajuan</td>
+                                    <th>Diterima</td>
+                                    <th>Satuan</td>
+                                    <th>Keterangan</td>
                                     <!-- <th class="p-3"></th> -->
                                 </tr>
                             </thead>

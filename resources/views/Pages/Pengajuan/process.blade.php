@@ -47,20 +47,20 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-2">Tanggal Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Tanggal</label>
+                        <div class="col-md-10 col-7">:
                             {{ \Carbon\carbon::parse($data->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}
                         </div>
-                        <label class="col-md-2">Jenis Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Pengajuan</label>
+                        <div class="col-md-10 col-7">:
                             {{ $data->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}
                         </div>
-                        <label class="col-md-2">Unit Kerja</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Unit Kerja</label>
+                        <div class="col-md-10 col-7">:
                             {{ $data->pegawai->workunit->nama_unit_kerja }}
                         </div>
-                        <label class="col-md-2">Surat Pengajuan</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Pengajuan</label>
+                        <div class="col-md-10 col-7">:
                             @if (!$data->surat_pengajuan)
                             Tidak ada file yang di upload
                             @else
@@ -69,8 +69,8 @@
                             </a>
                             @endif
                         </div>
-                        <label class="col-md-2">Surat Perintah</label>
-                        <div class="col-md-10">:
+                        <label class="col-md-2 col-4">Surat Perintah</label>
+                        <div class="col-md-10 col-7">:
                             @if (!$data->surat_perintah)
                             Tidak ada file yang di upload
                             @else
@@ -81,8 +81,8 @@
                         </div>
 
                         @if ($data->jenis_pengajuan == 'masuk')
-                        <label class="col-md-2">Batas Waktu Penyimpanan</label>&ensp;:
-                        <div class="col-md-4">
+                        <label class="col-md-2 col-4">Batas Waktu</label>&ensp;:
+                        <div class="col-md-4 col-7">
                             <input type="date" class="form-control select-border-bottom" name="batas_waktu" required>
                         </div>
                         @endif
@@ -95,16 +95,14 @@
                         <div class="col-md-12">
                             @if ($data->jenis_pengajuan == 'masuk')
                             <input type="hidden" name="category" value="masuk">
-                            <table class="table table-bordered" style="font-size: 15px;">
+                            <table class="table table-bordered table-responsive" style="font-size: 15px;">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</td>
-                                        <th>Nama Barang</td>
-                                        <th>Catatan</td>
+                                        <th>Barang</td>
                                         <th>Keterangan</td>
                                         <th style="width: 10%;" class="text-center">Jumlah</td>
                                         <th style="width: 10%;" class="text-center">Satuan</td>
-                                        <th style="width: 20%;">Rencana Penghapusan/Distribusi</td>
                                         <th style="width: 8%;" class="text-center">
                                             Penempatan
                                         </th>
@@ -119,15 +117,13 @@
                                             <input type="hidden" name="status" value="true">
                                         </td>
                                         <td class="pt-3">{{ $row->nama_barang }}</td>
-                                        <td class="pt-3">{{ $row->catatan }}</td>
-                                        <td class="pt-3">{{ $row->deskripsi }}</td>
+                                        <td class="pt-3">{{ $row->keterangan }}</td>
                                         <td class="pt-3 text-center">
                                             {{ $row->jumlah_diterima }}
                                         </td>
                                         <td class="pt-3 text-center">
                                             {{ $row->satuan }}
                                         </td>
-                                        <td class="pt-3">{{ $row->keterangan }}</td>
                                         <td class="text-center">
                                             <a type="button" data-toggle="modal" onclick="showModal('{{ $row->id_detail }}')" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-dolly-flatbed"></i>
@@ -136,7 +132,7 @@
                                     </tr>
                                     @endforeach
                                     <tr>
-                                        <td colspan="7">
+                                        <td colspan="5">
                                             Penempatan penyimpanan barang jika dalam satu lokasi yang sama.
                                         </td>
                                         <td class="text-center">
@@ -218,63 +214,68 @@
                 <input type="hidden" name="status" value="false">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <div class="col-md-2">Nama Barang</div>:
-                        <div class="col-md-9">{{ $row->nama_barang }}</div>
-                        <div class="col-md-2">Catatan</div>:
-                        <div class="col-md-9">{{ $row->catatan }}</div>
-                        <div class="col-md-2">Deskripsi</div>:
-                        <div class="col-md-9">{{ $row->deskripsi }}</div>
-                        <div class="col-md-2">Jumlah</div>:
-                        <div class="col-md-9">{{ $row->jumlah_diterima.' '.$row->satuan }}</div>
+                        <div class="col-md-2 col-4">Barang</div>:
+                        <div class="col-md-9 col-7">{{ $row->nama_barang }}</div>
+                        <div class="col-md-2 col-4">Catatan</div>:
+                        <div class="col-md-9 col-7">{{ $row->catatan }}</div>
+                        <div class="col-md-2 col-4">Deskripsi</div>:
+                        <div class="col-md-9 col-7">{{ $row->deskripsi }}</div>
+                        <div class="col-md-2 col-4">Jumlah</div>:
+                        <div class="col-md-9 col-7">{{ $row->jumlah_diterima.' '.$row->satuan }}</div>
                     </div>
                     <div>
                         <label>Lokasi Penyimpanan</label>
-                        <table class="table table-bordered table-striped" id="table-placement-{{ $row->id_detail }}">
-                            <thead>
-                                <tr>
-                                    <td style="width: 0%;" class="text-center">No</td>
-                                    <td style="width: 25%;">Lokasi Gudang</td>
-                                    <td style="width: 25%;">Lokasi Palet</td>
-                                    <td style="width: 15%;" class="text-center pr-4">Jumlah</td>
-                                    <td style="width: 15%;" class="text-center pr-4">Satuan</td>
-                                    <td>Kapasitas</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td>
-                                        <select class="form-control select-border-bottom warehouse" name="warehouse_id[]" data-id="{{ $i }}">
-                                            <option value="">-- Pilih Gedung --</option>
-                                            @foreach ($warehouse as $wh)
-                                            <option value="{{ $wh->id_gedung }}">
-                                                {{ $wh->nama_gedung }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select class="form-control select-border-bottom slot" name="slot_id[]" data-id="{{ $i }}">
-                                            <option value="">-- Pilih Slot --</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="hidden" id="total-{{ $row->id_detail }}" value="{{ $row->jumlah_diterima }}">
-                                        <input type="number" name="qty[]" class="form-control select-border-bottom total text-center sisa-barang" id="qty-{{ $row->id_detail }}" value="{{ $row->jumlah_diterima }}">
-                                        <input type="hidden" name="id_detail[]" class="id-detail" value="{{ $row->id_detail }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="text-center select-border-bottom satuan" id="satuan-{{ $row->id_detail }}" value="{{ $row->satuan }}" readonly>
-                                    </td>
-                                    <td>
-                                        <select name="kapasitas_id[]" class="form-control select-border-bottom">
-                                            <option value="2">Tersedia</option>
-                                            <option value="3">Penuh</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class=" table-responsive">
+                            <table class="table table-bordered table-striped" id="table-placement-{{ $row->id_detail }}">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 0%;" class="text-center">No</td>
+                                        <td style="width: 25%;">Gudang</td>
+                                        <td style="width: 25%;">Palet</td>
+                                        <td style="width: 15%;" class="text-center pr-4">Jumlah</td>
+                                        <td style="width: 15%;" class="text-center pr-4">Satuan</td>
+                                        <td>Kapasitas</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td class="custom">
+                                            <select class="form-control select-border-bottom warehouse" id="warehouse-{{$i}}" name="warehouse_id[]" data-id="{{ $i }}"
+                                            style="width: 20vh;">
+                                                <option value="">-- Pilih Gedung --</option>
+                                                @foreach ($warehouse as $wh)
+                                                <option value="{{ $wh->id_gedung }}">
+                                                    {{ $wh->nama_gedung }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control select-border-bottom slot" name="slot_id[]" data-id="{{ $i }}" style="width: 20vh;">
+                                                <option value="">-- Pilih Slot --</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id="total-{{ $row->id_detail }}" value="{{ $row->jumlah_diterima }}">
+                                            <input type="number" name="qty[]" class="form-control select-border-bottom total text-center sisa-barang"
+                                            id="qty-{{ $row->id_detail }}" value="{{ $row->jumlah_diterima }}" style="width: 15vh;">
+                                            <input type="hidden" name="id_detail[]" class="id-detail" value="{{ $row->id_detail }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="text-center select-border-bottom satuan" id="satuan-{{ $row->id_detail }}"
+                                            value="{{ $row->satuan }}" style="width: 15vh;" readonly>
+                                        </td>
+                                        <td>
+                                            <select name="kapasitas_id[]" class="form-control select-border-bottom" style="width: 15vh;">
+                                                <option value="2">Tersedia</option>
+                                                <option value="3">Penuh</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <a href="#" class="btn btn-success btn-sm btn-add-penyimpanan" data-id="{{ $row->id_detail }}">
                             <i class="fas fa-plus-circle"></i> Tambah Baris
                         </a>
