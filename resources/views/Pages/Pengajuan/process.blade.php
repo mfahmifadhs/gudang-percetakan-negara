@@ -304,7 +304,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">Lokasi Gudang</label>
+                        <label class="col-md-2 col-form-label">Gudang</label>
                         <div class="col-md-6">
                             <select class="form-control select-border-bottom warehouse" name="warehouse_all_id" data-id="{{ $row->id_detail }}">
                                 <option value="">-- Pilih Gedung --</option>
@@ -317,7 +317,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">Lokasi Palet</label>
+                        <label class="col-md-2 col-form-label">Palet</label>
                         <div class="col-md-6">
                             <select class="form-control select-border-bottom slot" name="slot_all_id" data-id="{{ $row->id_detail }}">
                                 <option value="">-- Pilih Slot --</option>
@@ -325,18 +325,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2 col-form-label">Informasi Barang</label>
-                        <div class="col-md-12">
+                        <label class="col-md-2 col-form-label">Barang</label>
+                        <div class="col-md-12 table-responsive">
                             <table class="table table-bordered" style="font-size: 15px;">
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</td>
-                                        <th>Nama Barang</td>
-                                        <th>Catatan</td>
-                                        <th>Keterangan</td>
+                                        <th>Barang</td>
+                                        <th style="width: 20%;">Keterangan</td>
                                         <th style="width: 10%;" class="text-center">Jumlah</td>
                                         <th style="width: 10%;" class="text-center">Satuan</td>
-                                        <th style="width: 20%;">Rencana Penghapusan/Distribusi</td>
                                     </tr>
                                 </thead>
                                 @php $no = 1; @endphp
@@ -348,22 +346,16 @@
                                             <input type="hidden" name="status" value="true">
                                         </td>
                                         <td class="pt-3">
-                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->nama_barang }}" readonly>
+                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->nama_barang }}" style="width: 20vh;" readonly>
                                         </td>
                                         <td class="pt-3">
-                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->catatan }}" readonly>
-                                        </td>
-                                        <td class="pt-3">
-                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->deskripsi }}" readonly>
+                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->keterangan }}" style="width: 15vh;" readonly>
                                         </td>
                                         <td class="pt-3 text-center">
-                                            <input class="form-control input-border-bottom bg-white text-center" value="{{ $row->jumlah_diterima }}" readonly>
+                                            <input class="form-control input-border-bottom bg-white text-center" value="{{ $row->jumlah_diterima }}" style="width: 10vh;" readonly>
                                         </td>
                                         <td class="pt-3 text-center">
-                                            <input class="form-control input-border-bottom bg-white text-center" value="{{ $row->satuan }}" readonly>
-                                        </td>
-                                        <td class="pt-3">
-                                            <input class="form-control input-border-bottom bg-white" value="{{ $row->keterangan }}" readonly>
+                                            <input class="form-control input-border-bottom bg-white text-center" value="{{ $row->satuan }}" style="width: 10vh;" readonly>
                                         </td>
                                     </tr>
                                     @endforeach
