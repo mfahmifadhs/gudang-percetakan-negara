@@ -139,24 +139,24 @@
                                         <tr>
                                             <th>No</th>
                                             <th style="width: 25vh;">Barang</th>
-                                            <th style="width: 10vh;">Permintaan</th>
+                                            <th style="width: 15vh;">Permintaan</th>
                                             <th>Pengambilan</th>
-                                            <th style="width: 10vh;">Stok</th>
-                                            <th style="width: 10vh;">Satuan</th>
-                                            <th colspan="2" style="width: 20vh;">Lokasi Penyimpanan</th>
+                                            <th style="width: 15vh;">Stok</th>
+                                            <th style="width: 15vh;">Satuan</th>
+                                            <th colspan="2" style="width: 40vh;">Lokasi Penyimpanan</th>
                                         </tr>
                                     </thead>
                                     @php $no = 1; @endphp
                                     <tbody>
                                         @foreach ($data->pengambilan as $row)
                                         <tr>
-                                            <td>{{ $no++ }}</td>
+                                            <td style="width: 0vh;">{{ $no++ }}</td>
                                             <td>
                                                 <input type="text" class="form-control input-border-bottom text-left bg-default" style="width: 25vh;"
                                                 value="{{ $row->palet->barang->nama_barang }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 15vh;"
                                                 value="{{ $row->jumlah_pengajuan }}" readonly>
                                             </td>
                                             <td style="width: 20vh;">
@@ -165,19 +165,19 @@
                                                 value="{{ $row->jumlah_pengajuan }}" min="0" max="{{ (int) $row->palet->total_masuk - $row->palet->total_keluar }}">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 15vh;"
                                                 value="{{ (int) $row->palet->total_masuk - $row->palet->total_keluar }}" readonly>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 15vh;"
                                                 value="{{ $row->palet->barang->satuan }}" readonly>
                                             </td>
-                                            <td>
-                                                <input type="text" class="form-control input-border-bottom text-center bg-default"
+                                            <td style="width: 15vh;">
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 20vh;"
                                                 value="{{ $row->palet->penyimpanan->gedung->nama_gedung }}" readonly>
                                             </td>
-                                            <td>
-                                                <input type="text" class="form-control input-border-bottom text-center bg-default"
+                                            <td style="width: 15vh;">
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 20vh;"
                                                 value="{{ $row->palet->penyimpanan->kode_palet }}" readonly>
                                             </td>
                                         </tr>

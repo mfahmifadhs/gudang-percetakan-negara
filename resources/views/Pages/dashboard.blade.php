@@ -139,9 +139,9 @@
                                                 @endif
 
                                                 @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4)
-                                                <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
+                                                <!-- <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                                     <i class="fas fa-edit"></i> Edit
-                                                </a>
+                                                </a> -->
                                                 @endif
 
                                                 <a class="dropdown-item btn" type="button" href="{{ route('submission.detail', $row->id_pengajuan) }}">
