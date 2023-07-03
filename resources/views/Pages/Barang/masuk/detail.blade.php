@@ -162,8 +162,8 @@
             </div>
             <input type="hidden" name="status" value="false">
             <div class="modal-body">
-                <table id="table-history" class="table table-bordered table-striped">
-                    <thead class="text-center">
+                <table id="table-history" class="table table-bordered table-striped text-center">
+                    <thead>
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
@@ -172,12 +172,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($row->history as $i => $subRow)
+                        @foreach ($row->history->where('kategori','masuk') as $i => $subRow)
                         <tr>
-                            <td class="text-center">{{ $i + 1 }}</td>
+                            <td>{{ $i + 1 }}</td>
                             <td>{{ \Carbon\carbon::parse($subRow->created_at)->isoFormat('DD MMMM Y HH:mm:ss') }}</td>
                             <td>{{ $subRow->kategori }}</td>
-                            <td class="text-center">{{ $subRow->jumlah.' '.$item->satuan }}</td>
+                            <td>{{ $subRow->jumlah.' '.$item->satuan }}</td>
+                        </tr>
+                        @endforeach
+
+                        @foreach ($row->keluar as $i => $subRow)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ \Carbon\carbon::parse($subRow->created_at)->isoFormat('DD MMMM Y HH:mm:ss') }}</td>
+                            <td>Keluar</td>
+                            <td>{{ $subRow->jumlah_keluar.' '.$item->satuan }}</td>
                         </tr>
                         @endforeach
                     </tbody>

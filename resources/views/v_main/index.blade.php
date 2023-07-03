@@ -28,11 +28,11 @@
 
               </p>
             </div>
-            <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/penyimpanan') }}">
+            <a class="btn btn-primary py-2 px-3 me-3" href="{{ route('submission.create', 'penyimpanan') }}">
               <i class="fas fa-boxes"></i> Penyimpanan
             </a>
-            <a class="btn btn-primary py-2 px-3 me-3" href="{{ url('unit-kerja/surat/pengajuan/pengeluaran') }}">
-              <i class="fas fa-people-carry"></i> Pengeluaran
+            <a class="btn btn-primary py-2 px-3 me-3" href="{{ route('submission.create', 'pengambilan') }}">
+              <i class="fas fa-people-carry"></i> Pengambilan
             </a>
           </div>
         </div>

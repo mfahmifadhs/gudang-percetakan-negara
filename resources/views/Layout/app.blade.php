@@ -368,13 +368,15 @@
                     <div class="modal-body">
                         <div class="form-group row text-center">
                             <div class="col-md-6">
-                                <a class="btn btn-default" href="{{ route('submission.create', 'penyimpanan') }}">
-                                    Penyimpanan
+                                <a class="btn btn-success" href="{{ route('submission.create', 'penyimpanan') }}">
+                                    <i class="fas fa-people-carry fa-2x p-2"></i>
+                                    <h5 class="font-weigth-bold">Penyimpanan</h5>
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a class="btn btn-default" href="{{ route('submission.create', 'pengambilan') }}">
-                                    Pengambilan
+                                <a class="btn btn-danger" href="{{ route('submission.create', 'pengambilan') }}">
+                                    <i class="fas fa-people-carry fa-2x p-2"></i>
+                                    <h5 class="font-weigth-bold">Pengambilan</h5>
                                 </a>
                             </div>
                         </div>

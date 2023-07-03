@@ -11,17 +11,17 @@ class Dashboard extends Controller
     public function Show() {
         if (Auth::user()->role_id == 4) {
             $submission = submissionModel::orderBy('status_pengajuan_id', 'ASC')
+                ->orderBy('created_at', 'DESC')
                 ->orderBy('status_proses_id', 'ASC')
-                ->orderBy('tanggal_pengajuan', 'DESC')
                 ->where('user_id', Auth::user()->id)
                 ->get();
         } else {
             $submission = submissionModel::orderBy('status_pengajuan_id', 'ASC')
+                ->orderBy('created_at', 'DESC')
                 ->orderBy('status_proses_id', 'ASC')
-                ->orderBy('tanggal_pengajuan', 'DESC')
                 ->get();
         }
-	
+
         return view('Pages/dashboard', compact('submission'));
     }
 

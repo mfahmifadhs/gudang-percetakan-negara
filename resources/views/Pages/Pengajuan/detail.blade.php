@@ -169,38 +169,36 @@
                                     <th class="text-center">No</th>
                                     <th>Nama Barang</th>
                                     <th>Deskripsi</th>
-                                    @if ($catatan != 'NUP')
-                                        <th>{{ $catatan }}</td>
-                                    @else
-                                        <th>{{ $catatan }}</td>
-                                    @endif
+                                    <th>{{ $catatan }}</td>
                                     <th class="text-center">Kondisi</th>
-                                    <th class="text-center">Jumlah</th>
+                                    <th class="text-center">Permintaan</th>
+                                    <th class="text-center">Pengambilan</th>
                                     <th class="text-center">Satuan</th>
                                     <th class="text-center" colspan="2">Lokasi Penyimpanan</th>
                                 </tr>
                             </thead>
                             @php $no = 1; @endphp
                             <tbody>
-                                @foreach ($data->riwayat as $row)
+                                @foreach ($data->pengambilan as $row)
                                 <tr>
                                     <td class="text-center">
                                         {{ $no++ }}
-                                        <a href="{{ route('item.detail', ['ctg' => 'keluar', 'id' => $row->id_riwayat]) }}">
+                                        <a href="{{ route('item.detail', ['ctg' => 'masuk', 'id' => $row->palet->pengajuan_detail_id]) }}">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                     </td>
-                                    <td>{{ $row->detailPenyimpanan->barang->nama_barang }}</td>
-                                    <td>{{ $row->detailPenyimpanan->barang->deskripsi }}</td>
-                                    <td class="text-center">{{ $row->detailPenyimpanan->barang->catatan }}</td>
-                                    <td class="text-center">{{ $row->detailPenyimpanan->barang->kondisi_barang }}</td>
-                                    <td class="text-center">{{ $row->jumlah }}</td>
-                                    <td class="text-center">{{ $row->detailPenyimpanan->barang->satuan }}</td>
+                                    <td>{{ $row->palet->barang->nama_barang }}</td>
+                                    <td>{{ $row->palet->barang->deskripsi }}</td>
+                                    <td class="text-center">{{ $row->palet->barang->catatan }}</td>
+                                    <td class="text-center">{{ $row->palet->barang->kondisi_barang }}</td>
+                                    <td class="text-center">{{ (int) $row->jumlah_pengajuan }}</td>
+                                    <td class="text-center">{{ (int) $row->jumlah_keluar }}</td>
+                                    <td class="text-center">{{ $row->palet->barang->satuan }}</td>
                                     <td class="text-center">
-                                        {{ $row->detailPenyimpanan->penyimpanan->gedung->nama_gedung }}
+                                        {{ $row->palet->penyimpanan->gedung->nama_gedung }}
                                     </td>
                                     <td class="text-center">
-                                        {{ $row->detailPenyimpanan->penyimpanan->kode_palet }}
+                                        {{ $row->palet->penyimpanan->kode_palet }}
                                     </td>
                                 </tr>
                                 @endforeach

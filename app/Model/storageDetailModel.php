@@ -35,4 +35,8 @@ class storageDetailModel extends Model
     public function history() {
         return $this->hasMany(StorageHistory::class, 'penyimpanan_detail_id');
     }
+
+    public function keluar() {
+        return $this->hasMany(ItemOutgoing::class, 'penyimpanan_id');
+    }
 }

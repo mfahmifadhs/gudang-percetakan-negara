@@ -63,7 +63,7 @@
 
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table id="table-submission" class="table m-0" style="font-size: 14px;">
+                            <table id="table-submission" class="table m-0 text-center" style="font-size: 14px;">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No</th>
@@ -74,11 +74,12 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+                                @php $no = 1; @endphp
                                 <tbody>
                                     @foreach ($submission->where('status_proses_id', '!=', 4) as $i => $row)
                                     <tr>
-                                        <td class="text-center">{{ $i + 1 }}</td>
-                                        <td class="text-center">{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD/MM/Y') }}</td>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ \Carbon\carbon::parse($row->tanggal_pengajuan)->isoFormat('DD/MM/Y') }}</td>
                                         <td>{{ $row->unitkerja->nama_unit_kerja }}</td>
                                         <td>
                                             @if ($row->status_proses_id == 1)
@@ -86,7 +87,7 @@
                                             @endif
 
                                             @if ($row->status_proses_id == 2 && Auth::user()->role_id == 4)
-                                            <span class="badge badge-warning">{{ $row->keterangan_proses }}</span>
+                                            <span class="badge badge-warning">Dapat Diporses</span>
                                             @endif
 
                                             @if ($row->status_proses_id == 2 && Auth::user()->role_id != 4)

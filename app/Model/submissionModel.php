@@ -49,6 +49,10 @@ class submissionModel extends Model
         return $this->hasMany(submissionDetailModel::class, 'pengajuan_id');
     }
 
+    public function pengambilan() {
+        return $this->hasMany(ItemOutgoing::class, 'pengajuan_id');
+    }
+
     public function petugas() {
         return $this->hasMany(SubmissionStaff::class, 'pengajuan_id');
     }

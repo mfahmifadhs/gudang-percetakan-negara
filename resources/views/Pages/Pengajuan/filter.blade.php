@@ -37,11 +37,11 @@
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-2 col-4">Tanggal Pengajuan</label>
+                        <label class="col-md-2 col-4">Tanggal</label>
                         <div class="col-md-10 col-8">:
                             {{ \Carbon\carbon::parse($data->tanggal_pengajuan)->isoFormat('DD MMMM Y') }}
                         </div>
-                        <label class="col-md-2 col-4">Jenis Pengajuan</label>
+                        <label class="col-md-2 col-4">Pengajuan</label>
                         <div class="col-md-10 col-8">:
                             {{ $data->jenis_pengajuan == 'masuk' ? 'Penyimpanan' : 'Pengeluaran' }}
                         </div>
@@ -71,7 +71,7 @@
                             Informasi Kedatangan <br>
                             <small class="text-danger"></small>
                         </label>
-                        <div class="col-md-2 col-4">Tanggal Datang</div>:
+                        <div class="col-md-2 col-4">Tanggal {{ $data->jenis_pengajuan == 'masuk' ? 'Data' : 'Keluar' }}</div>:
                         <div class="col-md-8 col-7">
                             <input type="datetime-local" class="form-control select-border-bottom" name="tanggal_datang" required>
                         </div>
@@ -133,40 +133,58 @@
                             </table>
                             @else
                             <input type="hidden" name="category" value="keluar">
-                            <table class="table table-bordered" style="font-size: 15px;">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th>Nama Barang</th>
-                                        <th>Deskripsi</th>
-                                        <th class="text-center">Kondisi</th>
-                                        <th class="text-center">Jumlah</th>
-                                        <th class="text-center">Satuan</th>
-                                        <th class="text-center" colspan="2">Lokasi Penyimpanan</th>
-                                    </tr>
-                                </thead>
-                                @php $no = 1; @endphp
-                                <tbody>
-                                    @foreach ($data->riwayat as $row)
-                                    <tr>
-                                        <td class="text-center">
-                                            {{ $no++ }}
-                                        </td>
-                                        <td>{{ $row->detailPenyimpanan->barang->nama_barang }}</td>
-                                        <td>{{ $row->detailPenyimpanan->barang->catatan }}</td>
-                                        <td class="text-center">{{ $row->detailPenyimpanan->barang->kondisi_barang }}</td>
-                                        <td class="text-center">{{ $row->jumlah }}</td>
-                                        <td class="text-center">{{ $row->detailPenyimpanan->barang->satuan }}</td>
-                                        <td class="text-center">
-                                            {{ $row->detailPenyimpanan->penyimpanan->gedung->nama_gedung }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $row->detailPenyimpanan->penyimpanan->kode_palet }}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center" style="font-size: 15px;">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th style="width: 25vh;">Barang</th>
+                                            <th style="width: 10vh;">Permintaan</th>
+                                            <th>Pengambilan</th>
+                                            <th style="width: 10vh;">Stok</th>
+                                            <th style="width: 10vh;">Satuan</th>
+                                            <th colspan="2" style="width: 20vh;">Lokasi Penyimpanan</th>
+                                        </tr>
+                                    </thead>
+                                    @php $no = 1; @endphp
+                                    <tbody>
+                                        @foreach ($data->pengambilan as $row)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-left bg-default" style="width: 25vh;"
+                                                value="{{ $row->palet->barang->nama_barang }}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                value="{{ $row->jumlah_pengajuan }}" readonly>
+                                            </td>
+                                            <td style="width: 20vh;">
+                                                <input type="hidden" name="id_keluar[]" value="{{ $row->id_keluar }}">
+                                                <input type="number" class="form-control input-border-bottom text-center" name="jumlah_keluar[]"
+                                                value="{{ $row->jumlah_pengajuan }}" min="0" max="{{ (int) $row->palet->total_masuk - $row->palet->total_keluar }}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                value="{{ (int) $row->palet->total_masuk - $row->palet->total_keluar }}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default" style="width: 10vh;"
+                                                value="{{ $row->palet->barang->satuan }}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default"
+                                                value="{{ $row->palet->penyimpanan->gedung->nama_gedung }}" readonly>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-border-bottom text-center bg-default"
+                                                value="{{ $row->palet->penyimpanan->kode_palet }}" readonly>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             @endif
                         </div>
                         <label class="col-md-12">

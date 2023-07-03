@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Bast;
 use App\Model\employeeModel;
+use App\Model\ItemOutgoing;
 use App\Model\statusCapacity;
 use App\Model\statusModel;
 use App\Model\storageDetailModel;
@@ -50,12 +51,15 @@ class Pengajuan extends Controller
     {
         $data     = submissionModel::where('id_pengajuan', $id)->first();
 
-        if ($data->penyimpanan->count() == $data->penyimpanan->where('jenis_barang_id', '441')->count()) {
-            $catatan = 'NUP';
-        } else if ($data->penyimpanan->count() == $data->penyimpanan->where('jenis_barang_id', '442')->count()) {
-            $catatan = 'Masa Kadaluarsa';
-        } else {
-            $catatan = 'Catatan';
+        if ($data->jenis_pengajuan == 'masuk') {
+            $jenisBarang = $data->penyimpanan->first();
+            $catatan = $jenisBarang->jenis_barang_id == 441 ? 'NUP' : 'Masa Kadaluarsa';
+        }
+
+        if ($data->jenis_pengajuan == 'keluar') {
+            foreach ($data->pengambilan as $row) {
+                $catatan = $row->palet->barang->jenis_barang_id == 442 ? 'Masa Kadaluarsa' : 'NUP';
+            }
         }
 
         return view('Pages/Pengajuan/detail', compact('data', 'catatan'));
@@ -77,22 +81,25 @@ class Pengajuan extends Controller
 
     public function Create(Request $request, $category)
     {
+        $kategori  = [];
         $item      = [];
         $workunit  = workunitModel::where('id_unit_kerja', Auth::user()->pegawai->unit_kerja_id)->get();
         $employee  = employeeModel::get();
 
-        if ($category == 'pengambilan') {
-            $item = storageDetailModel::where('unit_kerja_id', Auth::user()->pegawai->unit_kerja_id)
-                ->join('t_pengajuan_detail', 't_pengajuan_detail.id_detail', 'pengajuan_detail_id')
-                ->join('t_pengajuan', 'id_pengajuan', 'pengajuan_id')
-                ->select('t_penyimpanan_detail.id_detail as stg_detail_id', 't_pengajuan_detail.id_detail as sub_detail_id',
-                         't_pengajuan_detail.keterangan','t_pengajuan.*','t_pengajuan_detail.*','t_penyimpanan_detail.*')
-		->orderBy('nama_barang','ASC')
-		->orderBy('penyimpanan_id','ASC')
-                ->get();
+        if ($category != 'penyimpanan' && $category != 'pengambilan') {
+            $data = submissionDetailModel::where('user_id', Auth::user()->id)
+                    ->select('t_pengajuan.*','t_pengajuan_detail.*','t_pengajuan_detail.keterangan as keterangan')
+                    ->join('t_pengajuan','id_pengajuan','pengajuan_id')
+                    ->orderBy('nama_barang','ASC');
+
+            if ($category == 'pengambilan') {
+                $item = $data->get();
+            } else {
+                $item = $data->where('jenis_barang_id', $category)->get();
+            }
         }
 
-        return view('Pages/Pengajuan/create', compact('workunit', 'employee', 'category', 'item'));
+        return view('Pages/Pengajuan/create', compact('workunit','employee','category','item'));
     }
 
     public function Edit($id)
@@ -121,7 +128,7 @@ class Pengajuan extends Controller
 
             $list_pengajuan  = submissionModel::count();
             $total_pengajuan = str_pad($list_pengajuan + 1, 4, 0, STR_PAD_LEFT);
-            $id_pengajuan    = Carbon::now()->isoFormat('DDMMYY').$total_pengajuan;
+            $id_pengajuan    = Carbon::now()->isoFormat('YYMMDD').$total_pengajuan;
 
             $create = new submissionModel();
             $create->id_pengajuan      = $id_pengajuan;
@@ -295,18 +302,25 @@ class Pengajuan extends Controller
         } elseif ($category == 'pengambilan') {
             foreach ($request->penyimpanan_detail_id as $i => $detail_id) {
                 if ($request->jumlah[$i] != 0) {
-                    $riwayat = new StorageHistory();
-                    $riwayat->pengajuan_id          = $id_pengajuan;
-                    $riwayat->penyimpanan_detail_id = $detail_id;
-                    $riwayat->jumlah                = $request->jumlah[$i];
-                    $riwayat->kategori              = 'keluar';
-                    $riwayat->created_at            = Carbon::now();
-                    $riwayat->save();
+                    $keluar  = new ItemOutgoing();
+                    $keluar->pengajuan_id     = $id_pengajuan;
+                    $keluar->penyimpanan_id   = $detail_id;
+                    $keluar->jumlah_pengajuan = $request->jumlah[$i];
+                    $keluar->created_at       = Carbon::now();
+                    $keluar->save();
 
-                    $penyimpanan = storageDetailModel::where('id_detail', $detail_id)->first();
-                    storageDetailModel::where('id_detail', $detail_id)->update([
-                        'total_keluar' => (int) ($penyimpanan->total_keluar + $request->jumlah[$i])
-                    ]);
+                    // $riwayat = new StorageHistory();
+                    // $riwayat->pengajuan_id          = $id_pengajuan;
+                    // $riwayat->penyimpanan_detail_id = $detail_id;
+                    // $riwayat->jumlah                = $request->jumlah[$i];
+                    // $riwayat->kategori              = 'keluar';
+                    // $riwayat->created_at            = Carbon::now();
+                    // $riwayat->save();
+
+                    // $penyimpanan = storageDetailModel::where('id_detail', $detail_id)->first();
+                    // storageDetailModel::where('id_detail', $detail_id)->update([
+                    //     'total_keluar' => (int) ($penyimpanan->total_keluar + $request->jumlah[$i])
+                    // ]);
                 }
 
             }
@@ -423,11 +437,6 @@ class Pengajuan extends Controller
 
     public function FilterStore(Request $request, $id)
     {
-        submissionModel::where('id_pengajuan', $id)->update([
-            'keterangan_ketidaksesuaian' => $request->catatan,
-            'status_proses_id'  => 3
-        ]);
-
         $staff = new SubmissionStaff();
         $staff->pengajuan_id = $id;
         $staff->nama_petugas = $request->nama_petugas;
@@ -437,6 +446,11 @@ class Pengajuan extends Controller
         $staff->save();
 
         if ($request->category == 'masuk') {
+            submissionModel::where('id_pengajuan', $id)->update([
+                'keterangan_ketidaksesuaian' => $request->catatan,
+                'status_proses_id'  => 3
+            ]);
+
             $barang = $request->id_barang;
             foreach ($barang as $i => $id_barang)
             {
@@ -452,6 +466,44 @@ class Pengajuan extends Controller
                     'keterangan_kesesuaian'    => $penapisan
                 ]);
             }
+        }
+
+        if ($request->category == 'keluar')
+        {
+            submissionModel::where('id_pengajuan', $id)->update([
+                'keterangan_ketidaksesuaian' => $request->catatan,
+                'status_proses_id'  => 4
+            ]);
+
+            $barang = $request->id_keluar;
+            foreach ($barang as $i => $id_barang)
+            {
+                $barang = ItemOutgoing::where('id_keluar', $id_barang)->first();
+                ItemOutgoing::where('id_keluar', $id_barang)->update([
+                    'jumlah_keluar' => $request->jumlah_keluar[$i],
+                    'status_keluar' => $barang->jumlah_pengajuan == $request->jumlah_keluar[$i] ? 1 : 2
+                ]);
+
+
+                $penyimpanan = storageDetailModel::where('id_detail', $barang->penyimpanan_id)->first();
+                storageDetailModel::where('id_detail', $barang->penyimpanan_id)->update([
+                    'total_keluar' => (int) ($penyimpanan->total_keluar + $request->jumlah_keluar[$i])
+                ]);
+            }
+
+            $total_bast = Bast::join('t_pengajuan','id_pengajuan','pengajuan_id')
+                          ->where('jenis_pengajuan','keluar')->count();
+            $no_bast    = str_pad($total_bast + 1, 4, 0, STR_PAD_LEFT);
+            $month      = Carbon::now()->isoFormat('MM/Y');
+            $id_bast    = 'KR.02.04/2/2/'.$no_bast.'/'.$month;
+
+            $bast = new Bast();
+            $bast->id_berita_acara = Carbon::now()->isoFormat('YYMMDD').$no_bast;
+            $bast->pengajuan_id    = $id;
+            $bast->nomor_surat     = $id_bast;
+            $bast->created_at      = Carbon::now();
+            $bast->save();
+
         }
 
         return redirect()->route('submission.show')->with('success', 'Berhasil Melakukan Penapisan');
@@ -525,12 +577,14 @@ class Pengajuan extends Controller
         }
 
         $total_bast = Bast::count();
-        $no_bast    = str_pad($total_bast + 1, 4, 0, STR_PAD_LEFT);
+        $id_bast    = Bast::join('t_pengajuan','id_pengajuan','pengajuan_id')
+                          ->where('jenis_pengajuan','masuk')->count();
+        $no_bast    = str_pad($id_bast + 1, 4, 0, STR_PAD_LEFT);
         $month      = Carbon::now()->isoFormat('MM/Y');
-        $id_bast    = 'KR.02.04/2/'.$no_bast.'/'.$month;
+        $id_bast    = 'KR.02.04/2/1/'.$no_bast.'/'.$month;
 
         $bast = new Bast();
-        $bast->id_berita_acara = Carbon::now()->isoFormat('DMYYsmh');
+        $bast->id_berita_acara = Carbon::now()->isoFormat('YYMMDD').$total_bast;
         $bast->pengajuan_id    = $id;
         $bast->nomor_surat     = $id_bast;
         $bast->created_at      = Carbon::now();

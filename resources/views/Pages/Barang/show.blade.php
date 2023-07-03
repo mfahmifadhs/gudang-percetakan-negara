@@ -41,71 +41,129 @@
                     </button>
                 </div>
             </div>
-            <div class="card-body">
-                <table id="table-show" class="table table-bordered table-striped" style="font-size: 15px;">
-                    <thead class="text-center">
+            <div class="card-body table-responsive">
+                <table id="table-show" class="table table-bordered table-striped text-center" style="font-size: 15px;">
+                    <thead>
                         <tr>
                             <th rowspan="2" class="pb-5">No</th>
-                            <th rowspan="2" class="pb-5">Unit Kerja</th>
                             <th rowspan="2" class="pb-5">Nama Barang</th>
-                            <th rowspan="2" class="pb-5">Merek/Tipe</th>
-                            <th rowspan="2" class="pb-5">NUP / Masa <br> Kadaluarsa</th>
-                            <th rowspan="2" class="pb-5">Total <br> Barang</th>
-                            <th colspan="5">Lokasi <br> Penyimpanan</th>
+                            <th rowspan="2" class="pb-5">Total</th>
+                            <th colspan="5" style="width: 50%;">Lokasi <br> Penyimpanan</th>
+                            @if (Auth::user()->role_id != 4)
+                            <th rowspan="2" class="pb-5">Unit Kerja</th>
+                            @endif
                         </tr>
                         <tr>
-                            <th>Nama Gedung</th>
-                            <th>Kode Palet</th>
-                            <th>Jumlah Masuk</th>
-                            <th>Jumlah Keluar</th>
-                            <th>Sisa Stok</th>
+                            <th>Nama <br> Gedung</th>
+                            <th>Kode <br> Palet</th>
+                            <th>Jumlah <br> Masuk</th>
+                            <th>Jumlah <br> Keluar</th>
+                            <th>Sisa <br> Stok</th>
                         </tr>
                     </thead>
                     @php $no = 1; @endphp
                     <tbody class="text-capitalize">
-                        @foreach($item as $row)
+                        @foreach($item as $i => $row)
                         <tr>
-                            <td class="text-center">
+                            <td style="width: 0%;">{{ $no++ }}</td>
+                            <td style="width: 20%;" class="text-justify">
                                 <a href="{{ route('item.detail', ['ctg' => 'masuk', 'id' => $row->id_detail]) }}">
-                                    <i class="fas fa-info-circle"></i>
+                                    <h6 class="font-weight-bold">{{ $row->id_detail }} <br>  {{ $row->nama_barang }}</h6>
                                 </a>
-                                {{ $no++ }}
                             </td>
-                            <td class="">{{ $row->pengajuan->unitkerja->nama_unit_kerja }}</td>
-                            <td class="">{{ $row->nama_barang }}</td>
-                            <td class="">{{ $row->deskripsi }}</td>
-                            <td class="text-center">{{ $row->catatan }}</td>
-                            <td class="text-center">{{ (int) $row->jumlah_diterima.' '.$row->satuan }}</td>
-                            <td class="text-center">
-                                @foreach ($row->slot as $subRow)
+                            <td style="width: 10%;" class="pt-4">
+                                {{ (int) $row->jumlah_diterima.' '.$row->satuan }}
+                            </td>
+                            <td>
+                                {{ $row->slot->first()->nama_gedung }}
+                                <div class="text-gdn-{{ $i }} hide" style="display: none;">
+                                @foreach ($row->slot as $key => $subRow)
+                                    @if ($key === 0)
+                                        @continue
+                                    @endif
+                                    <hr class="m-1">
                                     {{ $subRow->nama_gedung }}
-                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
+                                </div>
+
+                                @if ($row->slot->count() > 1)
+                                    <br> <a class="btn show-hide-gdn text-lowercase small text-primary" data-id="{{ $i }}">show ⬇️</a>
+                                @endif
                             </td>
                             <td class="text-center">
-                                @foreach ($row->slot as $subRow)
+                                {{ $row->slot->first()->kode_palet }}
+
+                                <div class="text-slot-{{ $i }} hide" style="display: none;">
+                                @foreach ($row->slot as $key => $subRow)
+                                    @if ($key === 0)
+                                        @continue
+                                    @endif
+                                    <hr class="m-1">
                                     {{ $subRow->kode_palet }}
-                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
+                                </div>
+
+                                @if ($row->slot->count() > 1)
+                                    <br> <a class="btn show-hide-slot text-lowercase small text-primary" data-id="{{ $i }}">show ⬇️</a>
+                                @endif
                             </td>
                             <td class="text-center">
-                                @foreach ($row->slot as $subRow)
+                                {{ (int) $row->slot->first()->total_masuk.' '.$row->satuan }}
+
+                                <div class="text-in-{{ $i }} hide" style="display: none;">
+                                @foreach ($row->slot as $key => $subRow)
+                                    @if ($key === 0)
+                                        @continue
+                                    @endif
+                                    <hr class="m-1">
                                     {{ (int) $subRow->total_masuk.' '.$row->satuan }}
-                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
+                                </div>
+
+                                @if ($row->slot->count() > 1)
+                                    <br> <a class="btn show-hide-in text-lowercase small text-primary" data-id="{{ $i }}">show ⬇️</a>
+                                @endif
                             </td>
                             <td class="text-center">
-                                @foreach ($row->slot as $subRow)
+                                {{ (int) $row->slot->first()->total_keluar.' '.$row->satuan }}
+
+                                <div class="text-out-{{ $i }} hide" style="display: none;">
+                                @foreach ($row->slot as $key => $subRow)
+                                    @if ($key === 0)
+                                        @continue
+                                    @endif
+                                    <hr class="m-1">
                                     {{ (int) $subRow->total_keluar.' '.$row->satuan }}
-                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
+                                </div>
+
+                                @if ($row->slot->count() > 1)
+                                    <br> <a class="btn show-hide-out text-lowercase small text-primary" data-id="{{ $i }}">show ⬇️</a>
+                                @endif
                             </td>
                             <td class="text-center">
-                                @foreach ($row->slot as $subRow)
+                                {{ (int) $row->slot->first()->total_masuk - $row->slot->first()->total_keluar.' '.$row->satuan }}
+
+                                <div class="text-stok-{{ $i }} hide" style="display: none;">
+                                @foreach ($row->slot as $key => $subRow)
+                                    @if ($key === 0)
+                                        @continue
+                                    @endif
+                                    <hr class="m-1">
                                     {{ (int) $subRow->total_masuk - $subRow->total_keluar.' '.$row->satuan }}
-                                    @if ($row->slot->count() > 1) <hr class="m-1"> @endif
                                 @endforeach
+                                </div>
+
+                                @if ($row->slot->count() > 1)
+                                    <br> <a class="btn show-hide-stok text-lowercase small text-primary" data-id="{{ $i }}">show ⬇️</a>
+                                @endif
                             </td>
+
+                            @if (Auth::user()->role_id != 4)
+                            <td style="width: 15%;" class="text-justify">
+                                {{ $row->pengajuan->unitkerja->nama_unit_kerja }}
+                            </td>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -118,7 +176,7 @@
 <script>
     $(function() {
         $("#table-show").DataTable({
-            "responsive": true,
+            "responsive": false,
             "lengthChange": true,
             "autoWidth": true,
             "info": true,
@@ -147,6 +205,53 @@
             ]
         }).buttons().container().appendTo('#table-show_wrapper .col-md-6:eq(0)')
     })
+
+    $(document).ready(function() {
+        $(".show-hide-gdn").click(function() {
+            var rowId = $(this).data('id');
+            $(".text-gdn-" + rowId).slideToggle();
+            console.log(rowId)
+            $(this).text(function(i, text){
+                return text === "show ⬇️" ? "hide ⬆️" : "show ⬇️";
+            });
+        });
+
+        $(".show-hide-slot").click(function() {
+            var rowId = $(this).data('id');
+            $(".text-slot-" + rowId).slideToggle();
+            console.log(rowId)
+            $(this).text(function(i, text){
+                return text === "show ⬇️" ? "hide ⬆️" : "show ⬇️";
+            });
+        });
+
+        $(".show-hide-in").click(function() {
+            var rowId = $(this).data('id');
+            $(".text-in-" + rowId).slideToggle();
+            console.log(rowId)
+            $(this).text(function(i, text){
+                return text === "show ⬇️" ? "hide ⬆️" : "show ⬇️";
+            });
+        });
+
+        $(".show-hide-out").click(function() {
+            var rowId = $(this).data('id');
+            $(".text-out-" + rowId).slideToggle();
+            console.log(rowId)
+            $(this).text(function(i, text){
+                return text === "show ⬇️" ? "hide ⬆️" : "show ⬇️";
+            });
+        });
+
+        $(".show-hide-stok").click(function() {
+            var rowId = $(this).data('id');
+            $(".text-stok-" + rowId).slideToggle();
+            console.log(rowId)
+            $(this).text(function(i, text){
+                return text === "show ⬇️" ? "hide ⬆️" : "show ⬇️";
+            });
+        });
+    });
 </script>
 @endsection
 

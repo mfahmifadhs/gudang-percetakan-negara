@@ -139,21 +139,21 @@
                                 </thead>
                                 @php $no = 1; @endphp
                                 <tbody>
-                                    @foreach ($data->riwayat as $row)
+                                    @foreach ($data->pengambilan as $row)
                                     <tr>
                                         <td class="text-center">
                                             {{ $no++ }}
                                         </td>
-                                        <td>{{ $row->detailPenyimpanan->barang->nama_barang }}</td>
-                                        <td class="text-center">{{ $row->detailPenyimpanan->barang->catatan }}</td>
-                                        <td class="text-center">{{ $row->detailPenyimpanan->barang->kondisi_barang }}</td>
-                                        <td class="text-center">{{ $row->jumlah }}</td>
-                                        <td class="text-center">{{ $row->detailPenyimpanan->barang->satuan }}</td>
+                                        <td>{{ $row->palet->barang->nama_barang }}</td>
+                                        <td class="text-center">{{ $row->palet->barang->catatan }}</td>
+                                        <td class="text-center">{{ $row->palet->barang->kondisi_barang }}</td>
+                                        <td class="text-center">{{ $row->jumlah_pengajuan }}</td>
+                                        <td class="text-center">{{ $row->palet->barang->satuan }}</td>
                                         <td class="text-center">
-                                            {{ $row->detailPenyimpanan->penyimpanan->gedung->nama_gedung }}
+                                            {{ $row->palet->penyimpanan->gedung->nama_gedung }}
                                         </td>
                                         <td class="text-center">
-                                            {{ $row->detailPenyimpanan->penyimpanan->kode_palet }}
+                                            {{ $row->palet->penyimpanan->kode_palet }}
                                         </td>
                                     </tr>
                                     @endforeach
