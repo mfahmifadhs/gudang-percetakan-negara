@@ -21,7 +21,215 @@
 </section>
 <!-- Content Header -->
 
+@if ($category == 'penyimpanan')
+<section class="content">
+    <div class="container">
+        <form action="{{ $category == 'penyimpanan' ? route('submission.preview', '*') : route('submission.post', 'pengambilan') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="card card-warning card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Tambah Pengajuan</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Tanggal Pengajuan*</label>
+                        <div class="col-md-4">
+                            <input type="date" class="form-control" name="tanggal_pengajuan">
+                        </div>
+                        <label class="col-md-2 col-form-label">Jenis Pengajuan*</label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="jenis_pengajuan">
+                                @if ($category == 'penyimpanan')
+                                <option value="masuk">Penyimpanan</option>
+                                @else
+                                <option value="keluar">Pengambilan</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Unit Kerja*</label>
+                        <div class="col-md-10">
+                            <select class="form-control" id="workunit" name="unit_kerja_id">
+                                @foreach ($workunit as $row)
+                                <option value="{{ $row->id_unit_kerja }}">
+                                    {{ $row->nama_unit_kerja }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Keterangan*</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="keterangan" placeholder="Rencana Distribusi / Proses Penghapusan"></textarea>
+                        </div>
+                    </div>
 
+                    <div class="form-group row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <small class="text-danger">
+                                *Pengajuan penyimpanan / pengambilan darurat, Surat Pengajuan dan Surat Perintah dapat dilengkapi nanti.
+                            </small>
+                        </div>
+                        <label class="col-md-2 col-form-label">Surat Pengajuan</label>
+                        <div class="col-md-10">
+                            <div class="card-footer col-md-12 text-center border border-dark">
+                                <div class="btn btn-default btn-file">
+                                    <i class="fas fa-upload"></i> Upload File
+                                    <input type="file" class="form-control image" name="surat_pengajuan" accept=".pdf" onchange="displaySelectedFileCountSubmission(this)">
+                                    <span id="selected-file-count-submission"></span>
+                                </div><br>
+                                <span class="help-block small">Mohon upload file sesuai format yang telah di download (.pdf)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Surat Perintah</label>
+                        <div class="col-md-10">
+                            <div class="card-footer col-md-12 text-center border border-dark">
+                                <div class="btn btn-default btn-file">
+                                    <i class="fas fa-upload"></i> Upload File
+                                    <input type="file" class="form-control image" name="surat_perintah" accept=".pdf" onchange="displaySelectedFileCountWarrent(this)">
+                                    <span id="selected-file-count-warrent"></span>
+                                </div><br>
+                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.pdf)</span>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    @if ($category == 'penyimpanan')
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Data Barang</label>
+                        <div class="col-md-10 mt-1">
+                            <small>
+                                Mohon untuk melengkapi informasi barang yang akan disimpan,
+                                format file dapat diunduh
+                                <a href="{{ asset('format/format_penyimpanan.xlsx') }}" class="font-weight-bold" download>
+                                    <u>Disini</u>
+                                </a>
+                            </small>
+                            <div class="card-footer col-md-12 text-center border border-dark">
+                                <div class="btn btn-default btn-file">
+                                    <i class="fas fa-upload"></i> Upload File
+                                    <input type="file" class="form-control image" name="file_barang[]" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="displaySelectedFileCountItem(this)" required>
+                                    <span id="selected-file-count-item"></span>
+                                </div><br>
+                                <span class="help-block" style="font-size: 12px;">Mohon upload file sesuai format yang telah di download (.xlsx)</span>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Data Barang</label>
+                        <div class="col-md-12 mt-1">
+
+                            @if ($category == 441)
+                            <h6>
+                                Checklist (✔️) barang yang akan diambil, jika total lebih dari 1, masukkan jumlah pengambilan.
+                            </h6>
+                            <table class="table table-bordered text-center" style="font-size: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2" style="width: 25%;">Nama Barang</th>
+                                        <th rowspan="2">Deskripsi</th>
+                                        <th rowspan="2">Kondisi</th>
+                                        <th rowspan="2">Total</th>
+                                        <th rowspan="2" style="width: 15%;">Jumlah Pengambilan</th>
+                                        <th colspan="2">Lokasi Penyimpanan</th>
+                                        <th rowspan="2">
+                                            <input type="checkbox" id="selectAll" style="scale: 1.7;">
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Gedung</th>
+                                        <th>Kode Palet</th>
+                                    </tr>
+                                </thead>
+                                @php $no = 1; @endphp
+                                <tbody>
+                                    @foreach ($item->where('status_proses_id', 4) as $i => $row)
+                                    @foreach($row->slot as $subRow)
+                                    <tr>
+                                        <td class="pt-3">{{ $no++ }}</td>
+                                        <td class="pt-3 text-left">{{ $subRow->barang->nama_barang }}</td>
+                                        <td class="pt-3 text-left">{{ $subRow->barang->keterangan }}</td>
+                                        <td class="pt-3">{{ $subRow->barang->kondisi_barang }}</td>
+                                        <td class="pt-3">{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }} {{ $row->satuan }}</td>
+                                        <td>
+                                            <input type="hidden" name="penyimpanan_detail_id[]" value="{{ $subRow->id_detail }}">
+                                            <input type="number" class="form-control input-border-bottom text-center" name="jumlah[]" min="0" max="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}" value="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}">
+                                        </td>
+                                        <td class="pt-3">{{ $subRow->penyimpanan->gedung->nama_gedung }}</td>
+                                        <td class="pt-3">{{ $subRow->penyimpanan->kode_palet }}</td>
+                                        <td class="text-center p-3">
+                                            <input type="hidden" value="" name="status_barang[{{$i}}]">
+                                            <input type="checkbox" class="confirm-check" style="scale: 1.7;" name="status_barang[{{$i}}]" id="checkbox_id{{$i}}" value="true">
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @endif
+
+                            @if ($category == 442)
+                            <h6>
+                                Pilih <b>Ambil</b> barang - masukkan jumlah pengambilan - Tutup -> Submit
+                            </h6>
+                            <table class="table table-bordered text-center" style="font-size: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Barang</th>
+                                        <th>Deskripsi</th>
+                                        <th>Kondisi</th>
+                                        <th>Total</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                @php $no = 1; @endphp
+                                <tbody>
+                                    @foreach ($item as $row)
+                                    <tr>
+                                        <td class="pt-3">{{ $no++ }}</td>
+                                        <td class="pt-3 text-left">{{ $row->nama_barang }}</td>
+                                        <td class="pt-3 text-left">{{ $row->keterangan }}</td>
+                                        <td class="pt-3">{{ $row->kondisi_barang }}</td>
+                                        <td class="pt-3">{{ $row->jumlah_diterima }} {{ $row->satuan }}</td>
+                                        <td>
+                                            <a type="button" data-toggle="modal" onclick="showModal('{{ $row->id_detail }}')" class="btn btn-warning btn-sm">
+                                                <img src="https://img.icons8.com/?size=512&id=Ao3on8PYsYxx&format=png" class="mb-1" width="20">
+                                                Ambil
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                <div class="card-footer text-right">
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('Apakah Informasi Sudah Benar?')">
+                        <i class="fas fa-paper-plane fa-1x"></i> <b>Submit</b>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+@else
 <form action="{{ $category == 'penyimpanan' ? route('submission.preview', '*') : route('submission.post', 'pengambilan') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <section class="content">
@@ -184,9 +392,7 @@
                                         <td class="pt-3">{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }} {{ $row->satuan }}</td>
                                         <td>
                                             <input type="hidden" name="penyimpanan_detail_id[]" value="{{ $subRow->id_detail }}">
-                                            <input type="number" class="form-control input-border-bottom text-center" name="jumlah[]" min="0"
-                                            max="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}"
-                                            value="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}">
+                                            <input type="number" class="form-control input-border-bottom text-center" name="jumlah[]" min="0" max="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}" value="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}">
                                         </td>
                                         <td class="pt-3">{{ $subRow->penyimpanan->gedung->nama_gedung }}</td>
                                         <td class="pt-3">{{ $subRow->penyimpanan->kode_palet }}</td>
@@ -300,8 +506,7 @@
                                         <td>{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}</td>
                                         <td>
                                             <input type="hidden" name="penyimpanan_detail_id[]" value="{{ $subRow->id_detail }}">
-                                            <input type="number" class="form-control input-border-bottom text-center" name="jumlah[]" max="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}"
-                                            min="0" value="0">
+                                            <input type="number" class="form-control input-border-bottom text-center" name="jumlah[]" max="{{ $subRow->total_masuk - $subRow->penyimpanan->total_keluar }}" min="0" value="0">
                                         </td>
                                         <td>{{ $row->satuan }}</td>
                                     </tr>
@@ -319,6 +524,7 @@
     </div>
     @endforeach
 </form>
+@endif
 
 @section('js')
 <script>

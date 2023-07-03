@@ -90,7 +90,8 @@ class Pengajuan extends Controller
             $data = submissionDetailModel::where('user_id', Auth::user()->id)
                     ->select('t_pengajuan.*','t_pengajuan_detail.*','t_pengajuan_detail.keterangan as keterangan')
                     ->join('t_pengajuan','id_pengajuan','pengajuan_id')
-                    ->orderBy('nama_barang','ASC');
+                    ->orderBy('nama_barang','ASC')
+                    ->where('user_id', Auth::user()->id);
 
             if ($category == 'pengambilan') {
                 $item = $data->get();
