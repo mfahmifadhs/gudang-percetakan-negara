@@ -49,6 +49,7 @@ class Pengajuan extends Controller
 
     public function Detail($id)
     {
+	$catatan  = '';
         $data     = submissionModel::where('id_pengajuan', $id)->first();
 
         if ($data->jenis_pengajuan == 'masuk') {
@@ -127,7 +128,7 @@ class Pengajuan extends Controller
             $file['surat_perintah']  = $suratPerintah ? $request->surat_perintah : null;
             $resFile = $file;
 
-            $list_pengajuan  = submissionModel::count();
+            $list_pengajuan  = submissionModel::withTrashed()->count();
             $total_pengajuan = str_pad($list_pengajuan + 1, 4, 0, STR_PAD_LEFT);
             $id_pengajuan    = Carbon::now()->isoFormat('YYMMDD').$total_pengajuan;
 
