@@ -144,10 +144,10 @@
                                         <i class="fas fa-info-circle"></i> Detail
                                     </a>
 
-                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4 && $row->status_proses_id != 4)
-                                    <!-- <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
+                                    @if (Auth::user()->pegawai->workunit->id_unit_kerja == $row->unitkerja->id_unit_kerja && Auth::user()->role_id == 4 && $row->status_proses_id == 1)
+                                    <a class="dropdown-item btn" type="button" href="{{ route('submission.edit', $row->id_pengajuan) }}">
                                         <i class="fas fa-edit"></i> Edit
-                                    </a> -->
+                                    </a>
                                     @endif
 
                                     @if (Auth::user()->role_id == 1)
