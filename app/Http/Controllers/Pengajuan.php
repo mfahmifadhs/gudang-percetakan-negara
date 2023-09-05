@@ -39,8 +39,8 @@ class Pengajuan extends Controller
                 ->get();
         } else {
             $submission = submissionModel::orderBy('status_pengajuan_id', 'ASC')
-                ->orderBy('status_proses_id', 'ASC')
-                ->orderBy('tanggal_pengajuan', 'DESC')
+		->orderBy('status_proses_id', 'ASC')
+		->orderBy('tanggal_pengajuan', 'DESC')
                 ->get();
         }
 
